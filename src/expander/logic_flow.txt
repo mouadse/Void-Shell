@@ -1,0 +1,54 @@
+main
+|
+|---> get_clean_arg(arg, params, exit_status)
+      |
+      |---> get_clean_arg_2(arg, q, exit_status, params)
+            |
+            |---> [Character Processing Loop]
+                  |
+                  |---> If character is a single quote (')
+                  |     |
+                  |     |---> process_single_quote(arg, &i, q)
+                  |
+                  |---> Else if character is a double quote (")
+                  |     |
+                  |     |---> process_double_quote(values, arg, q, params)
+                  |            |
+                  |            |---> [Inside Double Quote Processing]
+                  |                  |
+                  |                  |---> If character is a dollar sign ($)
+                  |                  |     |
+                  |                  |     |---> process_double_quote_3(values, q) [If $?]
+                  |                  |     |
+                  |                  |     |---> process_double_quote_2(values, arg, q, params) [Else]
+                  |                  |
+                  |                  |---> Else enqueue character to queue
+                  |
+                  |---> Else if character is a dollar sign ($)
+                  |     |
+                  |     |---> process_dollar_sign(values, q, arg, params)
+                  |            |
+                  |            |---> If next character is '?'
+                  |            |     |
+                  |            |     |---> Enqueue exit status
+                  |            |
+                  |            |---> Else
+                  |                  |
+                  |                  |---> process_dollar_sign_2(values, q, arg, params)
+                  |
+                  |---> Else if character is a tilde (~) at start of word
+                  |     |
+                  |     |---> Expand tilde to HOME directory
+                  |
+                  |---> Else
+                        |
+                        |---> Enqueue character to queue
+      |
+      |---> Convert character queue to string (clean_arg)
+      |
+      |---> Return clean_arg to main
+|
+|---> Print original and processed arguments
+|
+|---> Free allocated memory
+
