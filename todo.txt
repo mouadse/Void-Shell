@@ -1,0 +1,4 @@
+- Sprint work for the builtins commands 
+- Add the shell lvl to our minishell 
+- Fix some minor syntax bugs
+- 
