@@ -1,4 +1,7 @@
 - Sprint work for the builtins commands 
 - Add the shell lvl to our minishell 
 - Fix some minor syntax bugs
-- 
+- Todo env and sorting the env list.
+- When adding a env variable to the env variables is it sorted or not ??
+- Edge cases file Khalil 
+-  
