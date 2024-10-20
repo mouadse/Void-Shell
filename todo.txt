@@ -4,4 +4,5 @@
 - Todo env and sorting the env list.
 - When adding a env variable to the env variables is it sorted or not ??
 - Edge cases file Khalil 
--  
+- '=' in env builtins
+- Time to start fixing the builtins and working on the edge cases (Export ... etc)
