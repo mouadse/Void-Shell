@@ -6,12 +6,12 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 00:21:19 by msennane          #+#    #+#             */
-/*   Updated: 2024/10/30 00:23:14 by msennane         ###   ########.fr       */
+/*   Updated: 2024/10/30 00:24:39 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
-#define MINISHELL_H
+# define MINISHELL_H
 # include <assert.h>
 # include <errno.h>
 # include <fcntl.h>
@@ -28,7 +28,9 @@
 
 // My own custom header files below
 
-#include "libft.h"
-
+# include "command.h"
+# include "environment.h"
+# include "libft.h"
+# include "queue.h"
 
 #endif
