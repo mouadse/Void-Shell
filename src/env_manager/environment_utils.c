@@ -12,36 +12,41 @@
 
 #include "../../include/minishell.h"
 
-char *get_env_value(char *key, t_env_var *env) {
-  t_env_var *head;
+char	*get_env_value(char *key, t_env_var *env)
+{
+	t_env_var	*head;
 
-  head = env;
-  while (head != NULL) {
-    if (ft_strcmp(head->key, key) == 0)
-      return (head->value);
-    head = head->next;
-  }
-  return (NULL);
+	head = env;
+	while (head != NULL)
+	{
+		if (ft_strcmp(head->key, key) == 0)
+			return (head->value);
+		head = head->next;
+	}
+	return (NULL);
 }
 
-void free_env_node(t_env_var *env) {
-  if (!env)
-    return;
-  if (env->key)
-    free(env->key);
-  if (env->value)
-    free(env->value);
-  free(env);
+void	free_env_node(t_env_var *env)
+{
+	if (!env)
+		return ;
+	if (env->key)
+		free(env->key);
+	if (env->value)
+		free(env->value);
+	free(env);
 }
 
-void free_env(t_env_var *env) {
-  t_env_var *head;
-  t_env_var *tmp;
+void	free_env(t_env_var *env)
+{
+	t_env_var	*head;
+	t_env_var	*tmp;
 
-  head = env;
-  while (head != NULL) {
-    tmp = head;
-    head = head->next;
-    free_env_node(tmp);
-  }
+	head = env;
+	while (head != NULL)
+	{
+		tmp = head;
+		head = head->next;
+		free_env_node(tmp);
+	}
 }
