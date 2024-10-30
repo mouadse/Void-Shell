@@ -12,10 +12,9 @@
 
 #include "../../include/minishell.h"
 
-
-t_env_var *create_env_var(char *key, char *value)
+t_env_var	*create_env_var(char *key, char *value)
 {
-	t_env_var *new;
+	t_env_var	*new;
 
 	new = malloc(sizeof(t_env_var));
 	if (!new)
@@ -25,4 +24,3 @@ t_env_var *create_env_var(char *key, char *value)
 	new->next = NULL;
 	return (new);
 }
-
