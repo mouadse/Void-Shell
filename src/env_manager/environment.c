@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 01:51:48 by msennane          #+#    #+#             */
-/*   Updated: 2024/10/31 20:56:45 by msennane         ###   ########.fr       */
+/*   Updated: 2024/10/31 21:00:53 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,3 +78,4 @@ void	insert_env_var(t_env_var **env_var_list, t_env_var *new_nod)
 	prev->next = new_nod;
 	new_nod->next = curr;
 }
+
