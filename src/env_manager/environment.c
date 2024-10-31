@@ -6,11 +6,12 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 01:51:48 by msennane          #+#    #+#             */
-/*   Updated: 2024/10/31 21:00:53 by msennane         ###   ########.fr       */
+/*   Updated: 2024/10/31 22:09:30 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <time.h>
 
 t_env_var	*create_env_var(char *key, char *value)
 {
@@ -79,3 +80,41 @@ void	insert_env_var(t_env_var **env_var_list, t_env_var *new_nod)
 	new_nod->next = curr;
 }
 
+static void	extract_and_push(t_env_var **env_var_list, char *env_var)
+{
+	char		*key;
+	char		*value;
+	char		*equal;
+	t_env_var	*new_nod;
+
+	equal = ft_strchr(env_var, '=');
+	if (!equal)
+	{
+		new_nod = create_env_var(ft_strdup(env_var), NULL);
+	}
+	else
+	{
+		key = ft_substr(env_var, 0, equal - env_var);
+		value = ft_strdup(equal + 1);
+		if (ft_strcmp(key, "OLDPWD") == 0)
+		{
+			new_nod = create_env_var(key, NULL);
+			free(key);
+		}
+		else
+			new_nod = create_env_var(key, value);
+	}
+	insert_env_var(env_var_list, new_nod);
+}
+
+void	init_env_var(t_env_var **env_var_list, char **envp)
+{
+	int	i;
+
+	i = 0;
+	while (envp[i])
+	{
+		extract_and_push(env_var_list, envp[i]);
+		i++;
+	}
+}
