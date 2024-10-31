@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 01:51:48 by msennane          #+#    #+#             */
-/*   Updated: 2024/10/31 20:33:39 by msennane         ###   ########.fr       */
+/*   Updated: 2024/10/31 20:34:49 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,10 @@ int	update_env_var(t_env_var *env_var_list, t_env_var *new_nod)
 		if (ft_strcmp(tmp->key, new_nod->key) == 0)
 		{
 			if (!new_nod->value)
-			{
-				free_env_node(new_nod);
-				return (1);
-			}
+				return (free_env_node(new_nod), 1);
 			new_value = ft_strdup(new_nod->value);
 			if (!new_value)
-			{
-				free_env_node(new_nod);
-				return (-1);
-			}
+				return (free_env_node(new_nod), 1);
 			free(tmp->value);
 			tmp->value = new_value;
 			free_env_node(new_nod);
