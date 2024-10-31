@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 01:51:48 by msennane          #+#    #+#             */
-/*   Updated: 2024/10/31 20:34:49 by msennane         ###   ########.fr       */
+/*   Updated: 2024/10/31 20:49:39 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ int	update_env_var(t_env_var *env_var_list, t_env_var *new_nod)
 	t_env_var	*tmp;
 	char		*new_value;
 
-	if (!env_var_list || !new_nod)
-		return (-1);
 	tmp = env_var_list;
 	while (tmp)
 	{
@@ -50,4 +48,33 @@ int	update_env_var(t_env_var *env_var_list, t_env_var *new_nod)
 		tmp = tmp->next;
 	}
 	return (0);
+}
+
+void	insert_env_var(t_env_var **env_var_list, t_env_var *new_nod)
+{
+	t_env_var	*curr;
+	t_env_var	*prev;
+
+	if (!env_var_list || !new_nod)
+		return ;
+	if (!*env_var_list)
+	{
+		*env_var_list = new_nod;
+		return ;
+	}
+	if (ft_strcmp(new_nod->key, (*env_var_list)->key) < 0)
+	{
+		new_nod->next = *env_var_list;
+		*env_var_list = new_nod;
+		return ;
+	}
+	curr = *env_var_list;
+	prev = NULL;
+	while (curr && ft_strcmp(new_nod->key, curr->key) >= 0)
+	{
+		prev = curr;
+		curr = curr->next;
+	}
+	prev->next = new_nod;
+	new_nod->next = curr;
 }
