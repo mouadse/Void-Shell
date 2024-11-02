@@ -62,9 +62,9 @@ typedef struct s_redir_data
 
 typedef struct s_shell_context
 {
-	int last_exit_status; // we either use this or we save it in a file locally
 	char		*input;
 	char		**envp;
+	int			last_exit_status;
 	t_env_var	*env_vars;
 	t_command	*tree;
 	t_queue		*queue;
