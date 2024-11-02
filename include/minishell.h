@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 00:21:19 by msennane          #+#    #+#             */
-/*   Updated: 2024/10/30 00:24:39 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/02 17:00:18 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 # include "command.h"
 # include "environment.h"
 # include "libft.h"
-# include "queue.h"
+#include "queue.h"
+#include "exec_engine.h"
+
 
 #endif
