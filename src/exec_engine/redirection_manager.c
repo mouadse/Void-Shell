@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:32 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/03 18:10:09 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/03 18:21:54 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	*getvar_name(char *arg)
 	return (ft_substr(arg, 0, i));
 }
 
-void	replace_var_in_line(char *line, int *i, t_shell_context *context,
+static void	replace_var_in_line(char *line, int *i, t_shell_context *context,
 		t_queue_char *q)
 {
 	char	*var_name;
@@ -44,7 +44,8 @@ void	replace_var_in_line(char *line, int *i, t_shell_context *context,
 		free(var_value);
 }
 
-char	*process_line(t_shell_context *context, char *line, int *exit_status)
+static char	*process_line(t_shell_context *context, char *line,
+		int *exit_status)
 {
 	int				i;
 	t_queue_char	q;
@@ -73,7 +74,7 @@ char	*process_line(t_shell_context *context, char *line, int *exit_status)
 	return (queue_char_str_convert(&q));
 }
 
-char	*read_heredoc_input(char *del, t_shell_context *context,
+static char	*read_heredoc_input(char *del, t_shell_context *context,
 		int *exit_status)
 {
 	char	*line;
@@ -110,7 +111,7 @@ char	*read_heredoc_input(char *del, t_shell_context *context,
 	return (queue_str_convert(&queue));
 }
 
-void	write_heredoc_file(t_shell_context *context, char *content)
+static void	write_heredoc_file(t_shell_context *context, char *content)
 {
 	int	fd;
 
@@ -130,3 +131,30 @@ void	write_heredoc_file(t_shell_context *context, char *content)
 	close(fd);
 }
 
+void	execute_redirects_command(t_command *cmd, t_shell_context *context,
+		int *exit_status)
+{
+	t_redir	*redir_cmd;
+	char	*heredoc_content;
+
+	redir_cmd = (t_redir *)cmd;
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	if (redir_cmd->redir_type != '%')
+	{
+		close(redir_cmd->fd);
+		if (open(redir_cmd->file, redir_cmd->mode, 0644) < 0)
+		//   free_panic_exit(context, "open", 1);
+	}
+	else
+	{
+		heredoc_content = read_heredoc_input(redir_cmd->file, context,
+				exit_status);
+		write_heredoc_file(context, heredoc_content);
+		free(heredoc_content);
+		close(redir_cmd->fd);
+		if (open("/tmp/herdoc_input.tmp", redir_cmd->mode, 0644) < 0)
+		//   free_panic_exit(context, "open", 1);
+	}
+	execute_command(redir_cmd->sub_cmd, context, exit_status);
+}

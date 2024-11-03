@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 01:40:43 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/02 18:47:34 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/03 18:19:20 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # define SHELL_CHILD_STATUS_FILE "/tmp/shell_exit_status.tmp"
 # define SHELL_HEREDOC_FILE "/tmp/shell_heredoc_content.tmp"
 
+void	execute_command(t_command *cmd, t_shell_context *context,
+		int *exit_status);
 void	execute_pipeline_command(t_command *cmd, t_shell_context *context,
 		int *exit_status);
 
