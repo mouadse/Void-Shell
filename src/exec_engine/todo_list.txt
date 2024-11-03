@@ -1,3 +1,4 @@
 - A second implementation of queues that handle single chars
 - Add utils for var processing 
 - Deal with cleanup function for leaks
+- We can replace our leaks cleanup function with a proper garbage collector
