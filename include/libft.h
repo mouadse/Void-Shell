@@ -30,5 +30,6 @@ char	*ft_itoa(int n);
 void	ft_putstr_fd(char *s, int fd);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strcmp(const char *s1, const char *s2);
+int		is_whitespace(char c);
 
 #endif // !LIBFT_H
