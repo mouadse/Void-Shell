@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:29 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/04 17:41:54 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/04 17:44:37 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,11 @@ static void	signal_handler(void)
 void	execute_pipeline_command(t_command *cmd, t_shell_context *context,
 		int *exit_status)
 {
-	int		fd[2];
-	pid_t	pids[2];
-	int		status;
-	int		heredoc_flag;
-	t_pipe	*pipe_cmd;
+	int			fd[2];
+	pid_t		pids[2];
+	int			status;
+	static int	heredoc_flag = 0;
+	t_pipe		*pipe_cmd;
 
 	pipe_cmd = (t_pipe *)cmd;
 	pipe(fd);
