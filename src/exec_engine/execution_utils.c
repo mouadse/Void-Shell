@@ -12,4 +12,26 @@
 
 #include "../../include/minishell.h"
 
+char *get_executable_path(char *command, char *path) {
+  int i;
+  char **path_directories;
+  char *command_with_slash;
+  char *full_path;
 
+  path_directories = ft_split(path, ':');
+  command_with_slash = ft_strjoin("/", command);
+  i = 0;
+  while (path_directories[i]) {
+    full_path = ft_strjoin(path_directories[i], command_with_slash);
+    if (access(full_path, X_OK) == 0) {
+      // free(command);
+      // free_split(path_directories);
+      return (full_path);
+    }
+    free(full_path);
+    i++;
+  }
+  // free(command);
+  // free_split(path_directories);
+  return (NULL);
+}
