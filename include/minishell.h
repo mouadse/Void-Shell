@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 00:21:19 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/06 20:18:57 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/06 20:47:03 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,6 @@
 #include "queue.h"
 #include "exec_engine.h"
 #include "tokenizer.h"
+#include "parser.h"
 
 #endif
