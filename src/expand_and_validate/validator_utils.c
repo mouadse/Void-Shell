@@ -11,3 +11,12 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+int validate_pipe_syntax(char **ps, char *es, int *exit_status) {
+  if (peek(ps, es, "|")) {
+    ft_putstr_fd("syntax error near unexpected token '|'\n", STDERR_FILENO);
+    *exit_status = 258;
+    return (0);
+  }
+  return (1);
+}
