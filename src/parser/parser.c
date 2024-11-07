@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 20:55:50 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/07 02:09:00 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/07 02:13:35 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,67 @@ t_command	*parseredirs(t_command *sub_cmd, char **ps, char *es)
 		gettoken(ps, es, &q, &eq);
 		cmd = handle_redirect(sub_cmd, ps, es, tok, q, eq);
 	}
+	return (cmd);
+}
+
+static int	collect_exec_argument(t_exec **exec_cmd, char **ps, char *es,
+		int *arg_count)
+{
+	int		token;
+	char	*start;
+	char	*end;
+
+	token = gettoken(ps, es, &start, &end);
+	if (token == '\0')
+		return (0);
+	(*exec_cmd)->argv[*arg_count] = start;
+	(*exec_cmd)->eargv[*arg_count] = end;
+	(*arg_count)++;
+	return (1);
+}
+
+static void	process_next_redirection(t_command **cmd, t_exec **exec_cmd,
+		char **ps, char *es)
+{
+	t_command	*temp_cmd;
+
+	if ((*cmd) != (t_command *)(*exec_cmd))
+	{
+		temp_cmd = (*cmd);
+		while (((t_redir *)temp_cmd)->sub_cmd->type == CMD_REDIR)
+			temp_cmd = ((t_redir *)temp_cmd)->sub_cmd;
+		((t_redir *)temp_cmd)->sub_cmd = parseredirs((t_command *)(*exec_cmd),
+				ps, es);
+	}
+	else
+	{
+		(*cmd) = parseredirs((*cmd), ps, es);
+	}
+}
+
+t_command	*parseexec(char **ps, char *es, int *status)
+{
+	t_exec		*exec_cmd;
+	t_command	*cmd;
+	int			arg_count;
+
+	arg_count = 0;
+	cmd = create_execcmd();
+	exec_cmd = (t_exec *)cmd;
+	cmd = parseredirs(cmd, ps, es);
+	while (!peek(ps, es, "|"))
+	{
+		if (!collect_exec_argument(&exec_cmd, ps, es, &arg_count))
+			break ;
+		if (arg_count >= MAX_ARGS)
+		{
+			*status = 1;
+			release_command_resources(cmd);
+			return (NULL);
+		}
+		process_next_redirection(&cmd, &exec_cmd, ps, es);
+	}
+	exec_cmd->argv[arg_count] = NULL;
+	exec_cmd->eargv[arg_count] = NULL;
 	return (cmd);
 }
