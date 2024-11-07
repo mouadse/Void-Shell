@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 00:27:00 by msennane          #+#    #+#             */
-/*   Updated: 2024/10/30 00:37:42 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/07 01:55:35 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,11 @@ typedef struct s_shell_context
 	t_command	*tree;
 	t_queue		*queue;
 }				t_shell_context;
+
+t_command		*create_execcmd(void);
+t_command		*create_pipecmd(t_command *left, t_command *right);
+t_redir_data	create_redirdata(char *file, char *efile, int fd, int mode);
+t_command		*create_redircmd(t_command *sub_cmd, t_redir_data data,
+					char redir_type);
 
 #endif
