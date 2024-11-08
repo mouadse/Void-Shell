@@ -181,6 +181,11 @@ char *queue_char_to_str(t_queue_char *q) {
   return str;
 }
 
+void free_queue_char(t_queue_char *q) {
+  if (q->data)
+    free(q->data);
+}
+
 /* Initialize string queue */
 void init_queue(t_queue *q) {
   q->capacity = 1024;
@@ -475,7 +480,7 @@ static char *clean_argument(const char *arg, t_params *params,
                             int *exit_status) {
   t_queue_char queue;
   char *clean_arg;
-
+  // int queue_flag = 0;
   init_queue_char(&queue);
 
   if (ft_strcmp(arg, "~") == 0) {
@@ -486,6 +491,7 @@ static char *clean_argument(const char *arg, t_params *params,
     } else {
       clean_arg = ft_strdup("~"); // Fallback to "~" if HOME is not set
     }
+    free_queue_char(&queue);
   } else {
     // Process the argument to handle quotes and special characters
     process_argument(arg, &queue, exit_status, params);
@@ -495,7 +501,9 @@ static char *clean_argument(const char *arg, t_params *params,
 
   // Enqueue the cleaned argument for further processing
   enqueue(params->args_queue, clean_arg);
-
+  // if (queue_flag == 1) {
+  //   free_queue_char(&queue);
+  // }
   return clean_arg;
 }
 
@@ -606,6 +614,7 @@ int main() {
       "path/to/some~file",
       "$HOME/$USER/docs",
       "\"Nested 'quotes' and $SHELL\"",
+      "noSpecialChars",
       NULL};
 
   // Define a mock exit status
