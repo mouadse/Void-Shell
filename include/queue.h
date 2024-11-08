@@ -13,6 +13,7 @@
 #ifndef QUEUE_H
 # define QUEUE_H
 
+#include "command.h"
 typedef struct s_node
 {
 	void				*data;
@@ -50,5 +51,6 @@ void					enqueue_char(t_queue_char *queue, char data);
 void					enqueue_str(t_queue_char *queue, char *str);
 char					dequeue_char(t_queue_char *queue);
 char					*queue_char_str_convert(t_queue_char *queue);
+void                     free_queue_char(t_queue_char *queue);
 
 #endif

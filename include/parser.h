@@ -25,4 +25,8 @@ int check_command_validity(char *line, int *exit_status);
 
 int has_special_characters(char *arg);
 
+void handle_single_quotes(char *str, int *index, t_queue_char *queue);
+void handle_double_quotes(char *str, int *values[2], t_queue_char *queue, t_shell_context *context);
+void handle_dollar_sign(char *str, int *values[2], t_queue_char *queue, t_shell_context *context);
+char *extract_variable_name(char *arg);
 #endif
