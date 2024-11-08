@@ -22,4 +22,7 @@ int check_redirection_syntax(char **ps, char *es, int *exit_status);
 int validate_pipe_syntax(char **ps, char *es, int *exit_status);
 int check_pipe_usage(char **ps, char *es, int *exit_status);
 int check_command_validity(char *line, int *exit_status);
+
+int has_special_characters(char *arg);
+
 #endif

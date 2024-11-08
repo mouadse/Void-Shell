@@ -11,3 +11,10 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+int has_special_characters(char *str) {
+    if (ft_strchr(str, '\'') || ft_strchr(str, '\"') || ft_strchr(str, '$')
+		|| ft_strchr(str, '~'))
+		return (1);
+	return (0);
+}
