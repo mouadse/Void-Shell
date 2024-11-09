@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/07 23:39:16 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/09 21:22:23 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void process_all_commands(t_command *cmd, t_shell_context *context,
     process_all_commands(pipe->right, context, exit_status);
   } else if (type == CMD_REDIR) {
     redir = (t_redir *)cmd;
-    if (redir->redir_type == '%' && has_special_characters(redir->file))
+    if (redir->redir_type != '%' && has_special_characters(redir->file))
       redir->file = clean_argument(redir->file, context, exit_status);
     process_all_commands(redir->sub_cmd, context, exit_status);
   }
