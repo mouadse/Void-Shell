@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:26 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/10 21:11:44 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/11 02:49:58 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,61 @@ void	handle_invalid_executable(t_exec *cmd, t_shell_context *context,
 	{
 		// ft_printf_fd(STDERR_FILENO, "minishell: %s: is a directory\n",
 		// cmd->argv[0]);
-		ft_putstr_fd("Void-shell: ", STDERR_FILENO);
-		ft_putstr_fd(cmd->argv[0], STDERR_FILENO);
-		ft_putstr_fd(": is a directory\n", STDERR_FILENO);
-		free_exit(params, 126);
+		// ft_putstr_fd("Void-shell: ", STDERR_FILENO);
+		// ft_putstr_fd(cmd->argv[0], STDERR_FILENO);
+		// ft_putstr_fd(": is a directory\n", STDERR_FILENO);
+		print_exec_error(cmd->argv[0], "is a directory");
+		free_exit(context, 126);
 	}
 	else if (access(cmd->argv[0], X_OK) != 0)
 	{
 		// ft_printf_fd(STDERR_FILENO, "minishell: %s: Permission denied\n",
 		//              cmd->argv[0]);
-		ft_putstr_fd("Void-shell: ", STDERR_FILENO);
-		ft_putstr_fd(cmd->argv[0], STDERR_FILENO);
-		ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
-		free_exit(params, 126);
+		// ft_putstr_fd("Void-shell: ", STDERR_FILENO);
+		// ft_putstr_fd(cmd->argv[0], STDERR_FILENO);
+		// ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+		print_exec_error(cmd->argv[0], "Permission denied");
+		free_exit(context, 126);
 	}
+}
+
+void	handle_executable_path(t_exec *ecmd, t_shell_context *context)
+{
+	struct stat	path_stat;
+
+	if (ecmd->argv[0] == NULL)
+		free_exit(context, 0);
+	else if (ft_strchr("./", ecmd->argv[0][0]))
+	{
+		if (stat(ecmd->argv[0], &path_stat) == 0)
+			handle_invalid_executable(ecmd, context, path_stat);
+		else
+		{
+			// ft_printf_fd(STDERR_FILENO,
+			// 	"minishell: %s: No such file or directory\n",
+			// 	ecmd->argv[0]);
+			print_exec_error(ecmd->argv[0], "No such file or directory");
+			free_exit(context, 127);
+		}
+	}
+}
+char	*get_command_path(char *cmd_name, t_env_var *env_vars)
+{
+	char	*path_env;
+	char	*cmd_path;
+
+	path_env = get_env_value("PATH", env_vars);
+	if (!path_env)
+		return (NULL);
+	cmd_path = get_executable_path(cmd_name, path_env);
+	return (cmd_path);
+}
+
+void	handle_execve(char *binary_path, char **argv, char **envp,
+		t_shell_context *context)
+{
+	execve(binary_path, argv, envp);
+	print_exec_error(argv[0], "Error executing command");
+	free(binary_path); // replace by custom free function
+	free_exit(context, 126);
 }
