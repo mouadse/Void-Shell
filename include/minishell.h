@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 00:21:19 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/07 02:17:56 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/10 21:09:19 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@
 # include <stdlib.h>
 # include <string.h>
 # include <sys/types.h>
-# include <sys/wait.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
 # include <unistd.h>
 
 // My own custom header files below
