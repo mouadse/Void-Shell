@@ -1,4 +1,4 @@
-- A second implementation of queues that handle single chars
-- Add utils for var processing 
 - Deal with cleanup function for leaks
 - We can replace our leaks cleanup function with a proper garbage collector
+- Time to start digging the rest of the code and fix some minor bugs
+- Clean mem allocated and check for workflow in case of code run with no env or some random scenarios
