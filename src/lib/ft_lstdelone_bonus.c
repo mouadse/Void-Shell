@@ -1,13 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft_utils3.c                                     :+:      :+:    :+:   */
+/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/21 18:39:06 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/21 18:40:28 by msennane         ###   ########.fr       */
+/*   Created: 2023/11/27 00:13:25 by msennane          #+#    #+#             */
+/*   Updated: 2023/11/27 00:14:43 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "libft.h"
+
+void	ft_lstdelone(t_list *lst, void (*del)(void *))
+{
+	if (lst && del)
+	{
+		if (lst->content)
+			del(lst->content);
+		free(lst);
+	}
+}

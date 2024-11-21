@@ -1,13 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft_utils3.c                                     :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/21 18:39:06 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/21 18:40:28 by msennane         ###   ########.fr       */
+/*   Created: 2023/11/05 18:29:57 by msennane          #+#    #+#             */
+/*   Updated: 2023/11/27 01:38:47 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "libft.h"
+
+void	ft_bzero(void *s, size_t n)
+{
+	size_t	i;
+	char	*t;
+
+	t = (char *)s;
+	i = 0;
+	while (i < n)
+	{
+		t[i] = 0;
+		i++;
+	}
+}
