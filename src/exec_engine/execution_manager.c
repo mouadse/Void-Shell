@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:23 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/21 16:08:58 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/21 17:51:06 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ static int	is_builtin_command(t_exec *exec_cmd)
 static void	execute_builtin_command(t_exec *exec_cmd, t_shell_context *context,
 		int exit_status)
 {
+	(void)exit_status;
+	(void)context; // to be updated later
 	if (ft_strcmp(exec_cmd->argv[0], "echo") == 0)
 		printf("Executing builtin command: echo\n");
 	else if (ft_strcmp(exec_cmd->argv[0], "exit") == 0)
