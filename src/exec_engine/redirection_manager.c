@@ -2,11 +2,14 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   redirection_manager.c                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+
+	+:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+
+	+#+        */
+/*                                                +#+#+#+#+#+
+	+#+           */
 /*   Created: 2024/11/01 23:46:32 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/21 17:12:53 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/21 17:19:51 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +119,7 @@ static void	write_heredoc_file(t_shell_context *context, char *content)
 		terminate_with_error(context, "open", 1);
 	if (write(fd, content, ft_strlen(content)) < 0)
 		terminate_with_error(context, "write", 1);
+
 	close(fd);
 }
 
