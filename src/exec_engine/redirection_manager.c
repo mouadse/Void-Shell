@@ -119,7 +119,6 @@ static void	write_heredoc_file(t_shell_context *context, char *content)
 		terminate_with_error(context, "open", 1);
 	if (write(fd, content, ft_strlen(content)) < 0)
 		terminate_with_error(context, "write", 1);
-
 	close(fd);
 }
 

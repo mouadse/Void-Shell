@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:29 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/21 16:41:17 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/21 17:40:55 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,13 @@ static void	save_exit_status(t_shell_context *context, int status_code)
 	if (fd < 0)
 	{
 		perror("open");
-		terminate_with_error(context,
-			"Failed to open file to write exit status", EXIT_FAILURE);
+		terminate_with_error(context, "Open", EXIT_FAILURE);
 	}
 	bytes_written = write(fd, &status_code, sizeof(status_code));
 	if (bytes_written < 0)
 	{
 		perror("write");
-		terminate_with_error(context, "Failed to write exit status to file",
-			EXIT_FAILURE);
+		terminate_with_error(context, "Write", EXIT_FAILURE);
 	}
 	close(fd);
 }
