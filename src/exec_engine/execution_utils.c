@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:26 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/21 16:16:31 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:25:53 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,15 @@ char	*get_executable_path(char *command, char *path)
 		full_path = ft_strjoin(path_directories[i], command_with_slash);
 		if (access(full_path, X_OK) == 0)
 		{
-			// free(command);
-			// free_split(path_directories);
+			ft_free(command_with_slash);
+			free_array(path_directories);
 			return (full_path);
 		}
 		free(full_path);
 		i++;
 	}
-	// free(command);
-	// free_split(path_directories);
+	ft_free(command_with_slash);
+	free_array(path_directories);
 	return (NULL);
 }
 

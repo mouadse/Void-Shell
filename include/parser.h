@@ -11,24 +11,26 @@
 /* ************************************************************************** */
 
 #ifndef PARSER_H
-#define PARSER_H
+# define PARSER_H
 
-#include "command.h"
+# include "command.h"
 
-t_command *cmd_null_terminate(t_command *cmd);
-void	release_command_resources(t_command *cmd);
+t_command	*cmd_null_terminate(t_command *cmd);
+void		release_command_resources(t_command *cmd);
 
-int check_redirection_syntax(char **ps, char *es, int *exit_status);
-int validate_pipe_syntax(char **ps, char *es, int *exit_status);
-int check_pipe_usage(char **ps, char *es, int *exit_status);
-int check_command_validity(char *line, int *exit_status);
+int			check_redirection_syntax(char **ps, char *es, int *exit_status);
+int			validate_pipe_syntax(char **ps, char *es, int *exit_status);
+int			check_pipe_usage(char **ps, char *es, int *exit_status);
+int			check_command_validity(char *line, int *exit_status);
 
-int has_special_characters(char *arg);
+int			has_special_characters(char *arg);
 
-void handle_single_quotes(char *str, int *index, t_queue_char *queue);
-void handle_double_quotes(char *str, int *values[2], t_queue_char *queue, t_shell_context *context);
-void handle_dollar_sign(char *str, int *values[2], t_queue_char *queue, t_shell_context *context);
-char *extract_variable_name(char *arg);
-void	process_variable(char *str, int *values[2], t_queue_char *queue,
-		t_shell_context *context);
+void		handle_single_quotes(char *str, int *index, t_queue_char *queue);
+void		handle_double_quotes(char *str, int *values[2], t_queue_char *queue,
+				t_shell_context *context);
+void		handle_dollar_sign(char *str, int *values[2], t_queue_char *queue,
+				t_shell_context *context);
+char		*extract_variable_name(char *arg);
+void		process_variable(char *str, int *values[2], t_queue_char *queue,
+				t_shell_context *context);
 #endif

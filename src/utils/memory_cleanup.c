@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 12:29:51 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/21 13:14:38 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:25:17 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,17 @@ void	terminate_with_error(t_shell_context *context, char *message,
 	cleanup_resources(context);
 	perror(message);
 	exit(status);
+}
+
+void	free_array(char **array)
+{
+	int i;
+
+	i = 0;
+	while (array[i])
+	{
+		ft_free(array[i]);
+		i++;
+	}
+	ft_free(array);
 }

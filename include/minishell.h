@@ -22,20 +22,20 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <sys/stat.h>
 # include <sys/types.h>
-#include <sys/wait.h>
-#include <sys/stat.h>
+# include <sys/wait.h>
 # include <unistd.h>
 
 // My own custom header files below
 
 # include "command.h"
 # include "environment.h"
+# include "exec_engine.h"
 # include "libft.h"
-#include "queue.h"
-#include "exec_engine.h"
-#include "tokenizer.h"
-#include "parser.h"
-#include "utils.h"
+# include "parser.h"
+# include "queue.h"
+# include "tokenizer.h"
+# include "utils.h"
 
 #endif
