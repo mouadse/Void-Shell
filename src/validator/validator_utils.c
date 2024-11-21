@@ -23,7 +23,7 @@ int	check_redirection_syntax(char **ps, char *es, int *exit_status)
 	{
 		ft_putstr_fd("Void-shell: syntax error near \
 unexpected token `newline'\n",
-			STDERR_FILENO);
+						STDERR_FILENO);
 		*exit_status = 258;
 		return (0);
 	}

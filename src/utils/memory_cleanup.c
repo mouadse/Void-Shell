@@ -58,7 +58,7 @@ void	terminate_with_error(t_shell_context *context, char *message,
 
 void	free_array(char **array)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (array[i])

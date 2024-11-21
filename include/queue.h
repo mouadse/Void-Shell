@@ -6,14 +6,13 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 00:35:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/03 17:23:08 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:32:15 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef QUEUE_H
 # define QUEUE_H
 
-# include "command.h"
 typedef struct s_node
 {
 	void				*data;
