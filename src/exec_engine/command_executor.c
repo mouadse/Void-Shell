@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:19 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/02 18:46:57 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:36:54 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	execute_command(t_command *cmd, t_shell_context *context,
 {
 	if (CMD_EXEC == cmd->type)
 	{
-		// run exec cmd
+		// run our exec
 	}
 	else if (CMD_REDIR == cmd->type)
 	{

@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:32 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/03 18:41:52 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/21 17:12:53 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,7 @@ static char	*read_heredoc_input(char *del, t_shell_context *context,
 
 	tty_fd = open("/dev/tty", O_RDWR);
 	if (tty_fd < 0)
-	{
-		perror("open");
-		exit(EXIT_FAILURE);
-		// Replace with custom error handling and memory cleanup
-	}
+		terminate_with_error(context, "open", 1);
 	dup2(tty_fd, STDIN_FILENO);
 	close(tty_fd);
 	init_queue(&queue);
@@ -117,17 +113,9 @@ static void	write_heredoc_file(t_shell_context *context, char *content)
 
 	fd = open(SHELL_HEREDOC_FILE, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
-	{
-		perror("open");
-		exit(EXIT_FAILURE); // Replace with custom error handling and memory
-							// cleanup
-	}
+		terminate_with_error(context, "open", 1);
 	if (write(fd, content, ft_strlen(content)) < 0)
-	{
-		perror("write");
-		exit(EXIT_FAILURE); // Replace with custom error handling and memory
-							// cleanup
-	}
+		terminate_with_error(context, "write", 1);
 	close(fd);
 }
 
@@ -144,7 +132,7 @@ void	execute_redirects_command(t_command *cmd, t_shell_context *context,
 	{
 		close(redir_cmd->fd);
 		if (open(redir_cmd->file, redir_cmd->mode, 0644) < 0)
-		//   free_panic_exit(context, "open", 1);
+			terminate_with_error(context, "open", 1);
 	}
 	else
 	{
@@ -154,7 +142,7 @@ void	execute_redirects_command(t_command *cmd, t_shell_context *context,
 		free(heredoc_content);
 		close(redir_cmd->fd);
 		if (open("/tmp/herdoc_input.tmp", redir_cmd->mode, 0644) < 0)
-		//   free_panic_exit(context, "open", 1);
+			terminate_with_error(context, "open", 1);
 	}
 	execute_command(redir_cmd->sub_cmd, context, exit_status);
 }

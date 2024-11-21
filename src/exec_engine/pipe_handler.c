@@ -6,15 +6,13 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:29 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/04 17:44:37 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:41:17 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <fcntl.h>
-#include <time.h>
 
-static void	save_exit_status(t_command *cmd, int status_code)
+static void	save_exit_status(t_shell_context *context, int status_code)
 {
 	int		fd;
 	ssize_t	bytes_written;
@@ -23,13 +21,15 @@ static void	save_exit_status(t_command *cmd, int status_code)
 	if (fd < 0)
 	{
 		perror("open");
-		exit(EXIT_FAILURE); // better cleanup function to be added here
+		terminate_with_error(context,
+			"Failed to open file to write exit status", EXIT_FAILURE);
 	}
 	bytes_written = write(fd, &status_code, sizeof(status_code));
 	if (bytes_written < 0)
 	{
 		perror("write");
-		exit(EXIT_FAILURE); // better cleanup function to be added here
+		terminate_with_error(context, "Failed to write exit status to file",
+			EXIT_FAILURE);
 	}
 	close(fd);
 }
@@ -105,6 +105,6 @@ void	execute_pipeline_command(t_command *cmd, t_shell_context *context,
 		*exit_status = WEXITSTATUS(status);
 	else
 		*exit_status = 1;
-	save_exit_status(cmd, *exit_status);
-	// free and exit our child processes
+	save_exit_status(context, *exit_status);
+	terminate_cleanly(context, *exit_status);
 }
