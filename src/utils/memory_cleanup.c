@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 12:29:51 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/21 13:09:17 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/21 13:14:38 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	cleanup_resources(t_shell_context *context)
 	}
 	if (context->queue)
 	{
-		free_queue(context->queue);
+		free_queue(context->queue); // to be reviewed later
 		context->queue = NULL;
 	}
 }
