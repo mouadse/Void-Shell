@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:26 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/11 02:49:58 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:09:43 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	handle_invalid_executable(t_exec *cmd, t_shell_context *context,
 		// ft_putstr_fd(cmd->argv[0], STDERR_FILENO);
 		// ft_putstr_fd(": is a directory\n", STDERR_FILENO);
 		print_exec_error(cmd->argv[0], "is a directory");
-		free_exit(context, 126);
+		terminate_cleanly(context, 127);
 	}
 	else if (access(cmd->argv[0], X_OK) != 0)
 	{
@@ -77,7 +77,7 @@ void	handle_invalid_executable(t_exec *cmd, t_shell_context *context,
 		// ft_putstr_fd(cmd->argv[0], STDERR_FILENO);
 		// ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
 		print_exec_error(cmd->argv[0], "Permission denied");
-		free_exit(context, 126);
+		terminate_cleanly(context, 127);
 	}
 }
 
@@ -86,7 +86,7 @@ void	handle_executable_path(t_exec *ecmd, t_shell_context *context)
 	struct stat	path_stat;
 
 	if (ecmd->argv[0] == NULL)
-		free_exit(context, 0);
+		terminate_cleanly(context, 127);
 	else if (ft_strchr("./", ecmd->argv[0][0]))
 	{
 		if (stat(ecmd->argv[0], &path_stat) == 0)
@@ -97,7 +97,7 @@ void	handle_executable_path(t_exec *ecmd, t_shell_context *context)
 			// 	"minishell: %s: No such file or directory\n",
 			// 	ecmd->argv[0]);
 			print_exec_error(ecmd->argv[0], "No such file or directory");
-			free_exit(context, 127);
+			terminate_cleanly(context, 127);
 		}
 	}
 }
@@ -118,6 +118,6 @@ void	handle_execve(char *binary_path, char **argv, char **envp,
 {
 	execve(binary_path, argv, envp);
 	print_exec_error(argv[0], "Error executing command");
-	free(binary_path); // replace by custom free function
-	free_exit(context, 126);
+	ft_free(binary_path); // replace by custom free function
+	terminate_cleanly(context, 127);
 }

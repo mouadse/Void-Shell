@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:23 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/11 02:42:07 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:08:58 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,20 +79,20 @@ static void	execute_external_command(t_command *cmd, t_shell_context *context)
 	{
 		/* Command not found in PATH */
 		print_exec_error(exec_cmd->argv[0], "command not found");
-		free_exit(context, 127);
+		terminate_cleanly(context, 127);
 	}
 	/* Pre-execution checks */
 	if (!file_exists(binary_path))
 	{
 		print_exec_error(exec_cmd->argv[0], "No such file or directory");
 		free(binary_path);
-		free_exit(context, 127);
+		terminate_cleanly(context, 127);
 	}
 	if (!is_executable(binary_path))
 	{
 		print_exec_error(exec_cmd->argv[0], "Permission denied");
 		free(binary_path);
-		free_exit(context, 126);
+		terminate_cleanly(context, 127);
 	}
 	/* Attempt to execute the command */
 	handle_execve(binary_path, exec_cmd->argv, context->envp, context);
@@ -108,13 +108,13 @@ void	run_exec(t_command *cmd, t_shell_context *context, int *exit_status)
 	if (is_builtin_command(exec_cmd))
 	{
 		execute_builtin_command(exec_cmd, context, *exit_status);
-		free_exit(context, 0);
+		terminate_cleanly(context, 127);
 	}
 	if (access(exec_cmd->argv[0], X_OK) == 0)
 	{
 		execve(exec_cmd->argv[0], exec_cmd->argv, context->envp);
 		print_exec_error(exec_cmd->argv[0], "command not found");
-		free_exit(context, 127);
+		terminate_cleanly(context, 127);
 	}
 	execute_external_command(cmd, context);
 }
