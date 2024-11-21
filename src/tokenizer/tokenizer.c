@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 20:18:35 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/06 20:27:11 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/21 18:07:03 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,9 @@ int	gettoken(char **ps, char *es, char **q, char **eq)
 	ret = *s;
 	ret = determine_special_tokens(&s);
 	if (ret == 'a')
-	{
 		skip_tokens(&s, es);
-	}
+	if (eq)
+		*eq = s;
 	*ps = s;
 	return (ret);
 }

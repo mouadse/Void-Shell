@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 01:40:43 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/11 02:41:39 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/21 17:53:44 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,10 @@ void	handle_execve(char *binary_path, char **argv, char **envp,
 			t_shell_context *context);
 void	print_exec_error(char *cmd_name, char *error_type);
 void	handle_executable_path(t_exec *ecmd, t_shell_context *context);
+
+// more exec functions
+
+void	run_exec(t_command *cmd, t_shell_context *context, int *exit_status);
+void	execute_redirects_command(t_command *cmd, t_shell_context *context,
+			int *exit_status);
 #endif

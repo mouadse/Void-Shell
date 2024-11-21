@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:29 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/21 17:40:55 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/21 18:05:28 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,21 +32,23 @@ static void	save_exit_status(t_shell_context *context, int status_code)
 	close(fd);
 }
 
-static void	left_pipe(t_command *cmd, int *fd, int *exit_status)
+static void	left_pipe(t_shell_context *context, t_command *cmd, int fd[2],
+		int *exit_status)
 {
 	close(fd[0]);
 	dup2(fd[1], STDOUT_FILENO);
 	close(fd[1]);
-	//   execute_command(cmd, exit_status);
+	execute_command(cmd, context, exit_status);
 	exit(EXIT_SUCCESS);
 }
 
-static void	right_pipe(t_command *cmd, int *fd, int *exit_status)
+static void	right_pipe(t_command *cmd, t_shell_context *context, int fd[2],
+		int *exit_status)
 {
 	close(fd[1]);
 	dup2(fd[0], STDIN_FILENO);
 	close(fd[0]);
-	//   execute_command(cmd, exit_status);
+	execute_command(cmd, context, exit_status);
 	exit(EXIT_SUCCESS);
 }
 
@@ -59,12 +61,13 @@ static void	signal_handler(void)
 void	execute_pipeline_command(t_command *cmd, t_shell_context *context,
 		int *exit_status)
 {
-	int			fd[2];
-	pid_t		pids[2];
-	int			status;
-	static int	heredoc_flag = 0;
-	t_pipe		*pipe_cmd;
+	int		fd[2];
+	pid_t	pids[2];
+	int		status;
+	int		heredoc_flag;
+	t_pipe	*pipe_cmd;
 
+	heredoc_flag = 0;
 	pipe_cmd = (t_pipe *)cmd;
 	pipe(fd);
 	pids[0] = fork(); // for left command
@@ -74,7 +77,7 @@ void	execute_pipeline_command(t_command *cmd, t_shell_context *context,
 		exit(EXIT_FAILURE); // to be handled better for potential cleanup
 	}
 	if (!pids[0])
-		left_pipe(pipe_cmd->left, fd, exit_status);
+		left_pipe(context, pipe_cmd->left, fd, exit_status);
 	if (pipe_cmd->right->type == CMD_REDIR
 		&& ((t_redir *)pipe_cmd->left)->redir_type == '%')
 	{
@@ -90,7 +93,7 @@ void	execute_pipeline_command(t_command *cmd, t_shell_context *context,
 		exit(EXIT_FAILURE); // to be handled better for potential cleanup
 	}
 	if (!pids[1])
-		right_pipe(pipe_cmd->right, fd, exit_status);
+		right_pipe(pipe_cmd->right, context, fd, exit_status);
 	signal_handler();
 	if (!heredoc_flag)
 	{
