@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:52:49 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/22 15:28:55 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/22 15:47:03 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,32 +52,27 @@ void	*dequeue(t_queue *queue)
 
 void	*queue_str_convert(t_queue *queue)
 {
-	// t_node	*tmp;
-	// char	*str;
-	// int		len;
-	// int		i;
+	int		len;
+	char	*str;
+	char	*line;
+	t_node	*tmp;
 
-	// if (!queue->front)
-	// 	return (NULL);
-	// len = 0;
-	// tmp = queue->front;
-	// while (tmp)
-	// {
-	// 	len++;
-	// 	tmp = tmp->next;
-	// }
-	// str = (char *)malloc(sizeof(char) * (len + 1));
-	// tmp = queue->front;
-	// i = 0;
-	// while (tmp)
-	// {
-	// 	str[i] = *(char *)tmp->data;
-	// 	tmp = tmp->next;
-	// 	i++;
-	// }
-	// str[i] = '\0';
-	// return (str);
-	// This code wont accomplish the task of converting the queue to a string
+	len = 0;
+	tmp = queue->front;
+	while (tmp)
+	{
+		len += ft_strlen(tmp->data);
+		tmp = tmp->next;
+	}
+	str = (char *)ft_calloc(len + 1, sizeof(char));
+	while (queue->front)
+	{
+		line = dequeue(queue);
+		ft_strlcat(str, line, len + 1);
+		free(line);
+			// To prevent a leaks since the node for this line is already freed
+	}
+	return (str);
 }
 
 void	free_queue(t_queue *queue)
@@ -172,15 +167,15 @@ char	*queue_char_str_convert(t_queue_char *queue)
 	return (str);
 }
 
-void	free_queue_char(t_queue_char *queue)
-{
-	t_node_char	*tmp;
+// void	free_queue_char(t_queue_char *queue)
+// {
+// 	t_node_char	*tmp;
 
-	while (queue->front)
-	{
-		tmp = queue->front;
-		queue->front = queue->front->next;
-		ft_free(tmp);
-	}
-	queue->rear = NULL;
-}
+// 	while (queue->front)
+// 	{
+// 		tmp = queue->front;
+// 		queue->front = queue->front->next;
+// 		ft_free(tmp);
+// 	}
+// 	queue->rear = NULL;
+// }
