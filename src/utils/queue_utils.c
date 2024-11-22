@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:52:49 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/22 15:47:03 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/22 15:55:03 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	*queue_str_convert(t_queue *queue)
 		line = dequeue(queue);
 		ft_strlcat(str, line, len + 1);
 		free(line);
-			// To prevent a leaks since the node for this line is already freed
+		// To prevent a leaks since the node for this line is already freed
 	}
 	return (str);
 }
@@ -89,6 +89,8 @@ void	free_queue(t_queue *queue)
 	queue->rear = NULL;
 }
 
+// This is a queue for char data type only
+
 void	init_queue_char(t_queue_char *queue)
 {
 	queue->front = NULL;
@@ -101,7 +103,7 @@ void	enqueue_char(t_queue_char *queue, char data)
 
 	new_node = (t_node_char *)malloc(sizeof(t_node_char));
 	if (!new_node)
-		exit(EXIT_FAILURE);
+		return ;
 	new_node->data = data;
 	new_node->next = NULL;
 	if (queue->rear)
@@ -111,22 +113,13 @@ void	enqueue_char(t_queue_char *queue, char data)
 		queue->front = queue->rear;
 }
 
-void	enqueue_str(t_queue_char *queue, char *str)
-{
-	while (*str)
-	{
-		enqueue_char(queue, *str);
-		str++;
-	}
-}
-
 char	dequeue_char(t_queue_char *queue)
 {
 	t_node_char	*tmp;
 	char		data;
 
-	if (!queue->front)
-		return ('\0');
+	// if (!queue->front)
+	// 	return ('\0');
 	tmp = queue->front;
 	data = tmp->data;
 	queue->front = queue->front->next;
@@ -136,46 +129,44 @@ char	dequeue_char(t_queue_char *queue)
 	return (data);
 }
 
+void	enqueue_str(t_queue_char *queue, char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		enqueue_char(queue, str[i]);
+		i++;
+	}
+}
+
 char	*queue_char_str_convert(t_queue_char *queue)
 {
 	t_node_char	*tmp;
 	char		*str;
-	int			len;
 	int			i;
 
 	if (!queue->front)
 		return (NULL);
-	len = 0;
+	i = 0;
 	tmp = queue->front;
 	while (tmp)
 	{
-		len++;
+		i++;
 		tmp = tmp->next;
 	}
-	str = (char *)malloc(sizeof(char) * (len + 1));
+	str = (char *)malloc(sizeof(char) * (i + 1));
 	if (!str)
-		exit(EXIT_FAILURE);
+		return (NULL);
+	// This can benefit from a dequeue_free in case of failure
 	tmp = queue->front;
 	i = 0;
 	while (tmp)
 	{
-		str[i] = tmp->data;
+		str[i++] = dequeue_char(queue);
 		tmp = tmp->next;
-		i++;
 	}
 	str[i] = '\0';
 	return (str);
 }
-
-// void	free_queue_char(t_queue_char *queue)
-// {
-// 	t_node_char	*tmp;
-
-// 	while (queue->front)
-// 	{
-// 		tmp = queue->front;
-// 		queue->front = queue->front->next;
-// 		ft_free(tmp);
-// 	}
-// 	queue->rear = NULL;
-// }
