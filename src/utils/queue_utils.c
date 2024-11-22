@@ -6,26 +6,25 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:52:49 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/21 18:54:37 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/22 15:17:42 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-
-void init_queue(t_queue *queue)
+void	init_queue(t_queue *queue)
 {
 	queue->front = NULL;
 	queue->rear = NULL;
 }
 
-void enqueue(t_queue *queue, void *data)
+void	enqueue(t_queue *queue, void *data)
 {
-	t_node *new_node;
+	t_node	*new_node;
 
 	new_node = (t_node *)malloc(sizeof(t_node));
 	if (!new_node)
-		exit(EXIT_FAILURE);
+		return ;
 	new_node->data = data;
 	new_node->next = NULL;
 	if (queue->rear)
@@ -35,10 +34,10 @@ void enqueue(t_queue *queue, void *data)
 		queue->front = queue->rear;
 }
 
-void *dequeue(t_queue *queue)
+void	*dequeue(t_queue *queue)
 {
-	t_node *tmp;
-	void *data;
+	t_node	*tmp;
+	void	*data;
 
 	if (!queue->front)
 		return (NULL);
@@ -51,12 +50,12 @@ void *dequeue(t_queue *queue)
 	return (data);
 }
 
-void *queue_str_convert(t_queue *queue)
+void	*queue_str_convert(t_queue *queue)
 {
-	t_node *tmp;
-	char *str;
-	int len;
-	int i;
+	t_node	*tmp;
+	char	*str;
+	int		len;
+	int		i;
 
 	if (!queue->front)
 		return (NULL);
@@ -82,9 +81,9 @@ void *queue_str_convert(t_queue *queue)
 	return (str);
 }
 
-void free_queue(t_queue *queue)
+void	free_queue(t_queue *queue)
 {
-	t_node *tmp;
+	t_node	*tmp;
 
 	while (queue->front)
 	{
@@ -95,15 +94,15 @@ void free_queue(t_queue *queue)
 	queue->rear = NULL;
 }
 
-void init_queue_char(t_queue_char *queue)
+void	init_queue_char(t_queue_char *queue)
 {
 	queue->front = NULL;
 	queue->rear = NULL;
 }
 
-void enqueue_char(t_queue_char *queue, char data)
+void	enqueue_char(t_queue_char *queue, char data)
 {
-	t_node_char *new_node;
+	t_node_char	*new_node;
 
 	new_node = (t_node_char *)malloc(sizeof(t_node_char));
 	if (!new_node)
@@ -117,7 +116,7 @@ void enqueue_char(t_queue_char *queue, char data)
 		queue->front = queue->rear;
 }
 
-void enqueue_str(t_queue_char *queue, char *str)
+void	enqueue_str(t_queue_char *queue, char *str)
 {
 	while (*str)
 	{
@@ -126,10 +125,10 @@ void enqueue_str(t_queue_char *queue, char *str)
 	}
 }
 
-char dequeue_char(t_queue_char *queue)
+char	dequeue_char(t_queue_char *queue)
 {
-	t_node_char *tmp;
-	char data;
+	t_node_char	*tmp;
+	char		data;
 
 	if (!queue->front)
 		return ('\0');
@@ -142,12 +141,12 @@ char dequeue_char(t_queue_char *queue)
 	return (data);
 }
 
-char *queue_char_str_convert(t_queue_char *queue)
+char	*queue_char_str_convert(t_queue_char *queue)
 {
-	t_node_char *tmp;
-	char *str;
-	int len;
-	int i;
+	t_node_char	*tmp;
+	char		*str;
+	int			len;
+	int			i;
 
 	if (!queue->front)
 		return (NULL);
@@ -173,9 +172,9 @@ char *queue_char_str_convert(t_queue_char *queue)
 	return (str);
 }
 
-void free_queue_char(t_queue_char *queue)
+void	free_queue_char(t_queue_char *queue)
 {
-	t_node_char *tmp;
+	t_node_char	*tmp;
 
 	while (queue->front)
 	{
@@ -185,5 +184,3 @@ void free_queue_char(t_queue_char *queue)
 	}
 	queue->rear = NULL;
 }
-
-

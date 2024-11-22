@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:26 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/21 16:25:53 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/22 15:12:46 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	clean_empty_arguments(t_exec *exec_cmd)
 {
 	int	i;
 
-	i = 0;
 	while (exec_cmd->argv[0] && exec_cmd->argv[0][0] != '\0')
 	{
 		i = 0;
