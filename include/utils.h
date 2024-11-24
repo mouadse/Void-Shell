@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #ifndef UTILS_H
 # define UTILS_H
 
@@ -22,10 +21,9 @@ void	terminate_with_error(t_shell_context *context, char *message,
 			int status);
 void	free_array(char **array);
 int		is_whitespace(char c);
-int	is_whitespace_string(char *str);
-int	is_numeric(const char *str);
-int	ft_fork(t_shell_context *context);
+int		is_whitespace_string(char *str);
+int		is_numeric(const char *str);
+int		ft_fork(t_shell_context *context);
 void	ft_pipe(int fd[2], t_shell_context *context);
-
 
 #endif

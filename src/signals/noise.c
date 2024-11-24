@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 01:31:03 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/22 13:04:00 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/24 22:44:24 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,26 +89,16 @@ void	setup_signals(void)
 	setup_signal_action(SIGQUIT, SIG_IGN, 0);
 }
 
-void	set_signal_handler_heredoc(void)
-{
-	setup_signal_action(SIGINT, signal_handler_heredoc, SA_RESTART);
-	setup_signal_action(SIGQUIT, signal_handler_heredoc, SA_RESTART);
-}
-
-void	set_signal_handler_input(void)
-{
-	setup_signal_action(SIGINT, signal_handler_input, SA_RESTART);
-	setup_signal_action(SIGQUIT, signal_handler_input, SA_RESTART);
-}
-
 void	set_signal_handler(t_command *tree)
 {
 	if (tree && tree->type == CMD_REDIR)
 	{
-		set_signal_handler_heredoc();
+		setup_signal_action(SIGINT, signal_handler_heredoc, SA_RESTART);
+		setup_signal_action(SIGQUIT, signal_handler_heredoc, SA_RESTART);
 	}
 	else
 	{
-		set_signal_handler_input();
+		setup_signal_action(SIGINT, signal_handler_input, SA_RESTART);
+		setup_signal_action(SIGQUIT, signal_handler_input, SA_RESTART);
 	}
 }
