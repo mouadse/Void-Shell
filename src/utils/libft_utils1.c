@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:39:02 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/21 19:22:34 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/24 22:28:59 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	is_numeric(const char *str)
 	return (1);
 }
 
-int	forking(t_shell_context *context)
+int	ft_fork(t_shell_context *context)
 {
 	int	pid;
 
@@ -59,7 +59,7 @@ int	forking(t_shell_context *context)
 	return (pid);
 }
 
-void	pipe1(int fd[2], t_shell_context *context)
+void	ft_pipe(int fd[2], t_shell_context *context)
 {
 	if (pipe(fd) == -1)
 		terminate_with_error(context, "fork", 1);
