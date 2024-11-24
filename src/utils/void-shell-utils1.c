@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:39:02 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/25 00:33:16 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/25 00:53:56 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,36 @@ void	store_subprocess_pid(pid_t pid, t_shell_context *context)
 	if (-1 == write(fd, &pid, sizeof(pid_t)))
 		terminate_with_error(context, "write", 1);
 	close(fd);
+}
+
+int	is_built_in_command(t_command *cmd)
+{
+	t_exec	*exec_cmd;
+
+	if (cmd && (cmd->type == CMD_EXEC))
+	{
+		exec_cmd = (t_exec *)cmd;
+		if (ft_strcmp(exec_cmd->argv[0], "cd") == 0
+			|| ft_strcmp(exec_cmd->argv[0], "export") == 0
+			|| ft_strcmp(exec_cmd->argv[0], "unset") == 0)
+			return (1);
+	}
+	return (0);
+}
+
+void	run_built_in_command(t_exec *cmd, t_env_var **env_list,
+		int *exit_status)
+{
+	if (ft_strcmp(cmd->argv[0], "cd") == 0)
+	{
+		// run_cd(cmd, env_var_list, exit_status);
+	}
+	else if (ft_strcmp(cmd->argv[0], "export") == 0)
+	{
+		// run_export(cmd, env_var_list, exit_status);
+	}
+	else if (ft_strcmp(cmd->argv[0], "unset") == 0)
+	{
+		// run_unset(cmd, env_var_list, exit_status);
+	}
 }
