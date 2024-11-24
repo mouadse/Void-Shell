@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 01:31:03 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/24 22:44:24 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/24 23:16:08 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,11 @@ void	signal_handler_heredoc(int signum)
 		fd = open("/tmp/child_pid.tmp", O_RDONLY);
 		if (fd < 0)
 		{
-			// write(STDERR_FILENO, "Error: Failed to open PID file\n", 31);
 			ft_putstr_fd("Error: Failed to open PID file\n", STDERR_FILENO);
 			_exit(1);
 		}
 		if (read(fd, &child_pid, sizeof(pid_t)) < 0)
 		{
-			// write(STDERR_FILENO, "Error: Failed to read PID\n", 25);
 			ft_putstr_fd("Error: Failed to read PID\n", STDERR_FILENO);
 			close(fd);
 			_exit(1);
@@ -67,10 +65,7 @@ void	signal_handler_heredoc(int signum)
 		kill(child_pid, SIGKILL);
 	}
 	else if (signum == SIGQUIT)
-	{
-		// write(STDOUT_FILENO, "\b\b  \b\b", 6);
 		ft_putstr_fd("\b\b  \b\b", STDOUT_FILENO);
-	}
 }
 
 static void	setup_signal_action(int signum, void (*handler)(int), int flags)

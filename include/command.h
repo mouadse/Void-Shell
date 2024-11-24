@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 00:27:00 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/21 16:32:08 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/24 22:50:20 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ typedef struct s_shell_context
 	int			last_exit_status;
 	t_env_var	*env_vars;
 	t_command	*tree;
-	t_queue		*queue;
+	t_queue		queue;
 }				t_shell_context;
 
 t_command		*create_execcmd(void);
