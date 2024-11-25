@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:39:02 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/25 00:59:30 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/25 01:02:07 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	run_built_in_command(t_exec *cmd, t_env_var **env_list,
 	}
 }
 
-void	clean_shell(t_shell_context *context, int status)
+void	clean_shell(t_shell_context *context)
 {
 	release_command_resources(context->tree);
 	ft_free(context->input);

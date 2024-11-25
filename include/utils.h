@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 22:01:30 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/25 00:57:41 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/25 01:02:15 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ void	ft_pipe(int fd[2], t_shell_context *context);
 void	retrieve_exit_status(t_command *cmd, t_shell_context *context,
 			int *exit_status, int status);
 void	store_subprocess_pid(pid_t pid, t_shell_context *context);
-int	is_built_in_command(t_command *cmd);
+int		is_built_in_command(t_command *cmd);
 void	run_built_in_command(t_exec *cmd, t_env_var **env_list,
-		int *exit_status);
+			int *exit_status);
+void	clean_shell(t_shell_context *context);
 
 #endif
