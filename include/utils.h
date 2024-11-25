@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 22:01:30 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/24 22:30:26 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/25 00:57:41 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define UTILS_H
 
 # include "command.h"
+# include <sys/types.h>
 
 void	ft_free(void *ptr);
 void	terminate_cleanly(t_shell_context *context, int status);
@@ -25,5 +26,12 @@ int		is_whitespace_string(char *str);
 int		is_numeric(const char *str);
 int		ft_fork(t_shell_context *context);
 void	ft_pipe(int fd[2], t_shell_context *context);
+
+void	retrieve_exit_status(t_command *cmd, t_shell_context *context,
+			int *exit_status, int status);
+void	store_subprocess_pid(pid_t pid, t_shell_context *context);
+int	is_built_in_command(t_command *cmd);
+void	run_built_in_command(t_exec *cmd, t_env_var **env_list,
+		int *exit_status);
 
 #endif

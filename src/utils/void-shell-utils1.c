@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:39:02 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/25 00:53:56 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/25 00:59:30 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,13 @@ void	run_built_in_command(t_exec *cmd, t_env_var **env_list,
 	{
 		// run_unset(cmd, env_var_list, exit_status);
 	}
+}
+
+void	clean_shell(t_shell_context *context, int status)
+{
+	release_command_resources(context->tree);
+	ft_free(context->input);
+	free_queue(&context->queue);
+	unlink(SHELL_CHILD_PID_FILE);
+	unlink(SHELL_CHILD_STATUS_FILE);
 }
