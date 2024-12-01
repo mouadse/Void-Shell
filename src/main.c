@@ -18,6 +18,35 @@ static void	init_shell_env(t_shell_context *context, char **envp,
 	init_env_var(&context->env_vars, envp);
 }
 
+static void	run_cmd(t_shell_context *context, int *exit_status)
+{
+	int		status;
+	t_exec	*exec;
+
+	set_signal_handler(context->tree);
+	if (ft_fork(context) == 0)
+	{
+		store_subprocess_pid(getpid(), context);
+		execute_command(context->tree, context, exit_status);
+	}
+	// this is the parent process
+	waitpid(-1, &status, 0); // wait for the child process to finish
+	retrieve_exit_status(context->tree, context, exit_status, status);
+	exec = (t_exec *)context->tree;
+	// first test is to check if the user demanded to exit the shell
+	if ((exec->type == CMD_EXEC) && ft_strcmp(exec->argv[0], "exit") == 0)
+	{
+		if (!exec->argv[1] || (exec->argv[1] && (!is_numeric(exec->argv[1])
+					|| !exec->argv[2])))
+		{
+			unlink("/tmp/exit_status.tmp");
+			unlink("/tmp/child_pid.tmp");
+			terminate_cleanly(context, *exit_status);
+		}
+	}
+	clean_shell(context);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell_context	context;
