@@ -18,7 +18,7 @@ static void	init_shell_env(t_shell_context *context, char **envp,
 	init_env_var(&context->env_vars, envp);
 }
 
-static void	run_cmd(t_shell_context *context, int *exit_status)
+static void	run_cmd_helper(t_shell_context *context, int *exit_status)
 {
 	int		status;
 	t_exec	*exec;
@@ -46,6 +46,27 @@ static void	run_cmd(t_shell_context *context, int *exit_status)
 	}
 	clean_shell(context);
 }
+static void	run_cmd(t_shell_context *context, int *exit_status)
+{
+	add_history(context->input);
+	context->tree = parsecmd(context->input, exit_status);
+	if (!context->tree)
+	{
+		ft_free(context->input);
+		return ;
+	}
+	process_all_commands(context->tree, context, exit_status);
+	if (is_built_in_command(context->tree))
+	{
+		run_built_in_command((t_exec *)context->tree, &context->env_vars,
+			exit_status);
+		ft_free(context->input);
+		release_command_resources(context->tree); // this is to be reviewed
+		free_queue(&context->queue);
+	}
+	else
+		run_cmd_helper(context, exit_status);
+}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -69,8 +90,7 @@ int	main(int argc, char **argv, char **envp)
 			free(context.input);
 			continue ;
 		}
-		add_history(context.input); // history for readline
-									// run the shell command
+		run_cmd(&context, &exit_status);
 	}
 	free_env(context.env_vars);
 	rl_clear_history();

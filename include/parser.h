@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 20:46:40 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/06 21:00:16 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/01 21:50:59 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,15 @@ void		handle_dollar_sign(char *str, int *values[2], t_queue_char *queue,
 char		*extract_variable_name(char *arg);
 void		process_variable(char *str, int *values[2], t_queue_char *queue,
 				t_shell_context *context);
+
+void		process_all_commands(t_command *cmd, t_shell_context *context,
+				int *exit_status);
+
+// parser functions prototypes
+
+t_command	*parsecmd(char *line, int *exit_status);
+t_command	*parsepipe(char **ps, char *es, int *ret);
+t_command	*parseredirs(t_command *sub_cmd, char **ps, char *es);
+t_command	*parseexec(char **ps, char *es, int *ret);
+
 #endif

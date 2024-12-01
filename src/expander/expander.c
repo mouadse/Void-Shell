@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/09 21:22:23 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/01 21:50:09 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static char	*clean_argument(char *arg, t_shell_context *context,
 		process_argument(arg, &queue, exit_status, context);
 		cleaned_arg = queue_char_str_convert(&queue);
 	}
-	enqueue(context->queue, cleaned_arg);
+	enqueue(&context->queue, cleaned_arg);
 	return (cleaned_arg);
 }
 
