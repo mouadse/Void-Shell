@@ -1,4 +1,5 @@
 #include "../include/minishell.h"
+#include <stdio.h>
 
 static int	is_shell_input_valid(char *input, int *exit_status)
 {
@@ -60,6 +61,7 @@ static void	run_cmd(t_shell_context *context, int *exit_status)
 	{
 		run_built_in_command((t_exec *)context->tree, &context->env_vars,
 			exit_status);
+		printf("built-in command\n");
 		ft_free(context->input);
 		release_command_resources(context->tree); // this is to be reviewed
 		free_queue(&context->queue);

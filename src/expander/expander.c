@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/01 21:50:09 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/01 22:43:05 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static char	*clean_argument(char *arg, t_shell_context *context,
 			// this is added to be fixing the leaks in
 			// case of no env : env -i ./minishell
 		}
-		free_queue_char(&queue); // this is added to be fixing the leaks
+		// free_queue_char(&queue); // this is added to be fixing the leaks
 	}
 	else
 	{

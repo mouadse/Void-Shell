@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:39:02 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/25 01:02:07 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/01 22:42:04 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ int	is_built_in_command(t_command *cmd)
 void	run_built_in_command(t_exec *cmd, t_env_var **env_list,
 		int *exit_status)
 {
+	(void)env_list;
+	(void)exit_status;
 	if (ft_strcmp(cmd->argv[0], "cd") == 0)
 	{
 		// run_cd(cmd, env_var_list, exit_status);
