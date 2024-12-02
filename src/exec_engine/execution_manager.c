@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:23 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/02 13:51:04 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/02 13:52:40 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,22 +52,70 @@ static int	is_builtin_command(t_exec *exec_cmd)
 }
 
 static void	execute_builtin_command(t_exec *exec_cmd, t_shell_context *context,
-		int exit_status)
+		int *exit_status)
 {
-	(void)exit_status;
-	(void)context; // to be updated later
+	int	status;
+		char cwd[1024];
+
 	if (ft_strcmp(exec_cmd->argv[0], "echo") == 0)
-		printf("Executing builtin command: echo\n");
+	{
+		// Implement echo functionality
+		for (int i = 1; exec_cmd->argv[i]; i++)
+		{
+			printf("%s", exec_cmd->argv[i]);
+			if (exec_cmd->argv[i + 1])
+				printf(" ");
+		}
+		printf("\n");
+		*exit_status = 0;
+	}
 	else if (ft_strcmp(exec_cmd->argv[0], "exit") == 0)
-		printf("Executing builtin command: exit\n");
+	{
+		// Implement exit functionality
+		status = 0;
+		if (exec_cmd->argv[1])
+			status = atoi(exec_cmd->argv[1]);
+		terminate_cleanly(context, status);
+	}
 	else if (ft_strcmp(exec_cmd->argv[0], "env") == 0)
-		printf("Executing builtin command: env\n");
+	{
+		// Implement env functionality
+		for (int i = 0; context->envp[i]; i++)
+			printf("%s\n", context->envp[i]);
+		*exit_status = 0;
+	}
 	else if (ft_strcmp(exec_cmd->argv[0], "export") == 0)
-		printf("Executing builtin command: export\n");
+	{
+		// Implement export functionality
+		// Placeholder: Just set exit_status to 0
+		*exit_status = 0;
+	}
 	else if (ft_strcmp(exec_cmd->argv[0], "unset") == 0)
-		printf("Executing builtin command: unset\n");
+	{
+		// Implement unset functionality
+		// Placeholder: Just set exit_status to 0
+		*exit_status = 0;
+	}
 	else if (ft_strcmp(exec_cmd->argv[0], "pwd") == 0)
-		printf("Executing builtin command: pwd\n");
+	{
+		// Implement pwd functionality
+		if (getcwd(cwd, sizeof(cwd)) != NULL)
+		{
+			printf("%s\n", cwd);
+			*exit_status = 0;
+		}
+		else
+		{
+			print_exec_error(exec_cmd->argv[0],
+				"Unable to get current directory");
+			*exit_status = 1;
+		}
+	}
+	else
+	{
+		print_exec_error(exec_cmd->argv[0], "Unknown builtin command");
+		*exit_status = 1;
+	}
 }
 
 static void	execute_external_command(t_command *cmd, t_shell_context *context)

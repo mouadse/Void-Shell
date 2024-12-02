@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/02 13:00:21 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/02 14:04:02 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ static void	process_argument(char *arg, t_queue_char *queue, int *exit_status,
 		{
 			values[0] = &i;
 			values[1] = exit_status;
-			process_variable(arg, values, queue, context);
+			// process_variable(arg, values, queue, context);
+			handle_dollar_sign(arg, values, queue, context);
 		}
 		else
 			enqueue_char(queue, arg[i++]);
