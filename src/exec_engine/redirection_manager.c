@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/02 19:31:59 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/02 22:29:43 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ static char	*process_line(t_shell_context *context, char *line,
 		else
 			enqueue_char(&q, line[i++]);
 	}
-	if (line)
-		free(line);
+	// new line since readline does not add it
+	enqueue_char(&q, '\n');
 	return (queue_char_str_convert(&q));
 }
 
@@ -96,14 +96,15 @@ static char	*read_heredoc_input(char *del, t_shell_context *context,
 		{
 			break ;
 		}
-		if (ft_strlen(line) == ft_strlen(del) + 1 && ft_strncmp(line, del,
-				ft_strlen(line) - 1) == 0)
+		if (ft_strlen(line) == ft_strlen(del) && ft_strncmp(line, del,
+				ft_strlen(del)) == 0)
 		{
 			free(line);
 			break ;
 		}
 		heredoc_line = process_line(context, line, exit_status);
 		enqueue(&queue, heredoc_line);
+		free(line);
 	}
 	return (queue_str_convert(&queue));
 }
@@ -142,7 +143,7 @@ void	execute_redirects_command(t_command *cmd, t_shell_context *context,
 		write_heredoc_file(context, heredoc_content);
 		free(heredoc_content);
 		close(redir_cmd->fd);
-		if (open("/tmp/herdoc_input.tmp", redir_cmd->mode, 0644) < 0)
+		if (open(SHELL_HEREDOC_FILE, redir_cmd->mode, 0644) < 0)
 			terminate_with_error(context, "open", 1);
 	}
 	execute_command(redir_cmd->sub_cmd, context, exit_status);

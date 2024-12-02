@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:39:02 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/02 13:11:32 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/02 21:53:24 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,14 @@ int	is_built_in_command(t_command *cmd)
 {
 	t_exec	*exec_cmd;
 
-	// return (1); // dummy condition
 	if (!cmd)
 		return (0);
 	if (cmd && (cmd->type == CMD_EXEC))
 	{
 		exec_cmd = (t_exec *)cmd;
-		if (ft_strcmp(exec_cmd->argv[0], "cd") == 0
+		if (exec_cmd->argv[0] && (ft_strcmp(exec_cmd->argv[0], "cd") == 0
 			|| ft_strcmp(exec_cmd->argv[0], "export") == 0
-			|| ft_strcmp(exec_cmd->argv[0], "unset") == 0)
+			|| ft_strcmp(exec_cmd->argv[0], "unset") == 0))
 			return (1);
 	}
 	return (0);

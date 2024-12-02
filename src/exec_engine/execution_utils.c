@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:26 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/02 14:07:38 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/02 22:06:49 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,10 @@ void	handle_executable_path(t_exec *ecmd, t_shell_context *context)
 	struct stat	path_stat;
 
 	if (ecmd->argv[0] == NULL)
+	{
+		print_exec_error(ecmd->argv[0], "command not found");
 		terminate_cleanly(context, 127);
+	}
 	else if (ft_strchr("./", ecmd->argv[0][0]))
 	{
 		if (stat(ecmd->argv[0], &path_stat) == 0)

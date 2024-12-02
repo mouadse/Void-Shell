@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 12:29:51 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/01 21:30:34 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/02 22:14:26 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ static void	cleanup_resources(t_shell_context *context)
 {
 	ft_free(context->input);
 	release_command_resources(context->tree);
-	free_env(context->env_vars);
 	free_queue(&context->queue);
+	free_env(context->env_vars);
 }
 
 void	ft_free(void *ptr)
