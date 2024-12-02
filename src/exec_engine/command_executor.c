@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:19 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/02 13:38:58 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/02 16:17:36 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,23 @@
 void	execute_command(t_command *cmd, t_shell_context *context,
 		int *exit_status)
 {
-	if (CMD_EXEC == cmd->type)
+	// print the cmd type for logging
+	printf("Command type: %d\n", cmd->type);
+	if (cmd->type == CMD_EXEC)
 	{
 		run_exec(cmd, context, exit_status);
 	}
-	else if (CMD_REDIR == cmd->type)
+	else if (cmd->type == CMD_REDIR)
 	{
 		execute_redirects_command(cmd, context, exit_status);
 	}
-	else if (CMD_PIPE == cmd->type)
+	else if (cmd->type == CMD_PIPE)
 	{
 		execute_pipeline_command(cmd, context, exit_status);
+	}
+	else
+	{
+		printf("Unknown command type\n");
 	}
 	exit(*exit_status);
 }

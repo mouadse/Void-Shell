@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 20:55:50 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/07 02:13:35 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:40:09 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 // we are using the same parser from xv6 kernel
 
 // func prototypes
-t_command			*parsecmd(char *line, int *exit_status);
-t_command			*parsepipe(char **ps, char *es, int *ret);
-t_command			*parseredirs(t_command *sub_cmd, char **ps, char *es);
-t_command			*parseexec(char **ps, char *es, int *ret);
+t_command	*parsecmd(char *line, int *exit_status);
+t_command	*parsepipe(char **ps, char *es, int *ret);
+t_command	*parseredirs(t_command *sub_cmd, char **ps, char *es);
+t_command	*parseexec(char **ps, char *es, int *ret);
 
 t_command	*parsepipe(char **ps, char *es, int *ret)
 {
@@ -61,68 +61,35 @@ t_command	*parsecmd(char *line, int *exit_status)
 	return (cmd);
 }
 
-static t_command	*handle_redirect(t_command *sub_cmd, char **ps, char *es,
-		int tok, char *q, char *eq)
-{
-	t_command		*cmd;
-	t_redir_data	redir;
+// // static t_command	*handle_redirect(t_command *sub_cmd, char **ps, char *es,
+// // 		int tok, char *q, char *eq)
+// // {
+// // 	t_command		*cmd;
+// // 	t_redir_data	redir;
 
-	cmd = sub_cmd;
-	if (tok == '<')
-	{
-		redir = create_redirdata(q, eq, 0, O_RDONLY);
-		cmd = create_redircmd(parseredirs(sub_cmd, ps, es), redir, '<');
-	}
-	else if (tok == '>')
-	{
-		redir = create_redirdata(q, eq, 1, O_WRONLY | O_CREAT | O_TRUNC);
-		cmd = create_redircmd(parseredirs(sub_cmd, ps, es), redir, '>');
-	}
-	else if (tok == '+')
-	{
-		redir = create_redirdata(q, eq, 1, O_WRONLY | O_CREAT | O_APPEND);
-		cmd = create_redircmd(parseredirs(sub_cmd, ps, es), redir, '+');
-	}
-	else if (tok == '%')
-	{
-		redir = create_redirdata(q, eq, 0, O_RDONLY);
-		cmd = create_redircmd(parseredirs(sub_cmd, ps, es), redir, '%');
-	}
-	return (cmd);
-}
-
-t_command	*parseredirs(t_command *sub_cmd, char **ps, char *es)
-{
-	char		*q;
-	char		*eq;
-	int			tok;
-	t_command	*cmd;
-
-	cmd = sub_cmd;
-	if (peek(ps, es, "<>"))
-	{
-		tok = gettoken(ps, es, 0, 0);
-		gettoken(ps, es, &q, &eq);
-		cmd = handle_redirect(sub_cmd, ps, es, tok, q, eq);
-	}
-	return (cmd);
-}
-
-static int	collect_exec_argument(t_exec **exec_cmd, char **ps, char *es,
-		int *arg_count)
-{
-	int		token;
-	char	*start;
-	char	*end;
-
-	token = gettoken(ps, es, &start, &end);
-	if (token == '\0')
-		return (0);
-	(*exec_cmd)->argv[*arg_count] = start;
-	(*exec_cmd)->eargv[*arg_count] = end;
-	(*arg_count)++;
-	return (1);
-}
+// // 	cmd = sub_cmd;
+// // 	if (tok == '<')
+// // 	{
+// // 		redir = create_redirdata(q, eq, 0, O_RDONLY);
+// // 		cmd = create_redircmd(parseredirs(sub_cmd, ps, es), redir, '<');
+// // 	}
+// // 	else if (tok == '>')
+// // 	{
+// // 		redir = create_redirdata(q, eq, 1, O_WRONLY | O_CREAT | O_TRUNC);
+// // 		cmd = create_redircmd(parseredirs(sub_cmd, ps, es), redir, '>');
+// // 	}
+// // 	else if (tok == '+')
+// // 	{
+// // 		redir = create_redirdata(q, eq, 1, O_WRONLY | O_CREAT | O_APPEND);
+// // 		cmd = create_redircmd(parseredirs(sub_cmd, ps, es), redir, '+');
+// // 	}
+// // 	else if (tok == '%')
+// // 	{
+// // 		redir = create_redirdata(q, eq, 0, O_RDONLY);
+// // 		cmd = create_redircmd(parseredirs(sub_cmd, ps, es), redir, '%');
+// // 	}
+// // 	return (cmd);
+// // }
 
 static void	process_next_redirection(t_command **cmd, t_exec **exec_cmd,
 		char **ps, char *es)
@@ -141,6 +108,52 @@ static void	process_next_redirection(t_command **cmd, t_exec **exec_cmd,
 	{
 		(*cmd) = parseredirs((*cmd), ps, es);
 	}
+}
+
+t_command	*parseredirs(t_command *sub_cmd, char **ps, char *es)
+{
+	char		*q;
+	char		*eq;
+	int			tok;
+	t_command	*cmd;
+
+	cmd = sub_cmd;
+	if (peek(ps, es, "<>"))
+	{
+		tok = gettoken(ps, es, 0, 0);
+		gettoken(ps, es, &q, &eq);
+		if (tok == '<')
+			cmd = create_redircmd(parseredirs(sub_cmd, ps, es),
+					create_redirdata(q, eq, 0, O_RDONLY), '<');
+		else if (tok == '>')
+			cmd = create_redircmd(parseredirs(sub_cmd, ps, es),
+					create_redirdata(q, eq, 1, O_WRONLY | O_CREAT | O_TRUNC),
+					'>');
+		else if (tok == '+')
+			cmd = create_redircmd(parseredirs(sub_cmd, ps, es),
+					create_redirdata(q, eq, 1, O_WRONLY | O_CREAT | O_APPEND),
+					'+');
+		else if (tok == '%')
+			cmd = create_redircmd(parseredirs(sub_cmd, ps, es),
+					create_redirdata(q, eq, 0, O_RDONLY), '%');
+	}
+	return (cmd);
+}
+
+static int	collect_exec_argument(t_exec **exec_cmd, char **ps, char *es,
+		int *arg_count)
+{
+	int		token;
+	char	*start;
+	char	*end;
+
+	token = gettoken(ps, es, &start, &end);
+	if (token == '\0')
+		return (0);
+	(*exec_cmd)->argv[*arg_count] = start;
+	(*exec_cmd)->eargv[*arg_count] = end;
+	(*arg_count)++;
+	return (1);
 }
 
 t_command	*parseexec(char **ps, char *es, int *status)

@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:26 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/02 13:50:34 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/02 14:07:38 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	handle_invalid_executable(t_exec *cmd, t_shell_context *context,
 {
 	if (S_ISDIR(path_stat.st_mode))
 	{
-		print_exec_error(cmd->argv[0], "is a directory");
+		print_exec_error(cmd->argv[0], "Is a directory");
 		terminate_cleanly(context, 127);
 	}
 	else if (access(cmd->argv[0], X_OK) != 0)
