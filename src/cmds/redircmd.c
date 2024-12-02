@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 02:32:09 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/02 18:56:21 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/02 20:22:33 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ t_command	*create_redircmd(t_command *subcmd, t_redir_data redir,
 {
 	t_redir *cmd;
 
-	printf("DEBUG: Creating redir cmd with type CMD_REDIR=%d\n", CMD_REDIR);
 	cmd = ft_calloc(1, sizeof(*cmd));
 	if (!cmd)
 	{
@@ -36,7 +35,6 @@ t_command	*create_redircmd(t_command *subcmd, t_redir_data redir,
 		return (NULL);
 	}
 	cmd->type = CMD_REDIR;
-	printf("DEBUG: Created redir cmd with type=%d\n", cmd->type);
 	cmd->sub_cmd = subcmd;
 	cmd->file = redir.file;
 	cmd->efile = redir.efile;

@@ -6,12 +6,11 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 20:55:50 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/02 20:04:12 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/02 20:22:47 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdio.h>
 
 // we are using the same parser from xv6 kernel
 
@@ -52,7 +51,6 @@ t_command	*parsecmd(char *line, int *exit_status)
 		release_command_resources(cmd);
 		return (NULL);
 	}
-	printf("before returning from parsecmd %d\n", cmd->type);
 	cmd_null_terminate(cmd);
 	return (cmd);
 }
@@ -81,26 +79,26 @@ t_command	*parseredirs(t_command *sub_cmd, char **ps, char *es)
 	t_command	*cmd;
 
 	cmd = sub_cmd;
-    if (peek(ps, es, "<>"))
-    {
-        tok = gettoken(ps, es, 0, 0);
-        gettoken(ps, es, &q, &eq);
-        if (tok == '<')
-            cmd = create_redircmd(parseredirs(sub_cmd, ps, es),
-                    create_redirdata(q, eq, 0, O_RDONLY), '<');
-        else if (tok == '>')
-            cmd = create_redircmd(parseredirs(sub_cmd, ps, es),
-                    create_redirdata(q, eq, 1, O_WRONLY | O_CREAT | O_TRUNC),
-                    '>');
-        else if (tok == '+')
-            cmd = create_redircmd(parseredirs(sub_cmd, ps, es),
-                    create_redirdata(q, eq, 1, O_WRONLY | O_CREAT | O_APPEND),
-                    '+');
-        else if (tok == '%')
-            cmd = create_redircmd(parseredirs(sub_cmd, ps, es),
-                    create_redirdata(q, eq, 0, O_RDONLY), '%');
-    }
-    return (cmd);
+	if (peek(ps, es, "<>"))
+	{
+		tok = gettoken(ps, es, 0, 0);
+		gettoken(ps, es, &q, &eq);
+		if (tok == '<')
+			cmd = create_redircmd(parseredirs(sub_cmd, ps, es),
+					create_redirdata(q, eq, 0, O_RDONLY), '<');
+		else if (tok == '>')
+			cmd = create_redircmd(parseredirs(sub_cmd, ps, es),
+					create_redirdata(q, eq, 1, O_WRONLY | O_CREAT | O_TRUNC),
+					'>');
+		else if (tok == '+')
+			cmd = create_redircmd(parseredirs(sub_cmd, ps, es),
+					create_redirdata(q, eq, 1, O_WRONLY | O_CREAT | O_APPEND),
+					'+');
+		else if (tok == '%')
+			cmd = create_redircmd(parseredirs(sub_cmd, ps, es),
+					create_redirdata(q, eq, 0, O_RDONLY), '%');
+	}
+	return (cmd);
 }
 
 static int	collect_exec_argument(t_exec **exec_cmd, char **ps, char *es,
