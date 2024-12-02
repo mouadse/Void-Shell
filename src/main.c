@@ -1,4 +1,5 @@
 #include "../include/minishell.h"
+#include <fcntl.h>
 #include <stdio.h>
 
 static int	is_shell_input_valid(char *input, int *exit_status)

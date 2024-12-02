@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/02 14:04:02 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/02 18:59:09 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,22 +100,21 @@ static void	clean_execution_command_args(t_command *cmd,
 void	process_all_commands(t_command *cmd, t_shell_context *context,
 		int *exit_status)
 {
-	int		type;
+
 	t_pipe	*pipe;
 	t_redir	*redir;
 
-	type = cmd->type;
-	if (type == CMD_EXEC)
+	if (cmd->type == CMD_EXEC)
 	{
 		clean_execution_command_args(cmd, context, exit_status);
 	}
-	else if (type == CMD_PIPE)
+	else if (cmd->type == CMD_PIPE)
 	{
 		pipe = (t_pipe *)cmd;
 		process_all_commands(pipe->left, context, exit_status);
 		process_all_commands(pipe->right, context, exit_status);
 	}
-	else if (type == CMD_REDIR)
+	else if (cmd->type == CMD_REDIR)
 	{
 		redir = (t_redir *)cmd;
 		if (redir->redir_type != '%' && has_special_characters(redir->file))

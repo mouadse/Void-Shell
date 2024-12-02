@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 00:27:00 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/24 22:50:20 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/02 19:00:37 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # include "queue.h"
 
 # define CMD_EXEC 1
-# define CMD_PIPE 2
-# define CMD_REDIR 3
+# define CMD_REDIR 2
+# define CMD_PIPE 3
 
 # define MAX_ARGS 1024
 
@@ -73,7 +73,7 @@ typedef struct s_shell_context
 t_command		*create_execcmd(void);
 t_command		*create_pipecmd(t_command *left, t_command *right);
 t_redir_data	create_redirdata(char *file, char *efile, int fd, int mode);
-t_command		*create_redircmd(t_command *sub_cmd, t_redir_data data,
+t_command		*create_redircmd(t_command *subcmd, t_redir_data data,
 					char redir_type);
 
 #endif

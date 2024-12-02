@@ -1,4 +1,4 @@
-CC = gcc
+CC = clang
 CFLAGS = -Wall -Wextra -Werror -Iinclude -I./libft -fsanitize=address,leak,undefined -g3 -O0
 LDFLAGS = -lreadline -L./libft -lft
 

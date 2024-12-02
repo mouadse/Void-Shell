@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 02:32:09 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/07 01:55:36 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/02 18:56:21 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,26 @@ t_redir_data	create_redirdata(char *file, char *efile, int fd, int mode)
 	return (data);
 }
 
-t_command	*create_redircmd(t_command *sub_cmd, t_redir_data data,
+t_command	*create_redircmd(t_command *subcmd, t_redir_data redir,
 		char redir_type)
 {
-	t_redir	*redir_cmd;
+	t_redir *cmd;
 
-	redir_cmd = malloc(sizeof(t_redir));
-	if (!redir_cmd)
+	printf("DEBUG: Creating redir cmd with type CMD_REDIR=%d\n", CMD_REDIR);
+	cmd = ft_calloc(1, sizeof(*cmd));
+	if (!cmd)
+	{
+		perror("ft_calloc failed");
 		return (NULL);
-	redir_cmd->sub_cmd = sub_cmd;
-	redir_cmd->type = CMD_REDIR;
-	redir_cmd->redir_type = redir_type;
-	redir_cmd->file = data.file;
-	redir_cmd->efile = data.efile;
-	redir_cmd->fd = data.fd;
-	redir_cmd->mode = data.mode;
-	return ((t_command *)redir_cmd);
+	}
+	cmd->type = CMD_REDIR;
+	printf("DEBUG: Created redir cmd with type=%d\n", cmd->type);
+	cmd->sub_cmd = subcmd;
+	cmd->file = redir.file;
+	cmd->efile = redir.efile;
+	cmd->mode = redir.mode;
+	cmd->fd = redir.fd;
+	cmd->redir_type = redir_type;
+
+	return ((t_command *)cmd); // Add this return statement
 }

@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 02:32:06 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/07 01:55:14 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/02 16:48:29 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_command	*create_pipecmd(t_command *left, t_command *right)
 {
 	t_pipe	*pipecmd;
 
-	pipecmd = malloc(sizeof(t_pipe));
+	pipecmd = ft_calloc(1, sizeof(*pipecmd));
 	if (!pipecmd)
 		return (NULL);
 	pipecmd->type = CMD_PIPE;

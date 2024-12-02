@@ -12,86 +12,75 @@
 
 #include "../../include/minishell.h"
 
-static int	determine_special_tokens(char **input)
-{
-	int	token;
+static int determine_special_tokens(char **input) {
+  int token;
+  token = **input;
+  if (token == '\0')
+    return ('\0');
+  else if (token == '|') {
+    (*input)++;
+    return token;
+  } else if (token == '>') {
+    (*input)++;
+    if (**input == '>') {
+      (*input)++;
+      return '+'; // Double '>' token
+    }
+    return token; // Single '>' token
+  } else if (token == '<') {
+    (*input)++;
+    if (**input == '<') {
+      (*input)++;
+      return '%'; // Double '<' token
+    }
+    return token; // Single '<' token
+  } else
+    return 'a';
+}
+static void skip_tokens(char **current, char *end) {
+  while (*current < end && !is_whitespace(**current) &&
+         !ft_strchr("<|>", **current)) {
+    if (**current == '\"') {
+      (*current)++;
+      while (*current < end && **current != '\"')
+        (*current)++;
+      if (*current >= end)
+        break; // Unmatched quote, stop processing
+    } else if (**current == '\'') {
+      (*current)++;
+      while (*current < end && **current != '\'')
+        (*current)++;
+      if (*current >= end)
+        break; // Unmatched quote, stop processing
+    }
+    if (*current < end)
+      (*current)++;
+  }
+}
+int gettoken(char **ps, char *es, char **q, char **eq) {
+  char *s;
+  int ret;
 
-	token = **input;
-	if (token == '\0')
-		return ('\0');
-	else if (token == '|')
-		(*input)++;
-	else if (token == '>')
-	{
-		(*input)++;
-		if (**input == '>')
-		{
-			token = '+';
-			(*input)++;
-		}
-	}
-	else if (token == '<')
-	{
-		(*input)++;
-		if (**input == '<')
-		{
-			token = '%';
-			(*input)++;
-		}
-	}
-	else
-		token = 'a';
-	return (token);
+  s = *ps;
+  while (s < es && is_whitespace(*s))
+    s++;
+  if (q)
+    *q = s;
+  // ret = *s; dead assignment here
+  ret = determine_special_tokens(&s);
+  if (ret == 'a')
+    skip_tokens(&s, es);
+  if (eq)
+    *eq = s;
+  *ps = s;
+  return (ret);
 }
 
-static void	skip_tokens(char **current, char *end)
-{
-	while (*current < end && !is_whitespace(**current) && !ft_strchr("<|>",
-			**current))
-	{
-		if (**current == '\"')
-		{
-			(*current)++;
-			while (*current < end && **current != '\"')
-				(*current)++;
-		}
-		else if (**current == '\'')
-		{
-			(*current)++;
-			while (*current < end && **current != '\'')
-				(*current)++;
-		}
-		if (*current < end)
-			(*current)++;
-	}
-}
+int peek(char **ps, char *es, char *toks) {
+  char *s;
 
-int	gettoken(char **ps, char *es, char **q, char **eq)
-{
-	char	*s;
-	int		ret;
-
-	s = *ps;
-	while (s < es && is_whitespace(*s))
-		s++;
-	if (q)
-		*q = s;
-	// ret = *s; dead assignment here
-	ret = determine_special_tokens(&s);
-	if (ret == 'a')
-		skip_tokens(&s, es);
-	if (eq)
-		*eq = s;
-	*ps = s;
-	return (ret);
-}
-
-int	peek(char **ps, char *es, char *toks)
-{
-	char	*s;
-
-	s = *ps;
-	while (s < es && is_whitespace(*s))
-		s++;
-	return (*s && ft_strchr(toks, *s));
+  s = *ps;
+  while (s < es && is_whitespace(*s))
+    s++;
+  return (*s && ft_strchr(toks, *s));
 }
