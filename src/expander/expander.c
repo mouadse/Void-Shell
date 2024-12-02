@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/01 22:43:05 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/02 13:00:21 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,13 @@ static void	process_argument(char *arg, t_queue_char *queue, int *exit_status,
 	int	i;
 	int	*values[2];
 
+	int prev_i; // Track progress
+	if (!arg || !queue || !exit_status || !context)
+		return ;
 	i = 0;
 	while (arg[i] != '\0')
 	{
+		prev_i = i; // Save current position
 		if (arg[i] == '\'')
 			handle_single_quotes(arg, &i, queue);
 		else if (arg[i] == '\"')
@@ -37,6 +41,9 @@ static void	process_argument(char *arg, t_queue_char *queue, int *exit_status,
 		}
 		else
 			enqueue_char(queue, arg[i++]);
+		// Check if we're stuck
+		if (prev_i == i && arg[i] != '\0')
+			i++; // Force progress
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:39:02 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/01 22:42:04 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/02 13:11:32 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,9 @@ int	is_built_in_command(t_command *cmd)
 {
 	t_exec	*exec_cmd;
 
+	// return (1); // dummy condition
+	if (!cmd)
+		return (0);
 	if (cmd && (cmd->type == CMD_EXEC))
 	{
 		exec_cmd = (t_exec *)cmd;

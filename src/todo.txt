@@ -1,1 +1,10 @@
 Fix double free problems
+
+
+static void	process_argument(char *arg, t_queue_char *queue, int *exit_status,
+		t_shell_context *context) // force increment MABLANCH
+
+
+void	run_exec(t_command *cmd, t_shell_context *context, int *exit_status) // Did some exit status modifications
+
+// clean empty args has a flaw in the loop too 

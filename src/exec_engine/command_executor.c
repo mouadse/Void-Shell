@@ -6,11 +6,13 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:19 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/01 22:47:18 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/02 13:38:58 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <stdio.h>
+#include <unistd.h>
 
 void	execute_command(t_command *cmd, t_shell_context *context,
 		int *exit_status)

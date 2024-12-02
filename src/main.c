@@ -27,6 +27,7 @@ static void	run_cmd_helper(t_shell_context *context, int *exit_status)
 	set_signal_handler(context->tree);
 	if (ft_fork(context) == 0)
 	{
+		// printf("We are inside fork\n");
 		store_subprocess_pid(getpid(), context);
 		execute_command(context->tree, context, exit_status);
 	}
@@ -67,7 +68,9 @@ static void	run_cmd(t_shell_context *context, int *exit_status)
 		free_queue(&context->queue);
 	}
 	else
+	{
 		run_cmd_helper(context, exit_status);
+	}
 }
 
 int	main(int argc, char **argv, char **envp)

@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:52:49 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/22 15:55:03 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/02 12:54:29 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	*dequeue(t_queue *queue)
 	t_node	*tmp;
 	void	*data;
 
-	if (!queue->front)
+	if (!queue || !queue->front)
 		return (NULL);
 	tmp = queue->front;
 	data = tmp->data;
@@ -57,6 +57,8 @@ void	*queue_str_convert(t_queue *queue)
 	char	*line;
 	t_node	*tmp;
 
+	if (!queue || !queue->front)
+		return (NULL);
 	len = 0;
 	tmp = queue->front;
 	while (tmp)
@@ -79,11 +81,14 @@ void	free_queue(t_queue *queue)
 {
 	t_node	*tmp;
 
+	if (!queue)
+		return ;
 	while (queue->front)
 	{
 		tmp = queue->front;
 		queue->front = queue->front->next;
-		ft_free(tmp->data); // to be reviewed
+		if (tmp->data)
+			ft_free(tmp->data);
 		ft_free(tmp);
 	}
 	queue->rear = NULL;
@@ -118,8 +123,8 @@ char	dequeue_char(t_queue_char *queue)
 	t_node_char	*tmp;
 	char		data;
 
-	// if (!queue->front)
-	// 	return ('\0');
+	if (!queue || !queue->front)
+		return ('\0'); // or handle error appropriately
 	tmp = queue->front;
 	data = tmp->data;
 	queue->front = queue->front->next;
@@ -143,30 +148,34 @@ void	enqueue_str(t_queue_char *queue, char *str)
 
 char	*queue_char_str_convert(t_queue_char *queue)
 {
-	t_node_char	*tmp;
-	char		*str;
-	int			i;
+	t_node_char *tmp;
+	char *str;
+	int i, len;
 
-	if (!queue->front)
+	if (!queue || !queue->front)
 		return (NULL);
-	i = 0;
+
+	// First pass: count characters
+	len = 0;
 	tmp = queue->front;
 	while (tmp)
 	{
-		i++;
+		len++;
 		tmp = tmp->next;
 	}
-	str = (char *)malloc(sizeof(char) * (i + 1));
+
+	// Allocate string
+	str = (char *)malloc(sizeof(char) * (len + 1));
 	if (!str)
 		return (NULL);
-	// This can benefit from a dequeue_free in case of failure
-	tmp = queue->front;
+
+	// Second pass: copy characters
 	i = 0;
-	while (tmp)
+	while (queue->front)
 	{
 		str[i++] = dequeue_char(queue);
-		tmp = tmp->next;
 	}
 	str[i] = '\0';
+
 	return (str);
 }
