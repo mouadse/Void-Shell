@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:52:49 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/02 12:54:29 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 12:34:06 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	free_queue(t_queue *queue)
 	{
 		tmp = queue->front;
 		queue->front = queue->front->next;
-		if (tmp->data)
+		if (tmp->data) // temporary bug fix
 			ft_free(tmp->data);
 		ft_free(tmp);
 	}

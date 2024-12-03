@@ -10,9 +10,12 @@ CFILES = 	ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c \
 BFILES =	ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_bonus.c \
 				ft_lstlast_bonus.c ft_lstadd_back_bonus.c ft_lstdelone_bonus.c \
 				ft_lstclear_bonus.c ft_lstiter_bonus.c ft_lstmap_bonus.c
+SRCS_GNL	=	../get_next_line/get_next_line.c ../get_next_line/get_next_line_utils.c
 
 OFILES = $(CFILES:.c=.o)
 OBFILES = $(BFILES:.c=.o)
+OBJS_GNL = $(SRCS_GNL:.c=.o)
+
 CFLAGS = -Wall -Wextra -Werror
 CC = cc
 RM = rm -f
@@ -20,7 +23,7 @@ AR = ar rc
 
 all: $(NAME)
 
-$(NAME) : $(OFILES)
+$(NAME) : $(OFILES) $(OBJS_GNL)
 
 
 bonus : $(OBFILES)
@@ -32,7 +35,7 @@ bonus : $(OBFILES)
 re: fclean all
 
 clean :
-	$(RM) $(OFILES) $(OBFILES)
+	$(RM) $(OFILES) $(OBFILES) $(OBJS_GNL)
 
 fclean : clean
 	$(RM) $(NAME)

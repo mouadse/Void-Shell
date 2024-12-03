@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 01:51:48 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/03 12:10:09 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 12:15:04 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,19 @@ int	update_env_var(t_env_var *env_var_list, t_env_var *new_nod)
 		if (ft_strcmp(tmp->key, new_nod->key) == 0)
 		{
 			if (!new_nod->value)
-				return (free_env_node(new_nod), 1);
+			{
+				// Free here and return (free_env_node(new_nod));
+				return (1);
+			}
 			new_value = ft_strdup(new_nod->value);
 			if (!new_value)
-				return (free_env_node(new_nod), 1);
+			{
+				// Free here and return (free_env_node(new_nod));
+				return (1);
+			}
 			ft_free(tmp->value);
 			tmp->value = new_value;
+			// Transfer ownership; free here
 			free_env_node(new_nod);
 			return (1);
 		}
@@ -90,20 +97,31 @@ static void	extract_and_push(t_env_var **env_var_list, char *env_var)
 	if (!equal)
 	{
 		new_nod = create_env_var(ft_strdup(env_var), NULL);
+		if (!new_nod)
+			return ; // Avoid processing further
 	}
 	else
 	{
 		key = ft_substr(env_var, 0, equal - env_var);
 		value = ft_strdup(equal + 1);
+		if (!key || (equal[1] && !value))
+		{
+			ft_free(key);
+			ft_free(value);
+			return ; // Avoid invalid new_nod creation
+		}
 		if (ft_strcmp(key, "OLDPWD") == 0)
 		{
 			new_nod = create_env_var(key, NULL);
 			ft_free(value);
 		}
 		else
+		{
 			new_nod = create_env_var(key, value);
+		}
 	}
-	insert_env_var(env_var_list, new_nod);
+	if (new_nod) // Only proceed if allocation succeeded
+		insert_env_var(env_var_list, new_nod);
 }
 
 void	init_env_var(t_env_var **env_var_list, char **envp)

@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:29 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/21 18:05:28 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 12:53:48 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,13 @@ void	execute_pipeline_command(t_command *cmd, t_shell_context *context,
 	}
 	if (!pids[0])
 		left_pipe(context, pipe_cmd->left, fd, exit_status);
-	if (pipe_cmd->right->type == CMD_REDIR
+	if (pipe_cmd->left->type == CMD_REDIR
 		&& ((t_redir *)pipe_cmd->left)->redir_type == '%')
 	{
-		heredoc_flag = 1;
 		close(fd[0]);
 		close(fd[1]);
 		waitpid(pids[0], NULL, 0);
+		heredoc_flag = 1;
 	}
 	pids[1] = fork(); // for right command
 	if (pids[1] < 0)

@@ -6,12 +6,12 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:23 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/02 22:00:17 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 12:19:55 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdio.h>
+
 
 void	print_exec_error(char *cmd_name, char *error_type)
 {

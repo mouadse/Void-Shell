@@ -6,12 +6,14 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/02 23:19:07 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 13:08:37 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <fcntl.h>
 #include <signal.h>
+#include <unistd.h>
 
 static char	*getvar_name(char *arg)
 {
@@ -70,8 +72,6 @@ static char	*process_line(t_shell_context *context, char *line,
 		else
 			enqueue_char(&q, line[i++]);
 	}
-	// new line since readline does not add it
-	enqueue_char(&q, '\n');
 	return (queue_char_str_convert(&q));
 }
 
@@ -83,7 +83,7 @@ static char	*read_heredoc_input(char *del, t_shell_context *context,
 	t_queue	queue;
 	int		tty_fd;
 
-	tty_fd = open("/dev/tty", O_RDWR);
+	tty_fd = open("/dev/tty", O_RDONLY);
 	if (tty_fd < 0)
 		terminate_with_error(context, "open", 1);
 	dup2(tty_fd, STDIN_FILENO);
@@ -91,13 +91,13 @@ static char	*read_heredoc_input(char *del, t_shell_context *context,
 	init_queue(&queue);
 	while (1)
 	{
-		line = readline("> ");
+		line = get_next_line(STDIN_FILENO);
 		if (!line)
 		{
 			break ;
 		}
-		if (ft_strlen(line) == ft_strlen(del) && ft_strncmp(line, del,
-				ft_strlen(del)) == 0)
+		if (ft_strlen(line) == ft_strlen(del) + 1 && ft_strncmp(line, del,
+				ft_strlen(del) - 1) == 0)
 		{
 			free(line);
 			break ;
