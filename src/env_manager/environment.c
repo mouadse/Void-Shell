@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 01:51:48 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/03 20:41:57 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 21:49:44 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,11 @@ static void	extract_and_push(t_env_var **env_var_list, char *env_var)
 		if (ft_strcmp(key, "OLDPWD") == 0)
 		{
 			new_nod = create_env_var(key, NULL);
+			// ft_free(value);
+		}
+		else if (ft_strcmp(key, "_") == 0)
+		{
+			new_nod = create_env_var(key, "/bin/bash");
 			// ft_free(value);
 		}
 		else
