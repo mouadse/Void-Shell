@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 01:51:48 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/03 12:15:04 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 13:21:19 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,15 @@ static void	extract_and_push(t_env_var **env_var_list, char *env_var)
 	equal = ft_strchr(env_var, '=');
 	if (!equal)
 	{
-		new_nod = create_env_var(ft_strdup(env_var), NULL);
-		if (!new_nod)
+		key = ft_strdup(env_var);
+		if (!key)
 			return ; // Avoid processing further
+		new_nod = create_env_var(key, NULL);
+		if (!new_nod)
+		{
+			ft_free(key);
+			return ;
+		}
 	}
 	else
 	{
@@ -108,7 +114,7 @@ static void	extract_and_push(t_env_var **env_var_list, char *env_var)
 		{
 			ft_free(key);
 			ft_free(value);
-			return ; // Avoid invalid new_nod creation
+			return ;
 		}
 		if (ft_strcmp(key, "OLDPWD") == 0)
 		{
@@ -120,7 +126,7 @@ static void	extract_and_push(t_env_var **env_var_list, char *env_var)
 			new_nod = create_env_var(key, value);
 		}
 	}
-	if (new_nod) // Only proceed if allocation succeeded
+	if (new_nod)
 		insert_env_var(env_var_list, new_nod);
 }
 

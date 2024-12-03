@@ -95,6 +95,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!is_shell_input_valid(context.input, &exit_status))
 		{
 			free(context.input);
+			context.input = NULL;
 			continue ;
 		}
 		run_cmd(&context, &exit_status);
