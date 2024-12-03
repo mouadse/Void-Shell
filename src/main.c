@@ -1,4 +1,6 @@
 #include "../include/minishell.h"
+#include <complex.h>
+#include <stdio.h>
 
 static int	is_shell_input_valid(char *input, int *exit_status)
 {
@@ -8,7 +10,6 @@ static int	is_shell_input_valid(char *input, int *exit_status)
 	return (1);
 }
 
-
 static void	init_shell_env(t_shell_context *context, char **envp,
 		int *exit_status)
 {
@@ -16,6 +17,7 @@ static void	init_shell_env(t_shell_context *context, char **envp,
 	context->env_vars = NULL;
 	init_env_var(&context->env_vars, envp);
 	init_queue(&context->queue);
+	context->last_cmd = ft_strdup("");
 	*exit_status = EXIT_SUCCESS;
 }
 
@@ -59,6 +61,9 @@ static void	run_cmd(t_shell_context *context, int *exit_status)
 		return ;
 	}
 	process_all_commands(context->tree, context, exit_status);
+	// printf("The cmd u trying to execute is %s\n",
+	//        ((t_exec *)context->tree)->argv[0]);
+	context->last_cmd = ((t_exec *)context->tree)->argv[0];
 	if (is_built_in_command(context->tree))
 	{
 		run_built_in_command((t_exec *)context->tree, &context->env_vars,
@@ -72,6 +77,8 @@ static void	run_cmd(t_shell_context *context, int *exit_status)
 	{
 		run_cmd_helper(context, exit_status);
 	}
+	insert_env_var(&context->env_vars, create_env_var(ft_strdup("_"),
+			context->last_cmd));
 	ft_free(context->input);
 }
 
