@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:26 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/03 11:59:21 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 19:03:54 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,15 @@ char	*get_executable_path(char *command, char *path)
 		full_path = ft_strjoin(path_directories[i], command_with_slash);
 		if (access(full_path, X_OK) == 0)
 		{
-			ft_free(command_with_slash);
+			// ft_free(command_with_slash);
 			free_array(path_directories);
 			return (full_path);
 		}
-		free(full_path);
+		// free(full_path);
 		i++;
 	}
-	ft_free(command_with_slash);
-	free_array(path_directories);
+	// ft_free(command_with_slash);
+	// free_array(path_directories);
 	return (NULL);
 }
 
@@ -115,6 +115,6 @@ void	handle_execve(char *binary_path, char **argv, char **envp,
 {
 	execve(binary_path, argv, envp);
 	print_exec_error(argv[0], "Error executing command");
-	ft_free(binary_path);
+	// ft_free(binary_path);
 	terminate_cleanly(context, 127);
 }

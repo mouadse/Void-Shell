@@ -1,9 +1,9 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -Iinclude -I./libft -fsanitize=address,leak,undefined -g3 -O0
+CFLAGS = -Wall -Wextra -Iinclude -I./libft #-fsanitize=address,leak,undefined -g3 -O0
 LDFLAGS = -lreadline -L./libft -lft
 
 SRCDIR = src
-EXCLUDE_DIRS = random_files garbage_collector
+EXCLUDE_DIRS = random_files
 SRC = $(shell find $(SRCDIR) -type f -name '*.c' $(foreach dir,$(EXCLUDE_DIRS),! -path '*/$(dir)/*'))
 OBJ = $(SRC:.c=.o)
 NAME = minishell

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 03:05:55 by msennane          #+#    #+#             */
-/*   Updated: 2023/11/27 01:52:15 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:23:38 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*ft_itoa(int n)
 		number = -number;
 	}
 	len = calculate_len(number);
-	int_str = (char *)malloc(sizeof(char) * (len + sign + 1));
+	int_str = (char *)gc_malloc(sizeof(char) * (len + sign + 1));
 	if (!int_str)
 		return (NULL);
 	if (sign)

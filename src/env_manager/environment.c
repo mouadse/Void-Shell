@@ -6,17 +6,19 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 01:51:48 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/03 13:21:19 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:54:28 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+void		update_shell_lvl(t_env_var **env_var_list);
+
 t_env_var	*create_env_var(char *key, char *value)
 {
 	t_env_var	*new;
 
-	new = malloc(sizeof(t_env_var));
+	new = gc_malloc(sizeof(t_env_var));
 	if (!new)
 		return (NULL);
 	new->key = key;
@@ -46,10 +48,10 @@ int	update_env_var(t_env_var *env_var_list, t_env_var *new_nod)
 				// Free here and return (free_env_node(new_nod));
 				return (1);
 			}
-			ft_free(tmp->value);
+			// ft_free(tmp->value);
 			tmp->value = new_value;
 			// Transfer ownership; free here
-			free_env_node(new_nod);
+			// free_env_node(new_nod);
 			return (1);
 		}
 		tmp = tmp->next;
@@ -102,7 +104,7 @@ static void	extract_and_push(t_env_var **env_var_list, char *env_var)
 		new_nod = create_env_var(key, NULL);
 		if (!new_nod)
 		{
-			ft_free(key);
+			// ft_free(key);
 			return ;
 		}
 	}
@@ -112,14 +114,14 @@ static void	extract_and_push(t_env_var **env_var_list, char *env_var)
 		value = ft_strdup(equal + 1);
 		if (!key || (equal[1] && !value))
 		{
-			ft_free(key);
-			ft_free(value);
+			// ft_free(key);
+			// ft_free(value);
 			return ;
 		}
 		if (ft_strcmp(key, "OLDPWD") == 0)
 		{
 			new_nod = create_env_var(key, NULL);
-			ft_free(value);
+			// ft_free(value);
 		}
 		else
 		{
@@ -140,4 +142,28 @@ void	init_env_var(t_env_var **env_var_list, char **envp)
 		extract_and_push(env_var_list, envp[i]);
 		i++;
 	}
+	update_shell_lvl(env_var_list);
+}
+
+void	update_shell_lvl(t_env_var **env_var_list)
+{
+	char	*shell_lvl;
+	char	*new_shell_lvl;
+	int		shell_lvl_int;
+
+	shell_lvl = getenv("SHLVL");
+	if (!shell_lvl)
+	{
+		shell_lvl_int = 1;
+	}
+	else
+	{
+		shell_lvl_int = ft_atoi(shell_lvl);
+		shell_lvl_int++;
+	}
+	new_shell_lvl = ft_itoa(shell_lvl_int);
+	if (!new_shell_lvl)
+		return ;
+	insert_env_var(env_var_list, create_env_var(ft_strdup("SHLVL"),
+			new_shell_lvl));
 }

@@ -17,7 +17,6 @@
 
 // func prototypes
 
-
 t_command	*parsepipe(char **ps, char *es, int *ret)
 {
 	t_command	*cmd;

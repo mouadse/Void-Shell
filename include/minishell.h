@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 00:21:19 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/22 15:40:29 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:17:16 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,5 @@
 # include "queue.h"
 # include "tokenizer.h"
 # include "utils.h"
+#include "garbage_collector.h"
 #endif

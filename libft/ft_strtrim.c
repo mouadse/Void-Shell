@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 01:30:53 by msennane          #+#    #+#             */
-/*   Updated: 2023/12/05 12:39:11 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:24:05 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 	len = end - start + 1;
 	if (start > end)
 		return (ft_strdup(""));
-	str = malloc(sizeof(char) * (len + 1));
+	str = gc_malloc(sizeof(char) * (len + 1));
 	if (!str)
 		return (NULL);
 	ft_strlcpy(str, s1 + start, len + 1);

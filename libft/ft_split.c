@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 23:42:07 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/03 12:29:30 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:28:08 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static char	*get_next_word(char const **s, char sep)
 		(*s)++;
 	while ((*s)[len] && !is_separator((*s)[len], sep))
 		len++;
-	word = malloc(sizeof(char) * (len + 1));
+	word = gc_malloc(sizeof(char) * (len + 1));
 	if (!word)
 		return (NULL);
 	i = 0;
@@ -64,18 +64,18 @@ static char	*get_next_word(char const **s, char sep)
 	return (word);
 }
 
-static void	free_split(char **split, int count)
-{
-	int	i;
+// static void	free_split(char **split, int count)
+// {
+// 	int	i;
 
-	i = 0;
-	while (i < count)
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
-}
+// 	i = 0;
+// 	while (i < count)
+// 	{
+// 		// free(split[i]);
+// 		i++;
+// 	}
+// 	// free(split);
+// }
 
 char	**ft_split(char const *s, char sep)
 {
@@ -86,7 +86,7 @@ char	**ft_split(char const *s, char sep)
 	if (!s)
 		return (NULL);
 	word_count = count_words(s, sep);
-	result = malloc(sizeof(char *) * (word_count + 1));
+	result = gc_malloc(sizeof(char *) * (word_count + 1));
 	if (!result)
 		return (NULL);
 	i = 0;
@@ -95,7 +95,7 @@ char	**ft_split(char const *s, char sep)
 		result[i] = get_next_word(&s, sep);
 		if (!result[i])
 		{
-			free_split(result, i);
+			// free_split(result, i);
 			return (NULL);
 		}
 		i++;

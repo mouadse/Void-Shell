@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 01:51:48 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/03 12:14:45 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:17:22 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ void	free_env_node(t_env_var *node)
 {
 	if (!node)
 		return ;
-	ft_free(node->key);
-	ft_free(node->value);
+	// ft_free(node->key);
+	// ft_free(node->value);
 	node->key = NULL;
 	node->value = NULL;
-	free(node);
+	// free(node);
 	node = NULL;
 }
 
@@ -48,6 +48,6 @@ void	free_env(t_env_var *env)
 	{
 		tmp = head;
 		head = head->next;
-		free_env_node(tmp);
+		// free_env_node(tmp);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:39:02 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/03 13:25:49 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:26:41 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ int	is_built_in_command(t_command *cmd)
 	{
 		exec_cmd = (t_exec *)cmd;
 		if (exec_cmd->argv[0] && (ft_strcmp(exec_cmd->argv[0], "cd") == 0
-			|| ft_strcmp(exec_cmd->argv[0], "export") == 0
-			|| ft_strcmp(exec_cmd->argv[0], "unset") == 0))
+				|| ft_strcmp(exec_cmd->argv[0], "export") == 0
+				|| ft_strcmp(exec_cmd->argv[0], "unset") == 0))
 			return (1);
 	}
 	return (0);
@@ -87,7 +87,7 @@ void	run_built_in_command(t_exec *cmd, t_env_var **env_list,
 
 void	clean_shell(t_shell_context *context)
 {
-	ft_free(context->input);
+	// ft_free(context->input);
 	release_command_resources(context->tree);
 	free_queue(&context->queue);
 	unlink(SHELL_CHILD_PID_FILE);

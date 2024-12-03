@@ -6,24 +6,24 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 01:08:01 by msennane          #+#    #+#             */
-/*   Updated: 2024/03/07 23:01:05 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:28:45 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static void	free_queue(t_list *node)
-{
-	struct s_list_node	*temp;
+// static void	free_queue(t_list *node)
+// {
+// 	struct s_list_node	*temp;
 
-	while (node->head)
-	{
-		temp = node->head;
-		node->head = node->head->next;
-		free(temp);
-	}
-	node->tail = NULL;
-}
+// 	while (node->head)
+// 	{
+// 		temp = node->head;
+// 		node->head = node->head->next;
+// 		// free(temp);
+// 	}
+// 	node->tail = NULL;
+// }
 
 static char	*extract_line(t_list *node)
 {
@@ -38,7 +38,7 @@ static char	*extract_line(t_list *node)
 		temp = temp->next;
 		i++;
 	}
-	line = malloc(sizeof(char) * (i + 2));
+	line = gc_malloc(sizeof(char) * (i + 2));
 	if (!line)
 		return (NULL);
 	i = 0;
@@ -62,7 +62,7 @@ static char	*extract_rest(t_list *node)
 		temp = temp->next;
 		i++;
 	}
-	rest = malloc(sizeof(char) * (i + 1));
+	rest = gc_malloc(sizeof(char) * (i + 1));
 	if (!rest)
 		return (NULL);
 	i = 0;
@@ -78,13 +78,13 @@ static char	*handle_cases(ssize_t bytes, t_list *node, char *rest, int *fd)
 
 	if (bytes == -1)
 	{
-		free(rest);
-		free_queue(node);
+		// free(rest);
+		// free_queue(node);
 		return (NULL);
 	}
 	else if (bytes == 0)
 	{
-		free(rest);
+		// free(rest);
 		if (is_it_empty(node))
 			return (NULL);
 		else
@@ -95,7 +95,7 @@ static char	*handle_cases(ssize_t bytes, t_list *node, char *rest, int *fd)
 		i = 0;
 		while (i < bytes)
 			push_node(node, rest[i++]);
-		free(rest);
+		// free(rest);
 		return (get_next_line(*fd));
 	}
 }
@@ -116,7 +116,7 @@ char	*get_next_line(int fd)
 	}
 	if (!is_it_empty(&node) && has_new_line(&node))
 		return (extract_line(&node));
-	rest = malloc(sizeof(char) * (BUFFER_SIZE));
+	rest = gc_malloc(sizeof(char) * (BUFFER_SIZE));
 	if (!rest)
 		return (NULL);
 	bytes = read(fd, rest, BUFFER_SIZE);

@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/03 13:08:37 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:25:25 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ static void	replace_var_in_line(char *line, int *i, t_shell_context *context,
 	if (var_value)
 		enqueue_str(q, var_value);
 	*i += ft_strlen(var_name);
-	if (var_value)
-		free(var_value);
+	// if (var_value)
+	// 	free(var_value);
 }
 
 static char	*process_line(t_shell_context *context, char *line,
@@ -62,7 +62,7 @@ static char	*process_line(t_shell_context *context, char *line,
 		{
 			exit_code = ft_itoa(*exit_status);
 			enqueue_str(&q, exit_code);
-			free(exit_code);
+			(exit_code);
 			i += 2;
 		}
 		else if (line[i] == '$' && (is_whitespace(line[i + 1])))
@@ -99,12 +99,12 @@ static char	*read_heredoc_input(char *del, t_shell_context *context,
 		if (ft_strlen(line) == ft_strlen(del) + 1 && ft_strncmp(line, del,
 				ft_strlen(del) - 1) == 0)
 		{
-			free(line);
+			// free(line);
 			break ;
 		}
 		heredoc_line = process_line(context, line, exit_status);
 		enqueue(&queue, heredoc_line);
-		free(line);
+		// free(line);
 	}
 	return (queue_str_convert(&queue));
 }

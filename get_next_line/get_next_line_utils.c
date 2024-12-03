@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 01:08:03 by msennane          #+#    #+#             */
-/*   Updated: 2024/03/07 21:27:56 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:22:03 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	push_node(t_list *node, char c)
 {
 	struct s_list_node	*new_node;
 
-	new_node = malloc(sizeof(struct s_list_node));
+	new_node = gc_malloc(sizeof(struct s_list_node));
 	if (!new_node)
 		return ;
 	new_node->data = c;
@@ -47,7 +47,7 @@ char	pop_node(t_list *node)
 	temp = node->head;
 	data = temp->data;
 	node->head = node->head->next;
-	free(temp);
+	// free(temp);
 	if (node->head == NULL)
 		node->tail = NULL;
 	return (data);

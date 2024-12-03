@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 01:08:05 by msennane          #+#    #+#             */
-/*   Updated: 2024/03/07 20:25:20 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:21:51 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+#include "../include/garbage_collector.h"
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024

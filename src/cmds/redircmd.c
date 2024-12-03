@@ -26,7 +26,7 @@ t_redir_data	create_redirdata(char *file, char *efile, int fd, int mode)
 t_command	*create_redircmd(t_command *subcmd, t_redir_data redir,
 		char redir_type)
 {
-	t_redir *cmd;
+	t_redir	*cmd;
 
 	cmd = ft_calloc(1, sizeof(*cmd));
 	if (!cmd)
@@ -41,6 +41,5 @@ t_command	*create_redircmd(t_command *subcmd, t_redir_data redir,
 	cmd->mode = redir.mode;
 	cmd->fd = redir.fd;
 	cmd->redir_type = redir_type;
-
 	return ((t_command *)cmd); // Add this return statement
 }

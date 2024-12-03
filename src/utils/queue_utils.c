@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:52:49 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/03 12:34:06 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:34:02 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	enqueue(t_queue *queue, void *data)
 {
 	t_node	*new_node;
 
-	new_node = (t_node *)malloc(sizeof(t_node));
+	new_node = (t_node *)gc_malloc(sizeof(t_node));
 	if (!new_node)
 		return ;
 	new_node->data = data;
@@ -46,7 +46,7 @@ void	*dequeue(t_queue *queue)
 	queue->front = queue->front->next;
 	if (!queue->front)
 		queue->rear = NULL;
-	ft_free(tmp);
+	// ft_free(tmp);
 	return (data);
 }
 
@@ -71,7 +71,7 @@ void	*queue_str_convert(t_queue *queue)
 	{
 		line = dequeue(queue);
 		ft_strlcat(str, line, len + 1);
-		free(line);
+		// free(line);
 		// To prevent a leaks since the node for this line is already freed
 	}
 	return (str);
@@ -87,9 +87,9 @@ void	free_queue(t_queue *queue)
 	{
 		tmp = queue->front;
 		queue->front = queue->front->next;
-		if (tmp->data) // temporary bug fix
-			ft_free(tmp->data);
-		ft_free(tmp);
+		// if (tmp->data) // temporary bug fix
+		// ft_free(tmp->data);
+		// ft_free(tmp);
 	}
 	queue->rear = NULL;
 }
@@ -106,7 +106,7 @@ void	enqueue_char(t_queue_char *queue, char data)
 {
 	t_node_char	*new_node;
 
-	new_node = (t_node_char *)malloc(sizeof(t_node_char));
+	new_node = (t_node_char *)gc_malloc(sizeof(t_node_char));
 	if (!new_node)
 		return ;
 	new_node->data = data;
@@ -130,7 +130,7 @@ char	dequeue_char(t_queue_char *queue)
 	queue->front = queue->front->next;
 	if (!queue->front)
 		queue->rear = NULL;
-	ft_free(tmp);
+	// ft_free(tmp);
 	return (data);
 }
 
@@ -148,13 +148,12 @@ void	enqueue_str(t_queue_char *queue, char *str)
 
 char	*queue_char_str_convert(t_queue_char *queue)
 {
-	t_node_char *tmp;
-	char *str;
-	int i, len;
+	t_node_char	*tmp;
+	char		*str;
 
+	int i, len;
 	if (!queue || !queue->front)
 		return (NULL);
-
 	// First pass: count characters
 	len = 0;
 	tmp = queue->front;
@@ -163,12 +162,10 @@ char	*queue_char_str_convert(t_queue_char *queue)
 		len++;
 		tmp = tmp->next;
 	}
-
 	// Allocate string
-	str = (char *)malloc(sizeof(char) * (len + 1));
+	str = (char *)gc_malloc(sizeof(char) * (len + 1));
 	if (!str)
 		return (NULL);
-
 	// Second pass: copy characters
 	i = 0;
 	while (queue->front)
@@ -176,6 +173,5 @@ char	*queue_char_str_convert(t_queue_char *queue)
 		str[i++] = dequeue_char(queue);
 	}
 	str[i] = '\0';
-
 	return (str);
 }
