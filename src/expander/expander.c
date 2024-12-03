@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/02 18:59:09 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 11:17:19 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ static void	clean_execution_command_args(t_command *cmd,
 	i = 0;
 	while (exec->argv[i])
 	{
+		// skip backslashes
 		if (has_special_characters(exec->argv[i]))
 			exec->argv[i] = clean_argument(exec->argv[i], context, exit_status);
 		i++;
@@ -100,7 +101,6 @@ static void	clean_execution_command_args(t_command *cmd,
 void	process_all_commands(t_command *cmd, t_shell_context *context,
 		int *exit_status)
 {
-
 	t_pipe	*pipe;
 	t_redir	*redir;
 

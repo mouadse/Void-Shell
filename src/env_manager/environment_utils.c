@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 01:51:48 by msennane          #+#    #+#             */
-/*   Updated: 2024/10/30 02:03:38 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 12:10:32 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,16 @@ char	*get_env_value(char *key, t_env_var *env)
 	return (NULL);
 }
 
-void	free_env_node(t_env_var *env)
+void	free_env_node(t_env_var *node)
 {
-	if (!env)
+	if (!node)
 		return ;
-	if (env->key)
-		free(env->key);
-	if (env->value)
-		free(env->value);
-	free(env);
+	ft_free(node->key);
+	ft_free(node->value);
+	node->key = NULL;
+	node->value = NULL;
+	free(node);
+	node = NULL;
 }
 
 void	free_env(t_env_var *env)

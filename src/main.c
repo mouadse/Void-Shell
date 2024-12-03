@@ -37,7 +37,8 @@ static void	run_cmd_helper(t_shell_context *context, int *exit_status)
 	retrieve_exit_status(context->tree, context, exit_status, status);
 	exec = (t_exec *)context->tree;
 	// first test is to check if the user demanded to exit the shell
-	if ((exec->type == CMD_EXEC) && exec->argv[0] && ft_strcmp(exec->argv[0], "exit") == 0)
+	if ((exec->type == CMD_EXEC) && exec->argv[0] && ft_strcmp(exec->argv[0],
+			"exit") == 0)
 	{
 		if (!exec->argv[1] || (exec->argv[1] && (!is_numeric(exec->argv[1])
 					|| !exec->argv[2])))
@@ -76,8 +77,8 @@ static void	run_cmd(t_shell_context *context, int *exit_status)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_shell_context	context;
 	int				exit_status;
+	t_shell_context	context;
 
 	(void)argc;
 	(void)argv;

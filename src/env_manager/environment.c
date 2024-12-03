@@ -6,14 +6,11 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 01:51:48 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/02 12:34:57 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 12:10:09 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-// SHLVL is a special environment variable that tracks the number of times a shell session has been started.
-static void	increment_shell_level(t_env_var *env_var_list);
 
 t_env_var	*create_env_var(char *key, char *value)
 {
@@ -118,46 +115,5 @@ void	init_env_var(t_env_var **env_var_list, char **envp)
 	{
 		extract_and_push(env_var_list, envp[i]);
 		i++;
-	}
-	// Increment SHLVL after initialization
-	increment_shell_level(*env_var_list);
-}
-
-static void	increment_shell_level(t_env_var *env_var_list)
-{
-	t_env_var	*tmp;
-	char		*new_value;
-	int			shlvl;
-
-	tmp = env_var_list;
-	while (tmp)
-	{
-		if (ft_strcmp(tmp->key, "SHLVL") == 0)
-		{
-			if (tmp->value)
-				shlvl = ft_atoi(tmp->value);
-			else
-				shlvl = 0;
-			shlvl += 1;
-			new_value = ft_itoa(shlvl);
-			if (!new_value)
-				return ; // Handle allocation failure as needed
-			ft_free(tmp->value);
-			tmp->value = new_value;
-			break ;
-		}
-		tmp = tmp->next;
-	}
-	// If SHLVL not found, optionally add it
-	// Handle leaks here accordingly
-	if (!tmp)
-	{
-		new_value = ft_strdup("1");
-		if (!new_value)
-			return ; // Handle allocation failure as needed
-		tmp = create_env_var("SHLVL", new_value);
-		if (tmp)
-			insert_env_var(&env_var_list, tmp);
-		ft_free(new_value);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:28 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/09 21:24:56 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/03 11:15:21 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	has_special_characters(char *str)
 {
 	if (ft_strchr(str, '\'') || ft_strchr(str, '\"') || ft_strchr(str, '$')
-			|| ft_strchr(str, '~'))
+			|| ft_strchr(str, '~') || ft_strchr(str, '\\'))
 		return (1);
 	return (0);
 }

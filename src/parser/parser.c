@@ -6,15 +6,17 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 20:55:50 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/02 20:22:47 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/02 23:25:36 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <stdio.h>
 
 // we are using the same parser from xv6 kernel
 
 // func prototypes
+
 
 t_command	*parsepipe(char **ps, char *es, int *ret)
 {
