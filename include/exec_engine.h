@@ -39,5 +39,5 @@ void	run_exec(t_command *cmd, t_shell_context *context, int *exit_status);
 void	execute_redirects_command(t_command *cmd, t_shell_context *context,
 			int *exit_status);
 void	execute_pipeline_command(t_command *cmd, t_shell_context *context,
-		int *exit_status);
+			int *exit_status);
 #endif

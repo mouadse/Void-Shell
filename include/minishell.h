@@ -30,6 +30,7 @@
 // My own custom header files below
 
 # include "../libft/libft.h"
+# include "builtins.h"
 # include "command.h"
 # include "environment.h"
 # include "exec_engine.h"
@@ -39,5 +40,4 @@
 # include "queue.h"
 # include "tokenizer.h"
 # include "utils.h"
-#include "builtins.h"
 #endif
