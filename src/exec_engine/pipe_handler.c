@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:29 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/03 12:53:48 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 01:54:20 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,49 +58,111 @@ static void	signal_handler(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
+// void	execute_pipeline_command(t_command *cmd, t_shell_context *context,
+// 		int *exit_status)
+// {
+// 	int		fd[2];
+// 	pid_t	pids[2];
+// 	int		status;
+// 	int		heredoc_flag;
+// 	t_pipe	*pipe_cmd;
+
+// 	heredoc_flag = 0;
+// 	pipe_cmd = (t_pipe *)cmd;
+// 	pipe(fd);
+// 	pids[0] = fork(); // for left command
+// 	if (pids[0] < 0)
+// 	{
+// 		perror("fork");
+// 		exit(EXIT_FAILURE); // to be handled better for potential cleanup
+// 	}
+// 	if (!pids[0])
+// 		left_pipe(context, pipe_cmd->left, fd, exit_status);
+// 	if (pipe_cmd->left->type == CMD_REDIR
+// 		&& ((t_redir *)pipe_cmd->left)->redir_type == '%')
+// 	{
+// 		close(fd[0]);
+// 		close(fd[1]);
+// 		waitpid(pids[0], NULL, 0);
+// 		heredoc_flag = 1;
+// 	}
+// 	pids[1] = fork(); // for right command
+// 	if (pids[1] < 0)
+// 	{
+// 		perror("fork");
+// 		exit(EXIT_FAILURE); // to be handled better for potential cleanup
+// 	}
+// 	if (!pids[1])
+// 		right_pipe(pipe_cmd->right, context, fd, exit_status);
+// 	signal_handler();
+// 	if (!heredoc_flag)
+// 	{
+// 		close(fd[0]);
+// 		close(fd[1]);
+// 		waitpid(pids[0], NULL, 0);
+// 	}
+// 	waitpid(pids[1], &status, 0);
+// 	if (WIFEXITED(status))
+// 		*exit_status = WEXITSTATUS(status);
+// 	else
+// 		*exit_status = 1;
+// 	save_exit_status(context, *exit_status);
+// 	terminate_cleanly(context, *exit_status);
+// }
+
 void	execute_pipeline_command(t_command *cmd, t_shell_context *context,
 		int *exit_status)
 {
 	int		fd[2];
 	pid_t	pids[2];
 	int		status;
-	int		heredoc_flag;
 	t_pipe	*pipe_cmd;
 
-	heredoc_flag = 0;
 	pipe_cmd = (t_pipe *)cmd;
-	pipe(fd);
-	pids[0] = fork(); // for left command
+	if (pipe(fd) < 0)
+	{
+		perror("pipe");
+		exit(EXIT_FAILURE);
+	}
+	pids[0] = fork(); // Fork first child (left command)
 	if (pids[0] < 0)
 	{
 		perror("fork");
-		exit(EXIT_FAILURE); // to be handled better for potential cleanup
+		exit(EXIT_FAILURE);
 	}
-	if (!pids[0])
-		left_pipe(context, pipe_cmd->left, fd, exit_status);
-	if (pipe_cmd->left->type == CMD_REDIR
-		&& ((t_redir *)pipe_cmd->left)->redir_type == '%')
+	if (pids[0] == 0)
 	{
-		close(fd[0]);
+		// Child process for left command
+		close(fd[0]);               // Close unused read end
+		dup2(fd[1], STDOUT_FILENO); // Redirect STDOUT to pipe write end
 		close(fd[1]);
-		waitpid(pids[0], NULL, 0);
-		heredoc_flag = 1;
+		execute_command(pipe_cmd->left, context, exit_status);
+		exit(EXIT_SUCCESS);
 	}
-	pids[1] = fork(); // for right command
+	pids[1] = fork(); // Fork second child (right command)
 	if (pids[1] < 0)
 	{
 		perror("fork");
-		exit(EXIT_FAILURE); // to be handled better for potential cleanup
+		exit(EXIT_FAILURE);
 	}
-	if (!pids[1])
-		right_pipe(pipe_cmd->right, context, fd, exit_status);
-	signal_handler();
-	if (!heredoc_flag)
+	if (pids[1] == 0)
 	{
+		// Child process for right command
+		close(fd[1]);              // Close unused write end
+		dup2(fd[0], STDIN_FILENO); // Redirect STDIN to pipe read end
 		close(fd[0]);
-		close(fd[1]);
-		waitpid(pids[0], NULL, 0);
+		execute_command(pipe_cmd->right, context, exit_status);
+		exit(EXIT_SUCCESS);
 	}
+	// Parent process
+	close(fd[0]);
+	close(fd[1]);
+	// Wait for both children to finish
+	waitpid(pids[0], &status, 0);
+	if (WIFEXITED(status))
+		*exit_status = WEXITSTATUS(status);
+	else
+		*exit_status = 1;
 	waitpid(pids[1], &status, 0);
 	if (WIFEXITED(status))
 		*exit_status = WEXITSTATUS(status);

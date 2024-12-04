@@ -55,15 +55,34 @@ static void	run_cmd_helper(t_shell_context *context, int *exit_status)
 
 static void	run_cmd(t_shell_context *context, int *exit_status)
 {
+	t_exec	*exec_cmd;
+
 	add_history(context->input);
 	context->tree = parsecmd(context->input, exit_status);
 	if (!context->tree)
 		return ;
 	process_all_commands(context->tree, context, exit_status);
 	// context->last_cmd = ((t_exec *)context->tree)->argv[0];
-	if (context->input)
+	if (context->tree && context->tree->type == CMD_EXEC)
 	{
-		insert_env_var(&context->env_vars, create_env_var("_", context->input));
+		exec_cmd = (t_exec *)context->tree;
+		insert_env_var(&context->env_vars, create_env_var("_",
+				exec_cmd->argv[0]));
+	}
+	if (!context->input)
+	{
+		// $_ is a special variable that stores the last command
+		if (context->tree && context->tree->type == CMD_EXEC)
+		{
+			exec_cmd = (t_exec *)context->tree;
+			insert_env_var(&context->env_vars, create_env_var("_",
+					exec_cmd->argv[0]));
+		}
+		else
+		{
+			insert_env_var(&context->env_vars, create_env_var("_",
+					context->input));
+		}
 	}
 	if (is_built_in_command(context->tree))
 	{

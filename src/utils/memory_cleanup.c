@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 12:29:51 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/03 15:46:23 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 01:42:18 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	terminate_cleanly(t_shell_context *context, int status)
 void	terminate_with_error(t_shell_context *context, char *message,
 		int status)
 {
-	cleanup_resources(context);
+	gc_free_all();
 	perror(message);
 	exit(status);
 }
