@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 01:31:03 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/03 23:43:43 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 20:39:04 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	signal_handler_heredoc(int signum)
 	if (signum == SIGINT)
 	{
 		write(STDOUT_FILENO, "\n", 1);
-		fd = open("/tmp/child_pid.tmp", O_RDONLY);
+		fd = open(SHELL_CHILD_PID_FILE, O_RDONLY);
 		if (fd < 0)
 		{
 			ft_putstr_fd("Error: Failed to open PID file\n", STDERR_FILENO);
