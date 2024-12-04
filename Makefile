@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Iinclude -I./libft #-fsanitize=address,leak,undefined -g3 -O0
+CFLAGS = -Wall -Wextra -Iinclude -I./libft -fsanitize=address,leak,undefined -g3 -O0
 LDFLAGS = -lreadline -L./libft -lft
 
 SRCDIR = src
