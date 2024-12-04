@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:39:02 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/04 19:46:50 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 20:19:03 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	run_built_in_command(t_exec *cmd, t_env_var **env_list,
 	}
 	else if (ft_strcmp(cmd->argv[0], "unset") == 0)
 	{
-		// run_unset(cmd, env_var_list, exit_status);
+		unset_env(cmd->argv, env_list, exit_status);
 	}
 }
 

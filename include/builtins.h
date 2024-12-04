@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 01:47:29 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/04 19:43:29 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 20:15:33 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	simple_export(char **args, t_env_var *env_var_list);
 void	ft_export(char **args, t_env_var **env_var_list, int *exit_status);
 
 // #=====================# unset #=====================#
-void	unset_env_var(char **args, t_env_var **env_var_list, int *exit_status);
+void	unset_env(char **args, t_env_var **env_var_list, int *exit_status);
 
 // #=====================# cd #=====================#
 void	cd(char **argv, int *exit_status, t_env_var **env_var_list);

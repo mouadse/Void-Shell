@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:23 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/04 19:48:41 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 20:19:29 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,6 @@ static void	execute_builtin_command(t_exec *exec_cmd, t_shell_context *context,
 	}
 	else if (ft_strcmp(exec_cmd->argv[0], "unset") == 0)
 	{
-		// Implement unset functionality
-		// Placeholder: Just set exit_status to 0
 		*exit_status = 0;
 	}
 	else if (ft_strcmp(exec_cmd->argv[0], "pwd") == 0)
