@@ -6,11 +6,12 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/04 12:20:32 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 12:39:05 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <unistd.h>
 
 static char	*getvar_name(char *arg)
 {
@@ -85,7 +86,7 @@ static char	*read_heredoc_input(char *del, t_shell_context *context,
 	init_queue(&queue);
 	while (1)
 	{
-		ft_putstr_fd("> ", 1);
+		ft_putstr_fd("> ", STDERR_FILENO);
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;

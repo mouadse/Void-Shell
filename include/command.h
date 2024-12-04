@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 00:27:00 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/02 20:19:56 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 13:30:07 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_shell_context {
   t_env_var *env_vars;
   t_command *tree;
   t_queue queue;
+  int empty_env_var;
 } t_shell_context;
 
 t_command *create_execcmd(void);

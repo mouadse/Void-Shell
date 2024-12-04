@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:26 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/04 01:24:15 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 13:35:39 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,7 @@ void	clean_empty_arguments(t_exec *exec_cmd)
 			}
 		}
 		else
-		{
 			i++;
-		}
 	}
 }
 
@@ -51,15 +49,11 @@ char	*get_executable_path(char *command, char *path)
 		full_path = ft_strjoin(path_directories[i], command_with_slash);
 		if (access(full_path, X_OK) == 0)
 		{
-			// ft_free(command_with_slash);
 			free_array(path_directories);
 			return (full_path);
 		}
-		// free(full_path);
 		i++;
 	}
-	// ft_free(command_with_slash);
-	// free_array(path_directories);
 	return (NULL);
 }
 
@@ -69,12 +63,12 @@ void	handle_invalid_executable(t_exec *cmd, t_shell_context *context,
 	if (S_ISDIR(path_stat.st_mode))
 	{
 		print_exec_error(cmd->argv[0], "Is a directory");
-		terminate_cleanly(context, 127);
+		terminate_cleanly(context, 126);
 	}
 	else if (access(cmd->argv[0], X_OK) != 0)
 	{
 		print_exec_error(cmd->argv[0], "Permission denied");
-		terminate_cleanly(context, 127);
+		terminate_cleanly(context, 126);
 	}
 }
 
@@ -82,10 +76,18 @@ void	handle_executable_path(t_exec *ecmd, t_shell_context *context)
 {
 	struct stat	path_stat;
 
-	if (ecmd->argv[0] == NULL)
+	if (ecmd->argv[0] == NULL || ecmd->argv[0][0] == '\0')
 	{
-		print_exec_error(ecmd->argv[0], "command not found");
-		terminate_cleanly(context, 127);
+		if (!context->empty_env_var)
+		{
+			print_exec_error(ecmd->argv[0], "command not found");
+			terminate_cleanly(context, 127);
+		}
+		else
+		{
+			context->empty_env_var = 0;
+			terminate_cleanly(context, 0);
+		}
 	}
 	else if (ft_strchr("./", ecmd->argv[0][0]))
 	{
@@ -114,7 +116,6 @@ void	handle_execve(char *binary_path, char **argv, char **envp,
 		t_shell_context *context)
 {
 	execve(binary_path, argv, envp);
-	print_exec_error(argv[0], "Error executing command");
-	// ft_free(binary_path);
+	print_exec_error(argv[0], "command not found");
 	terminate_cleanly(context, 127);
 }

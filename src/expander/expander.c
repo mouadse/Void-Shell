@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/03 11:17:19 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 13:28:23 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@ static void	process_argument(char *arg, t_queue_char *queue, int *exit_status,
 {
 	int	i;
 	int	*values[2];
+	int	prev_i;
 
-	int prev_i; // Track progress
 	if (!arg || !queue || !exit_status || !context)
 		return ;
 	i = 0;
 	while (arg[i] != '\0')
 	{
-		prev_i = i; // Save current position
+		prev_i = i;
 		if (arg[i] == '\'')
 			handle_single_quotes(arg, &i, queue);
 		else if (arg[i] == '\"')
@@ -37,14 +37,12 @@ static void	process_argument(char *arg, t_queue_char *queue, int *exit_status,
 		{
 			values[0] = &i;
 			values[1] = exit_status;
-			// process_variable(arg, values, queue, context);
 			handle_dollar_sign(arg, values, queue, context);
 		}
 		else
 			enqueue_char(queue, arg[i++]);
-		// Check if we're stuck
 		if (prev_i == i && arg[i] != '\0')
-			i++; // Force progress
+			i++;
 	}
 }
 
@@ -61,16 +59,9 @@ static char	*clean_argument(char *arg, t_shell_context *context,
 	{
 		home = get_env_value("HOME", context->env_vars);
 		if (home)
-		{
 			cleaned_arg = home;
-		}
 		else
-		{
 			cleaned_arg = ft_strdup("~");
-			// this is added to be fixing the leaks in
-			// case of no env : env -i ./minishell
-		}
-		// free_queue_char(&queue); // this is added to be fixing the leaks
 	}
 	else
 	{

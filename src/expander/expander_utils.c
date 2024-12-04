@@ -6,11 +6,12 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:28 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/03 15:25:48 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 13:30:46 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <stdio.h>
 
 int	has_special_characters(char *str)
 {
@@ -61,8 +62,9 @@ void	process_variable(char *str, int *values[2], t_queue_char *queue,
 	var_value = get_env_value(var_name, context->env_vars);
 	if (var_value)
 		enqueue_str(queue, var_value);
+	else
+		context->empty_env_var = 1;
 	(*i) += ft_strlen(var_name);
-	// free(var_name); // to be replaced by custom free
 }
 
 void	handle_dollar_sign(char *str, int *values[2], t_queue_char *queue,
@@ -74,7 +76,7 @@ void	handle_dollar_sign(char *str, int *values[2], t_queue_char *queue,
 
 	index = values[0];
 	exit_status = values[1];
-	(*index)++; // skip the dollar sign
+	(*index)++;
 	if (!str[*index] || is_whitespace(str[*index]))
 	{
 		enqueue_char(queue, '$');
@@ -84,7 +86,6 @@ void	handle_dollar_sign(char *str, int *values[2], t_queue_char *queue,
 	{
 		exit_status_str = ft_itoa(*exit_status);
 		enqueue_str(queue, exit_status_str);
-		// free(exit_status_str);
 		(*index)++;
 	}
 	else
