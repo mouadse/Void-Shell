@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:23 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/04 13:58:48 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 18:58:19 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,7 @@ static void	execute_builtin_command(t_exec *exec_cmd, t_shell_context *context,
 	}
 	else if (ft_strcmp(exec_cmd->argv[0], "export") == 0)
 	{
-		// Implement export functionality
-		// Placeholder: Just set exit_status to 0
+		ft_putstr_fd("Export 2\n", 1);
 		*exit_status = 0;
 	}
 	else if (ft_strcmp(exec_cmd->argv[0], "unset") == 0)

@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 00:25:14 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/24 22:52:52 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 18:43:44 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int						update_env_var(t_env_var *env_var_list,
 							t_env_var *new_nod);
 void					insert_env_var(t_env_var **env_var_list,
 							t_env_var *new_nod);
-void	init_env_var(t_env_var **env_var_list, char **envp);
+void					init_env_var(t_env_var **env_var_list, char **envp);
+void					extract_and_push(t_env_var **env_var_list,
+							char *env_var);
 
 #endif

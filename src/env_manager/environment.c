@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 01:51:48 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/04 00:23:10 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 18:43:31 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	insert_env_var(t_env_var **env_var_list, t_env_var *new_nod)
 	}
 }
 
-static void	extract_and_push(t_env_var **env_var_list, char *env_var)
+void	extract_and_push(t_env_var **env_var_list, char *env_var)
 {
 	char		*key;
 	char		*value;
@@ -180,5 +180,3 @@ void	update_shell_lvl(t_env_var **env_var_list)
 	insert_env_var(env_var_list, create_env_var(ft_strdup("SHLVL"),
 			new_shell_lvl));
 }
-
-

@@ -63,7 +63,6 @@ static void	run_cmd(t_shell_context *context, int *exit_status)
 	if (!context->tree)
 		return ;
 	process_all_commands(context->tree, context, exit_status);
-	// context->last_cmd = ((t_exec *)context->tree)->argv[0];
 	if (context->tree && context->tree->type == CMD_EXEC)
 	{
 		exec_cmd = (t_exec *)context->tree;
@@ -89,7 +88,6 @@ static void	run_cmd(t_shell_context *context, int *exit_status)
 	{
 		run_built_in_command((t_exec *)context->tree, &context->env_vars,
 			exit_status);
-		// ft_free(context->input);
 		release_command_resources(context->tree); // this is to be reviewed
 		free_queue(&context->queue);
 	}
