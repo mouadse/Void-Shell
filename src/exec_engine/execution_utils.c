@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:26 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/04 13:35:39 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 13:50:54 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,16 @@
 void	clean_empty_arguments(t_exec *exec_cmd)
 {
 	int	i;
-	int	j;
 
-	i = 0;
-	while (exec_cmd->argv[i])
+	while (exec_cmd->argv[0] && exec_cmd->argv[0][0] == '\0')
 	{
-		if (exec_cmd->argv[i][0] == '\0')
+		i = 0;
+		while (exec_cmd->argv[i] && exec_cmd->argv[i + 1])
 		{
-			j = i;
-			while (exec_cmd->argv[j])
-			{
-				exec_cmd->argv[j] = exec_cmd->argv[j + 1];
-				j++;
-			}
-		}
-		else
+			exec_cmd->argv[i] = exec_cmd->argv[i + 1];
 			i++;
+		}
+		exec_cmd->argv[i] = NULL;
 	}
 }
 

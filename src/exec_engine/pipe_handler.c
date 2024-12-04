@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:29 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/04 12:14:50 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 16:04:33 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,15 @@ static void	save_exit_status(t_shell_context *context, int status_code)
 		perror("write");
 		terminate_with_error(context, "Write", EXIT_FAILURE);
 	}
-	close(fd);
+	ft_close(context, fd);
 }
 
 static void	left_pipe(t_shell_context *context, t_command *cmd, int fd[2],
 		int *exit_status)
 {
-	close(fd[0]);
+	ft_close(context, fd[0]);
 	dup2(fd[1], STDOUT_FILENO);
-	close(fd[1]);
+	ft_close(context, fd[1]);
 	execute_command(cmd, context, exit_status);
 	exit(0);
 }
@@ -45,9 +45,9 @@ static void	left_pipe(t_shell_context *context, t_command *cmd, int fd[2],
 static void	right_pipe(t_command *cmd, t_shell_context *context, int fd[2],
 		int *exit_status)
 {
-	close(fd[1]);
+	ft_close(context, fd[1]);
 	dup2(fd[0], STDIN_FILENO);
-	close(fd[0]);
+	ft_close(context, fd[0]);
 	execute_command(cmd, context, exit_status);
 	exit(0);
 }
@@ -127,9 +127,9 @@ void	execute_pipeline_command(t_command *cmd, t_shell_context *context,
 			&& ((t_redir *)pipe_cmd->left)->redir_type == '%')
 		{
 			// Heredoc without command acts like cat
-			close(fd[0]);
+			ft_close(context, fd[0]);
 			dup2(fd[1], STDOUT_FILENO);
-			close(fd[1]);
+			ft_close(context, fd[1]);
 			execute_command(pipe_cmd->left, context, exit_status);
 		}
 		else
@@ -145,8 +145,8 @@ void	execute_pipeline_command(t_command *cmd, t_shell_context *context,
 		waitpid(pid1, &status, 0);
 		if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
 		{
-			close(fd[0]);
-			close(fd[1]);
+			ft_close(context, fd[0]);
+			ft_close(context, fd[1]);
 			*exit_status = WEXITSTATUS(status);
 		}
 	}
@@ -155,8 +155,8 @@ void	execute_pipeline_command(t_command *cmd, t_shell_context *context,
 	if (pid2 == 0)
 		right_pipe(pipe_cmd->right, context, fd, exit_status);
 	signal_handler();
-	close(fd[0]);
-	close(fd[1]);
+	ft_close(context, fd[0]);
+	ft_close(context, fd[1]);
 	if (!is_heredoc)
 		waitpid(pid1, &status, 0);
 	waitpid(pid2, &status, 0);

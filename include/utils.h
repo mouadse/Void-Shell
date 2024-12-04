@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 22:01:30 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/02 12:15:50 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 16:03:43 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,6 @@ int		is_built_in_command(t_command *cmd);
 void	run_built_in_command(t_exec *cmd, t_env_var **env_list,
 			int *exit_status);
 void	clean_shell(t_shell_context *context);
+void	ft_close(t_shell_context *context, int fd);
 
 #endif

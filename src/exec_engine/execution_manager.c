@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:23 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/04 13:14:11 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 13:58:48 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,49 +144,87 @@ char	*ft_strjoin3(const char *s1, const char *s2, const char *s3)
 	return (result);
 }
 
+// char	**envp_to_env_vector(t_env_var *env_vars)
+// {
+// 	int			count;
+// 	char		**env_vector;
+// 	t_env_var	*temp;
+// 	int			i;
+
+// 	// Count the number of environment variables
+// 	count = 0;
+// 	temp = env_vars;
+// 	while (temp)
+// 	{
+// 		count++;
+// 		temp = temp->next;
+// 	}
+// 	// Allocate memory for the env_vector
+// 	env_vector = (char **)gc_malloc(sizeof(char *) * (count + 1));
+// 	if (!env_vector)
+// 		return (NULL);
+// 	// Populate env_vector with "KEY=VALUE" strings
+// 	temp = env_vars;
+// 	i = 0;
+// 	while (temp)
+// 	{
+// 		// Ensure both key and value are not NULL
+// 		if (temp->key && temp->value)
+// 		{
+// 			env_vector[i] = ft_strjoin3(temp->key, "=", temp->value);
+// 		}
+// 		else if (temp->key && !temp->value)
+// 		{
+// 			// Handle variables with no value
+// 			env_vector[i] = ft_strdup(temp->key);
+// 		}
+// 		else
+// 		{
+// 			// Skip if key is NULL
+// 			temp = temp->next;
+// 			continue ;
+// 		}
+// 		if (!env_vector[i])
+// 			return (NULL);
+// 		i++;
+// 		temp = temp->next;
+// 	}
+// 	env_vector[i] = NULL;
+// 	return (env_vector);
+// }
+
 char	**envp_to_env_vector(t_env_var *env_vars)
 {
-	int			count;
-	char		**env_vector;
-	t_env_var	*temp;
 	int			i;
+	int			count;
+	t_env_var	*temp;
+	char		**env_vector;
 
-	// Count the number of environment variables
+	i = 0;
 	count = 0;
 	temp = env_vars;
+	// Count the number of environment variables
 	while (temp)
 	{
 		count++;
 		temp = temp->next;
 	}
-	// Allocate memory for the env_vector
-	env_vector = (char **)gc_malloc(sizeof(char *) * (count + 1));
+	env_vector = gc_malloc(sizeof(char *) * (count + 1));
 	if (!env_vector)
 		return (NULL);
-	// Populate env_vector with "KEY=VALUE" strings
 	temp = env_vars;
-	i = 0;
 	while (temp)
 	{
-		// Ensure both key and value are not NULL
-		if (temp->key && temp->value)
+		if (temp->key)
 		{
-			env_vector[i] = ft_strjoin3(temp->key, "=", temp->value);
+			if (temp->value)
+				env_vector[i] = ft_strjoin3(temp->key, "=", temp->value);
+			else
+				env_vector[i] = ft_strdup(temp->key);
+			if (!env_vector[i])
+				return (NULL);
+			i++;
 		}
-		else if (temp->key && !temp->value)
-		{
-			// Handle variables with no value
-			env_vector[i] = ft_strdup(temp->key);
-		}
-		else
-		{
-			// Skip if key is NULL
-			temp = temp->next;
-			continue ;
-		}
-		if (!env_vector[i])
-			return (NULL);
-		i++;
 		temp = temp->next;
 	}
 	env_vector[i] = NULL;

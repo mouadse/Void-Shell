@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/04 12:39:05 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 16:05:02 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static char	*read_heredoc_input(char *del, t_shell_context *context,
 	if (tty_fd < 0)
 		terminate_with_error(context, "open", 1);
 	dup2(tty_fd, STDIN_FILENO);
-	close(tty_fd);
+	ft_close(context, tty_fd);
 	init_queue(&queue);
 	while (1)
 	{
@@ -112,7 +112,7 @@ static void	write_heredoc_file(t_shell_context *context, char *content)
 		terminate_with_error(context, "open", 1);
 	if (write(fd, content, ft_strlen(content)) < 0)
 		terminate_with_error(context, "write", 1);
-	close(fd);
+	ft_close(context, fd);
 }
 
 void	execute_redirects_command(t_command *cmd, t_shell_context *context,
@@ -126,7 +126,7 @@ void	execute_redirects_command(t_command *cmd, t_shell_context *context,
 	signal(SIGQUIT, SIG_IGN);
 	if (redir_cmd->redir_type != '%')
 	{
-		close(redir_cmd->fd);
+		ft_close(context, redir_cmd->fd);
 		if (open(redir_cmd->file, redir_cmd->mode, 0644) < 0)
 			terminate_with_error(context, "open", 1);
 	}
@@ -135,7 +135,7 @@ void	execute_redirects_command(t_command *cmd, t_shell_context *context,
 		heredoc_content = read_heredoc_input(redir_cmd->file, context,
 				exit_status);
 		write_heredoc_file(context, heredoc_content);
-		close(redir_cmd->fd);
+		ft_close(context, redir_cmd->fd);
 		if (open(SHELL_HEREDOC_FILE, redir_cmd->mode, 0644) < 0)
 			terminate_with_error(context, "open", 1);
 	}

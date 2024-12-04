@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:39:02 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/04 01:25:49 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 16:05:32 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	retrieve_exit_status(t_command *cmd, t_shell_context *context,
 			terminate_with_error(context, "open", 1);
 		if (-1 == read(fd, exit_status, sizeof(int)))
 			terminate_with_error(context, "read", 1);
-		close(fd);
+		ft_close(context, fd);
 	}
 }
 
@@ -46,7 +46,7 @@ void	store_subprocess_pid(pid_t pid, t_shell_context *context)
 		terminate_with_error(context, "open", 1);
 	if (-1 == write(fd, &pid, sizeof(pid_t)))
 		terminate_with_error(context, "write", 1);
-	close(fd);
+	ft_close(context, fd);
 }
 
 int	is_built_in_command(t_command *cmd)
@@ -92,4 +92,10 @@ void	clean_shell(t_shell_context *context)
 	// free_queue(&context->queue);
 	unlink(SHELL_CHILD_PID_FILE);
 	unlink(SHELL_CHILD_STATUS_FILE);
+}
+
+void	ft_close(t_shell_context *context, int fd)
+{
+	if (-1 == close(fd))
+		terminate_with_error(context, "close", 1);
 }
