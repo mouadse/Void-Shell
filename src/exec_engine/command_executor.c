@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdio.h>
-#include <unistd.h>
 
 void	execute_command(t_command *cmd, t_shell_context *context,
 		int *exit_status)

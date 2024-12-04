@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:29 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/04 01:54:20 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 12:14:50 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	left_pipe(t_shell_context *context, t_command *cmd, int fd[2],
 	dup2(fd[1], STDOUT_FILENO);
 	close(fd[1]);
 	execute_command(cmd, context, exit_status);
-	exit(EXIT_SUCCESS);
+	exit(0);
 }
 
 static void	right_pipe(t_command *cmd, t_shell_context *context, int fd[2],
@@ -49,7 +49,7 @@ static void	right_pipe(t_command *cmd, t_shell_context *context, int fd[2],
 	dup2(fd[0], STDIN_FILENO);
 	close(fd[0]);
 	execute_command(cmd, context, exit_status);
-	exit(EXIT_SUCCESS);
+	exit(0);
 }
 
 static void	signal_handler(void)
@@ -62,46 +62,42 @@ static void	signal_handler(void)
 // 		int *exit_status)
 // {
 // 	int		fd[2];
-// 	pid_t	pids[2];
+// 	pid_t	pid1;
+// 	pid_t	pid2;
 // 	int		status;
-// 	int		heredoc_flag;
+// 	int		is_here_doc;
 // 	t_pipe	*pipe_cmd;
 
-// 	heredoc_flag = 0;
-// 	pipe_cmd = (t_pipe *)cmd;
+// 	// code goes here
+// 	is_here_doc = 0;
 // 	pipe(fd);
-// 	pids[0] = fork(); // for left command
-// 	if (pids[0] < 0)
+// 	pipe_cmd = (t_pipe *)cmd;
+// 	pid1 = fork();
+// 	if (!pid1)
 // 	{
-// 		perror("fork");
-// 		exit(EXIT_FAILURE); // to be handled better for potential cleanup
-// 	}
-// 	if (!pids[0])
 // 		left_pipe(context, pipe_cmd->left, fd, exit_status);
-// 	if (pipe_cmd->left->type == CMD_REDIR
-// 		&& ((t_redir *)pipe_cmd->left)->redir_type == '%')
+// 	}
+// 	if (CMD_REDIR == pipe_cmd->left->type
+// 		&& ((t_redir *)pipe_cmd)->redir_type == '%')
 // 	{
 // 		close(fd[0]);
 // 		close(fd[1]);
-// 		waitpid(pids[0], NULL, 0);
-// 		heredoc_flag = 1;
+// 		waitpid(pid1, NULL, 0);
+// 		is_here_doc = 1;
 // 	}
-// 	pids[1] = fork(); // for right command
-// 	if (pids[1] < 0)
+// 	pid2 = fork();
+// 	if (!pid2)
 // 	{
-// 		perror("fork");
-// 		exit(EXIT_FAILURE); // to be handled better for potential cleanup
-// 	}
-// 	if (!pids[1])
 // 		right_pipe(pipe_cmd->right, context, fd, exit_status);
+// 	}
 // 	signal_handler();
-// 	if (!heredoc_flag)
+// 	if (!is_here_doc)
 // 	{
 // 		close(fd[0]);
 // 		close(fd[1]);
-// 		waitpid(pids[0], NULL, 0);
+// 		waitpid(pid1, NULL, 0);
 // 	}
-// 	waitpid(pids[1], &status, 0);
+// 	waitpid(pid2, &status, 0);
 // 	if (WIFEXITED(status))
 // 		*exit_status = WEXITSTATUS(status);
 // 	else
@@ -114,56 +110,56 @@ void	execute_pipeline_command(t_command *cmd, t_shell_context *context,
 		int *exit_status)
 {
 	int		fd[2];
-	pid_t	pids[2];
+	pid_t	pid1;
+	pid_t	pid2;
 	int		status;
 	t_pipe	*pipe_cmd;
+	int		is_heredoc;
 
+	is_heredoc = 0;
 	pipe_cmd = (t_pipe *)cmd;
-	if (pipe(fd) < 0)
+	ft_pipe(fd, context);
+	// First process for heredoc/left command
+	pid1 = ft_fork(context);
+	if (pid1 == 0)
 	{
-		perror("pipe");
-		exit(EXIT_FAILURE);
+		if (pipe_cmd->left->type == CMD_REDIR
+			&& ((t_redir *)pipe_cmd->left)->redir_type == '%')
+		{
+			// Heredoc without command acts like cat
+			close(fd[0]);
+			dup2(fd[1], STDOUT_FILENO);
+			close(fd[1]);
+			execute_command(pipe_cmd->left, context, exit_status);
+		}
+		else
+		{
+			left_pipe(context, pipe_cmd->left, fd, exit_status);
+		}
 	}
-	pids[0] = fork(); // Fork first child (left command)
-	if (pids[0] < 0)
+	// Handle heredoc completion before starting right command
+	if (pipe_cmd->left->type == CMD_REDIR
+		&& ((t_redir *)pipe_cmd->left)->redir_type == '%')
 	{
-		perror("fork");
-		exit(EXIT_FAILURE);
+		is_heredoc = 1;
+		waitpid(pid1, &status, 0);
+		if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+		{
+			close(fd[0]);
+			close(fd[1]);
+			*exit_status = WEXITSTATUS(status);
+		}
 	}
-	if (pids[0] == 0)
-	{
-		// Child process for left command
-		close(fd[0]);               // Close unused read end
-		dup2(fd[1], STDOUT_FILENO); // Redirect STDOUT to pipe write end
-		close(fd[1]);
-		execute_command(pipe_cmd->left, context, exit_status);
-		exit(EXIT_SUCCESS);
-	}
-	pids[1] = fork(); // Fork second child (right command)
-	if (pids[1] < 0)
-	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}
-	if (pids[1] == 0)
-	{
-		// Child process for right command
-		close(fd[1]);              // Close unused write end
-		dup2(fd[0], STDIN_FILENO); // Redirect STDIN to pipe read end
-		close(fd[0]);
-		execute_command(pipe_cmd->right, context, exit_status);
-		exit(EXIT_SUCCESS);
-	}
-	// Parent process
+	// Right command
+	pid2 = ft_fork(context);
+	if (pid2 == 0)
+		right_pipe(pipe_cmd->right, context, fd, exit_status);
+	signal_handler();
 	close(fd[0]);
 	close(fd[1]);
-	// Wait for both children to finish
-	waitpid(pids[0], &status, 0);
-	if (WIFEXITED(status))
-		*exit_status = WEXITSTATUS(status);
-	else
-		*exit_status = 1;
-	waitpid(pids[1], &status, 0);
+	if (!is_heredoc)
+		waitpid(pid1, &status, 0);
+	waitpid(pid2, &status, 0);
 	if (WIFEXITED(status))
 		*exit_status = WEXITSTATUS(status);
 	else

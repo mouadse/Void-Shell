@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:23 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/04 01:22:12 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 12:24:30 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ static void	execute_builtin_command(t_exec *exec_cmd, t_shell_context *context,
 		print_exec_error(exec_cmd->argv[0], "Unknown builtin command");
 		*exit_status = 1;
 	}
-	// gc_free_all();
+	gc_free_all();
 }
 
 // sh lvl here

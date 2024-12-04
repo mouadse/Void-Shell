@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/04 01:49:04 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 12:20:32 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,20 +85,17 @@ static char	*read_heredoc_input(char *del, t_shell_context *context,
 	init_queue(&queue);
 	while (1)
 	{
+		ft_putstr_fd("> ", 1);
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
-		{
 			break ;
-		}
-		if (ft_strlen(line) == ft_strlen(del) + 1 && ft_strncmp(line, del,
-				ft_strlen(del)) == 0 && line[ft_strlen(del)] == '\n')
+		if (ft_strncmp(line, del, ft_strlen(del)) == 0
+			&& line[ft_strlen(del)] == '\n')
 		{
-			// free(line);
 			break ;
 		}
 		heredoc_line = process_line(context, line, exit_status);
 		enqueue(&queue, heredoc_line);
-		// free(line);
 	}
 	return (queue_str_convert(&queue));
 }
@@ -107,6 +104,8 @@ static void	write_heredoc_file(t_shell_context *context, char *content)
 {
 	int	fd;
 
+	if (!content)
+		terminate_cleanly(context, 0);
 	fd = open(SHELL_HEREDOC_FILE, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
 		terminate_with_error(context, "open", 1);
@@ -135,7 +134,6 @@ void	execute_redirects_command(t_command *cmd, t_shell_context *context,
 		heredoc_content = read_heredoc_input(redir_cmd->file, context,
 				exit_status);
 		write_heredoc_file(context, heredoc_content);
-		// free(heredoc_content);
 		close(redir_cmd->fd);
 		if (open(SHELL_HEREDOC_FILE, redir_cmd->mode, 0644) < 0)
 			terminate_with_error(context, "open", 1);
