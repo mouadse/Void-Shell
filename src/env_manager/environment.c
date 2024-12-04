@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 01:51:48 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/03 21:49:44 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 00:23:10 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,15 +131,15 @@ static void	extract_and_push(t_env_var **env_var_list, char *env_var)
 			new_nod = create_env_var(key, NULL);
 			// ft_free(value);
 		}
-		else if (ft_strcmp(key, "_") == 0)
-		{
-			new_nod = create_env_var(key, "/bin/bash");
-			// ft_free(value);
-		}
 		else
 		{
 			new_nod = create_env_var(key, value);
 		}
+		/*else if (ft_strcmp(key, "_") == 0)
+		{
+			new_nod = create_env_var(key, "/bin/bash");
+			// ft_free(value);
+		} */
 	}
 	if (new_nod)
 		insert_env_var(env_var_list, new_nod);
@@ -180,3 +180,5 @@ void	update_shell_lvl(t_env_var **env_var_list)
 	insert_env_var(env_var_list, create_env_var(ft_strdup("SHLVL"),
 			new_shell_lvl));
 }
+
+
