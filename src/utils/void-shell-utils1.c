@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:39:02 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/04 18:59:08 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 19:46:50 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	run_built_in_command(t_exec *cmd, t_env_var **env_list,
 		cd(cmd->argv, exit_status, env_list);
 	else if (ft_strcmp(cmd->argv[0], "export") == 0)
 	{
-		printf("Export\n");
+		ft_export(cmd->argv, env_list, exit_status);
 	}
 	else if (ft_strcmp(cmd->argv[0], "unset") == 0)
 	{

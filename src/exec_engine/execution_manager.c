@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:23 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/04 18:58:19 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/04 19:48:41 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static void	execute_builtin_command(t_exec *exec_cmd, t_shell_context *context,
 	}
 	else if (ft_strcmp(exec_cmd->argv[0], "export") == 0)
 	{
-		ft_putstr_fd("Export 2\n", 1);
+		simple_export(exec_cmd->argv, context->env_vars);
 		*exit_status = 0;
 	}
 	else if (ft_strcmp(exec_cmd->argv[0], "unset") == 0)
@@ -116,7 +116,7 @@ static void	execute_builtin_command(t_exec *exec_cmd, t_shell_context *context,
 		print_exec_error(exec_cmd->argv[0], "Unknown builtin command");
 		*exit_status = 1;
 	}
-	gc_free_all();
+	// gc_free_all();
 }
 
 // sh lvl here
@@ -142,55 +142,6 @@ char	*ft_strjoin3(const char *s1, const char *s2, const char *s3)
 	result[len1 + len2 + len3] = '\0';
 	return (result);
 }
-
-// char	**envp_to_env_vector(t_env_var *env_vars)
-// {
-// 	int			count;
-// 	char		**env_vector;
-// 	t_env_var	*temp;
-// 	int			i;
-
-// 	// Count the number of environment variables
-// 	count = 0;
-// 	temp = env_vars;
-// 	while (temp)
-// 	{
-// 		count++;
-// 		temp = temp->next;
-// 	}
-// 	// Allocate memory for the env_vector
-// 	env_vector = (char **)gc_malloc(sizeof(char *) * (count + 1));
-// 	if (!env_vector)
-// 		return (NULL);
-// 	// Populate env_vector with "KEY=VALUE" strings
-// 	temp = env_vars;
-// 	i = 0;
-// 	while (temp)
-// 	{
-// 		// Ensure both key and value are not NULL
-// 		if (temp->key && temp->value)
-// 		{
-// 			env_vector[i] = ft_strjoin3(temp->key, "=", temp->value);
-// 		}
-// 		else if (temp->key && !temp->value)
-// 		{
-// 			// Handle variables with no value
-// 			env_vector[i] = ft_strdup(temp->key);
-// 		}
-// 		else
-// 		{
-// 			// Skip if key is NULL
-// 			temp = temp->next;
-// 			continue ;
-// 		}
-// 		if (!env_vector[i])
-// 			return (NULL);
-// 		i++;
-// 		temp = temp->next;
-// 	}
-// 	env_vector[i] = NULL;
-// 	return (env_vector);
-// }
 
 char	**envp_to_env_vector(t_env_var *env_vars)
 {
@@ -274,6 +225,7 @@ void	run_exec(t_command *cmd, t_shell_context *context, int *exit_status)
 	{
 		execute_builtin_command(exec_cmd, context, exit_status);
 		// Do not terminate here; allow the shell to continue running
+		terminate_cleanly(context, *exit_status);
 	}
 	else
 	{
