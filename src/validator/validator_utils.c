@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:38:44 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/05 12:52:17 by msennane         ###   ########.fr       */
+/*   Updated: 2024/11/08 00:19:22 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	check_redirection_syntax(char **ps, char *es, int *exit_status)
 	{
 		ft_putstr_fd("Void-shell: syntax error near \
 unexpected token `newline'\n",
-			STDERR_FILENO);
+						STDERR_FILENO);
 		*exit_status = 258;
 		return (0);
 	}

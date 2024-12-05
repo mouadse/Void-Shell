@@ -1,4 +1,7 @@
 #include "../include/minishell.h"
+#include <complex.h>
+#include <readline/chardefs.h>
+#include <stdio.h>
 
 static int	is_shell_input_valid(char *input, int *exit_status)
 {
@@ -28,12 +31,15 @@ static void	run_cmd_helper(t_shell_context *context, int *exit_status)
 	set_signal_handler(context->tree);
 	if (ft_fork(context) == 0)
 	{
+		// printf("We are inside fork\n");
 		store_subprocess_pid(getpid(), context);
 		execute_command(context->tree, context, exit_status);
 	}
-	waitpid(-1, &status, 0);
+	// this is the parent process
+	waitpid(-1, &status, 0); // wait for the child process to finish
 	retrieve_exit_status(context->tree, context, exit_status, status);
 	exec = (t_exec *)context->tree;
+	// first test is to check if the user demanded to exit the shell
 	if ((exec->type == CMD_EXEC) && exec->argv[0] && ft_strcmp(exec->argv[0],
 			"exit") == 0)
 	{
@@ -65,6 +71,7 @@ static void	run_cmd(t_shell_context *context, int *exit_status)
 	}
 	if (!context->input)
 	{
+		// $_ is a special variable that stores the last command
 		if (context->tree && context->tree->type == CMD_EXEC)
 		{
 			exec_cmd = (t_exec *)context->tree;
@@ -81,7 +88,8 @@ static void	run_cmd(t_shell_context *context, int *exit_status)
 	{
 		run_built_in_command((t_exec *)context->tree, &context->env_vars,
 			exit_status);
-		release_command_resources(context->tree);
+		release_command_resources(context->tree); // this is to be reviewed
+		free_queue(&context->queue);
 	}
 	else
 		run_cmd_helper(context, exit_status);
@@ -99,7 +107,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		setup_signals();
-		context.input = readline("void-shell$ ");
+		context.input = readline("void-shell$ "); // colors later
 		if (!context.input)
 		{
 			ft_putstr_fd("exit\n", 1);
@@ -111,8 +119,10 @@ int	main(int argc, char **argv, char **envp)
 			context.input = NULL;
 			continue ;
 		}
+		// this is a function that handles the signal exit
 		run_cmd(&context, &exit_status);
 	}
+	free_env(context.env_vars);
 	rl_clear_history();
 	gc_free_all();
 	return (EXIT_SUCCESS);

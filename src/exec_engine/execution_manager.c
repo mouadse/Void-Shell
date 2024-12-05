@@ -6,11 +6,12 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:23 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/05 13:05:11 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:21:09 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <stdio.h>
 
 void	print_exec_error(char *cmd_name, char *error_type)
 {
@@ -76,6 +77,7 @@ static void	execute_builtin_command(t_exec *exec_cmd, t_shell_context *context,
 	}
 	else if (ft_strcmp(exec_cmd->argv[0], "exit") == 0)
 	{
+		// Implement exit functionality
 		status = 0;
 		if (exec_cmd->argv[1] && is_a_word(exec_cmd->argv[1]))
 			status = 2;
@@ -87,6 +89,7 @@ static void	execute_builtin_command(t_exec *exec_cmd, t_shell_context *context,
 	}
 	else if (ft_strcmp(exec_cmd->argv[0], "env") == 0)
 	{
+		// Implement env functionality
 		for (int i = 0; context->envp[i]; i++)
 			printf("%s\n", context->envp[i]);
 		*exit_status = 0;
@@ -102,6 +105,8 @@ static void	execute_builtin_command(t_exec *exec_cmd, t_shell_context *context,
 	}
 	else if (ft_strcmp(exec_cmd->argv[0], "pwd") == 0)
 	{
+		// gc_free_all();
+		// Implement pwd functionality
 		if (getcwd(cwd, sizeof(cwd)) != NULL)
 		{
 			printf("%s\n", cwd);
@@ -121,6 +126,8 @@ static void	execute_builtin_command(t_exec *exec_cmd, t_shell_context *context,
 	}
 	// gc_free_all();
 }
+
+// sh lvl here
 
 char	*ft_strjoin3(const char *s1, const char *s2, const char *s3)
 {
@@ -154,6 +161,7 @@ char	**envp_to_env_vector(t_env_var *env_vars)
 	i = 0;
 	count = 0;
 	temp = env_vars;
+	// Count the number of environment variables
 	while (temp)
 	{
 		count++;
@@ -189,22 +197,28 @@ static void	execute_external_command(t_command *cmd, t_shell_context *context)
 
 	envp = envp_to_env_vector(context->env_vars);
 	exec_cmd = (t_exec *)cmd;
+	/* Attempt to find the full path of the command */
 	binary_path = get_command_path(exec_cmd->argv[0], context->env_vars);
 	if (!binary_path)
 	{
+		/* Command not found in PATH */
 		print_exec_error(exec_cmd->argv[0], "command not found");
 		terminate_cleanly(context, 127);
 	}
+	/* Pre-execution checks */
 	if (!file_exists(binary_path))
 	{
 		print_exec_error(exec_cmd->argv[0], "No such file or directory");
+		// ft_free(binary_path);
 		terminate_cleanly(context, 127);
 	}
 	if (!is_executable(binary_path))
 	{
 		print_exec_error(exec_cmd->argv[0], "Permission denied");
+		// ft_free(binary_path);
 		terminate_cleanly(context, 127);
 	}
+	/* Attempt to execute the command */
 	handle_execve(binary_path, exec_cmd->argv, envp, context);
 }
 
@@ -218,6 +232,7 @@ void	run_exec(t_command *cmd, t_shell_context *context, int *exit_status)
 	if (is_builtin_command(exec_cmd))
 	{
 		execute_builtin_command(exec_cmd, context, exit_status);
+		// Do not terminate here; allow the shell to continue running
 		terminate_cleanly(context, *exit_status);
 	}
 	else
