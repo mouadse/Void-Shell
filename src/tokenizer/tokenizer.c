@@ -6,46 +6,45 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 20:18:35 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/05 12:45:36 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/05 13:24:14 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	determine_special_tokens(char **input)
+static void	determine_special_tokens(char **input, int *token)
 {
-	int	token;
-
-	token = **input;
-	if (token == '\0')
-		return ('\0');
-	else if (token == '|')
+	if (**input == '\0')
+		*token = '\0';
+	else if (**input == '|')
 	{
+		*token = '|';
 		(*input)++;
-		return (token);
 	}
-	else if (token == '>')
+	else if (**input == '>')
 	{
 		(*input)++;
 		if (**input == '>')
 		{
+			*token = '+';
 			(*input)++;
-			return ('+');
 		}
-		return (token);
+		else
+			*token = '>';
 	}
-	else if (token == '<')
+	else if (**input == '<')
 	{
 		(*input)++;
 		if (**input == '<')
 		{
+			*token = '%';
 			(*input)++;
-			return ('%');
 		}
-		return (token);
+		else
+			*token = '<';
 	}
 	else
-		return ('a');
+		*token = 'a';
 }
 
 static void	skip_tokens(char **current, char *end)
@@ -84,7 +83,7 @@ int	gettoken(char **ps, char *es, char **q, char **eq)
 		s++;
 	if (q)
 		*q = s;
-	ret = determine_special_tokens(&s);
+	determine_special_tokens(&s, &ret);
 	if (ret == 'a')
 		skip_tokens(&s, es);
 	if (eq)
