@@ -6,11 +6,35 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 20:18:35 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/05 13:24:14 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/05 13:31:50 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+static void	determine_greater_than_token(char **input, int *token)
+{
+	(*input)++;
+	if (**input == '>')
+	{
+		*token = '+';
+		(*input)++;
+	}
+	else
+		*token = '>';
+}
+
+static void	determine_less_than_token(char **input, int *token)
+{
+	(*input)++;
+	if (**input == '<')
+	{
+		*token = '%';
+		(*input)++;
+	}
+	else
+		*token = '<';
+}
 
 static void	determine_special_tokens(char **input, int *token)
 {
@@ -22,27 +46,9 @@ static void	determine_special_tokens(char **input, int *token)
 		(*input)++;
 	}
 	else if (**input == '>')
-	{
-		(*input)++;
-		if (**input == '>')
-		{
-			*token = '+';
-			(*input)++;
-		}
-		else
-			*token = '>';
-	}
+		determine_greater_than_token(input, token);
 	else if (**input == '<')
-	{
-		(*input)++;
-		if (**input == '<')
-		{
-			*token = '%';
-			(*input)++;
-		}
-		else
-			*token = '<';
-	}
+		determine_less_than_token(input, token);
 	else
 		*token = 'a';
 }
@@ -90,14 +96,4 @@ int	gettoken(char **ps, char *es, char **q, char **eq)
 		*eq = s;
 	*ps = s;
 	return (ret);
-}
-
-int	peek(char **ps, char *es, char *toks)
-{
-	char	*s;
-
-	s = *ps;
-	while (s < es && is_whitespace(*s))
-		s++;
-	return (*s && ft_strchr(toks, *s));
 }
