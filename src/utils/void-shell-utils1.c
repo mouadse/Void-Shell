@@ -6,12 +6,11 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:39:02 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/04 20:19:03 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:49:48 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdio.h>
 
 void	retrieve_exit_status(t_command *cmd, t_shell_context *context,
 		int *exit_status, int status)
@@ -85,9 +84,6 @@ void	run_built_in_command(t_exec *cmd, t_env_var **env_list,
 
 void	clean_shell(t_shell_context *context)
 {
-	// ft_free(context->input);
-	// release_command_resources(context->tree);
-	// free_queue(&context->queue);
 	unlink(SHELL_CHILD_PID_FILE);
 	unlink(SHELL_CHILD_STATUS_FILE);
 }
