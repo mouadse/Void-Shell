@@ -107,7 +107,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		setup_signals();
-		context.input = readline("void-shell$ "); // colors later
+		context.input = readline("void-shell$ ");
 		if (!context.input)
 		{
 			ft_putstr_fd("exit\n", 1);
@@ -119,10 +119,8 @@ int	main(int argc, char **argv, char **envp)
 			context.input = NULL;
 			continue ;
 		}
-		// this is a function that handles the signal exit
 		run_cmd(&context, &exit_status);
 	}
-	free_env(context.env_vars);
 	rl_clear_history();
 	gc_free_all();
 	return (EXIT_SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:29 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/04 16:04:33 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/05 13:57:38 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,54 +58,6 @@ static void	signal_handler(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-// void	execute_pipeline_command(t_command *cmd, t_shell_context *context,
-// 		int *exit_status)
-// {
-// 	int		fd[2];
-// 	pid_t	pid1;
-// 	pid_t	pid2;
-// 	int		status;
-// 	int		is_here_doc;
-// 	t_pipe	*pipe_cmd;
-
-// 	// code goes here
-// 	is_here_doc = 0;
-// 	pipe(fd);
-// 	pipe_cmd = (t_pipe *)cmd;
-// 	pid1 = fork();
-// 	if (!pid1)
-// 	{
-// 		left_pipe(context, pipe_cmd->left, fd, exit_status);
-// 	}
-// 	if (CMD_REDIR == pipe_cmd->left->type
-// 		&& ((t_redir *)pipe_cmd)->redir_type == '%')
-// 	{
-// 		close(fd[0]);
-// 		close(fd[1]);
-// 		waitpid(pid1, NULL, 0);
-// 		is_here_doc = 1;
-// 	}
-// 	pid2 = fork();
-// 	if (!pid2)
-// 	{
-// 		right_pipe(pipe_cmd->right, context, fd, exit_status);
-// 	}
-// 	signal_handler();
-// 	if (!is_here_doc)
-// 	{
-// 		close(fd[0]);
-// 		close(fd[1]);
-// 		waitpid(pid1, NULL, 0);
-// 	}
-// 	waitpid(pid2, &status, 0);
-// 	if (WIFEXITED(status))
-// 		*exit_status = WEXITSTATUS(status);
-// 	else
-// 		*exit_status = 1;
-// 	save_exit_status(context, *exit_status);
-// 	terminate_cleanly(context, *exit_status);
-// }
-
 void	execute_pipeline_command(t_command *cmd, t_shell_context *context,
 		int *exit_status)
 {
@@ -119,25 +71,20 @@ void	execute_pipeline_command(t_command *cmd, t_shell_context *context,
 	is_heredoc = 0;
 	pipe_cmd = (t_pipe *)cmd;
 	ft_pipe(fd, context);
-	// First process for heredoc/left command
 	pid1 = ft_fork(context);
 	if (pid1 == 0)
 	{
 		if (pipe_cmd->left->type == CMD_REDIR
 			&& ((t_redir *)pipe_cmd->left)->redir_type == '%')
 		{
-			// Heredoc without command acts like cat
 			ft_close(context, fd[0]);
 			dup2(fd[1], STDOUT_FILENO);
 			ft_close(context, fd[1]);
 			execute_command(pipe_cmd->left, context, exit_status);
 		}
 		else
-		{
 			left_pipe(context, pipe_cmd->left, fd, exit_status);
-		}
 	}
-	// Handle heredoc completion before starting right command
 	if (pipe_cmd->left->type == CMD_REDIR
 		&& ((t_redir *)pipe_cmd->left)->redir_type == '%')
 	{
@@ -150,7 +97,6 @@ void	execute_pipeline_command(t_command *cmd, t_shell_context *context,
 			*exit_status = WEXITSTATUS(status);
 		}
 	}
-	// Right command
 	pid2 = ft_fork(context);
 	if (pid2 == 0)
 		right_pipe(pipe_cmd->right, context, fd, exit_status);
