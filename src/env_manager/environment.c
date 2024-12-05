@@ -6,26 +6,13 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 01:51:48 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/04 18:43:31 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:31:01 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void		update_shell_lvl(t_env_var **env_var_list);
-
-t_env_var	*create_env_var(char *key, char *value)
-{
-	t_env_var	*new;
-
-	new = gc_malloc(sizeof(t_env_var));
-	if (!new)
-		return (NULL);
-	new->key = key;
-	new->value = value;
-	new->next = NULL;
-	return (new);
-}
+void	update_shell_lvl(t_env_var **env_var_list);
 
 int	update_env_var(t_env_var *env_var_list, t_env_var *new_nod)
 {
@@ -38,20 +25,11 @@ int	update_env_var(t_env_var *env_var_list, t_env_var *new_nod)
 		if (ft_strcmp(tmp->key, new_nod->key) == 0)
 		{
 			if (!new_nod->value)
-			{
-				// Free here and return (free_env_node(new_nod));
 				return (1);
-			}
 			new_value = ft_strdup(new_nod->value);
 			if (!new_value)
-			{
-				// Free here and return (free_env_node(new_nod));
 				return (1);
-			}
-			// ft_free(tmp->value);
 			tmp->value = new_value;
-			// Transfer ownership; free here
-			// free_env_node(new_nod);
 			return (1);
 		}
 		tmp = tmp->next;
@@ -108,38 +86,21 @@ void	extract_and_push(t_env_var **env_var_list, char *env_var)
 	{
 		key = ft_strdup(env_var);
 		if (!key)
-			return ; // Avoid processing further
+			return ;
 		new_nod = create_env_var(key, NULL);
 		if (!new_nod)
-		{
-			// ft_free(key);
 			return ;
-		}
 	}
 	else
 	{
 		key = ft_substr(env_var, 0, equal - env_var);
 		value = ft_strdup(equal + 1);
 		if (!key || (equal[1] && !value))
-		{
-			// ft_free(key);
-			// ft_free(value);
 			return ;
-		}
 		if (ft_strcmp(key, "OLDPWD") == 0)
-		{
 			new_nod = create_env_var(key, NULL);
-			// ft_free(value);
-		}
 		else
-		{
 			new_nod = create_env_var(key, value);
-		}
-		/*else if (ft_strcmp(key, "_") == 0)
-		{
-			new_nod = create_env_var(key, "/bin/bash");
-			// ft_free(value);
-		} */
 	}
 	if (new_nod)
 		insert_env_var(env_var_list, new_nod);

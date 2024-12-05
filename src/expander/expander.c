@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/05 00:32:00 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:33:05 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ static char	*clean_argument(char *arg, t_shell_context *context,
 	char			*cleaned_arg;
 	char			*home;
 
-	// to-do : this code can benefit from the some improvements
 	init_queue_char(&queue);
 	if (ft_strcmp(arg, "~") == 0)
 	{
@@ -82,7 +81,6 @@ static void	clean_execution_command_args(t_command *cmd,
 	i = 0;
 	while (exec->argv[i])
 	{
-		// skip backslashes
 		if (has_special_characters(exec->argv[i]))
 			exec->argv[i] = clean_argument(exec->argv[i], context, exit_status);
 		i++;

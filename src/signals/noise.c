@@ -6,12 +6,9 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 01:31:03 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/04 20:39:04 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:43:25 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// This is the part responsible for the noise in the shell aka signal handling
-// which involves 3 steps : Ignore signals, Handle signals, Default signals
 
 #include "../../include/minishell.h"
 
@@ -32,13 +29,11 @@ void	signal_handler_input(int signum)
 
 	if (signum == SIGQUIT)
 	{
-		msg = "Quit: 3\n"; // Assuming SIGQUIT is 3
+		msg = "Quit: 3\n";
 		ft_putstr_fd(msg, 1);
 	}
 	else if (signum == SIGINT)
-	{
 		ft_putstr_fd("\n", 1);
-	}
 }
 
 void	signal_handler_heredoc(int signum)

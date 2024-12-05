@@ -6,14 +6,13 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 15:03:42 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/03 15:17:36 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:39:57 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// garbage_collector.c
 #include "../../include/minishell.h"
 
-t_garbage_collector	g_gc = {0}; // Definition of the global variable
+t_garbage_collector	g_gc = {0};
 
 void	*gc_malloc(size_t size)
 {
@@ -27,6 +26,7 @@ void	*gc_malloc(size_t size)
 	if (!node)
 	{
 		free(ptr);
+		gc_free_all();
 		return (NULL);
 	}
 	node->ptr = ptr;

@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 02:32:09 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/02 20:22:33 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:38:22 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,5 @@ t_command	*create_redircmd(t_command *subcmd, t_redir_data redir,
 	cmd->mode = redir.mode;
 	cmd->fd = redir.fd;
 	cmd->redir_type = redir_type;
-	return ((t_command *)cmd); // Add this return statement
+	return ((t_command *)cmd);
 }

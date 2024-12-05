@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 02:32:03 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/02 16:53:37 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:38:11 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_command	*create_execcmd(void)
 
 	cmd = ft_calloc(1, sizeof(*cmd));
 	if (!cmd)
-		return (NULL);    // Handle allocation failure
-	cmd->type = CMD_EXEC; // Set the command type
+		return (NULL);
+	cmd->type = CMD_EXEC;
 	return ((t_command *)cmd);
 }

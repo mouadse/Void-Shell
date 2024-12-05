@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 20:18:35 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/02 12:38:29 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:45:36 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ static int	determine_special_tokens(char **input)
 		if (**input == '>')
 		{
 			(*input)++;
-			return ('+'); // Double '>' token
+			return ('+');
 		}
-		return (token); // Single '>' token
+		return (token);
 	}
 	else if (token == '<')
 	{
@@ -40,13 +40,14 @@ static int	determine_special_tokens(char **input)
 		if (**input == '<')
 		{
 			(*input)++;
-			return ('%'); // Double '<' token
+			return ('%');
 		}
-		return (token); // Single '<' token
+		return (token);
 	}
 	else
 		return ('a');
 }
+
 static void	skip_tokens(char **current, char *end)
 {
 	while (*current < end && !is_whitespace(**current) && !ft_strchr("<|>",
@@ -58,7 +59,7 @@ static void	skip_tokens(char **current, char *end)
 			while (*current < end && **current != '\"')
 				(*current)++;
 			if (*current >= end)
-				break ; // Unmatched quote, stop processing
+				break ;
 		}
 		else if (**current == '\'')
 		{
@@ -66,12 +67,13 @@ static void	skip_tokens(char **current, char *end)
 			while (*current < end && **current != '\'')
 				(*current)++;
 			if (*current >= end)
-				break ; // Unmatched quote, stop processing
+				break ;
 		}
 		if (*current < end)
 			(*current)++;
 	}
 }
+
 int	gettoken(char **ps, char *es, char **q, char **eq)
 {
 	char	*s;
@@ -82,7 +84,6 @@ int	gettoken(char **ps, char *es, char **q, char **eq)
 		s++;
 	if (q)
 		*q = s;
-	// ret = *s; dead assignment here
 	ret = determine_special_tokens(&s);
 	if (ret == 'a')
 		skip_tokens(&s, es);

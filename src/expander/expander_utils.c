@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:28 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/05 00:32:15 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:32:40 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,15 @@ int	has_special_characters(char *str)
 
 void	handle_single_quotes(char *str, int *index, t_queue_char *queue)
 {
-	(*index)++; // skip the single quote
+	(*index)++;
 	while (str[*index] && str[*index] != '\'')
 	{
 		enqueue_char(queue, str[*index]);
 		(*index)++;
 	}
-	(*index)++; // skip the single quote
+	(*index)++;
 }
-// this function is another helper function that is used to extract the variable
-// name
+
 char	*extract_variable_name(char *arg)
 {
 	int	i;
@@ -40,11 +39,10 @@ char	*extract_variable_name(char *arg)
 	i = 0;
 	if (ft_isdigit(arg[i]))
 	{
-		n = arg[i] - '0'; // extract variable name like $1, $2, $3, ...
+		n = arg[i] - '0';
 		return (ft_itoa(n));
 	}
 	while (arg[i] && ((ft_isalnum(arg[i]) || arg[i] == '_')))
-		// extract variable name like $HOME, $USER, ...
 		i++;
 	return (ft_substr(arg, 0, i));
 }
@@ -102,7 +100,7 @@ void	handle_double_quotes(char *arg, int *values[2], t_queue_char *q,
 
 	i = values[0];
 	exit_status = values[1];
-	(*i)++; // skip the opening double quote
+	(*i)++;
 	while (arg[*i] && arg[*i] != '\"')
 	{
 		if (arg[*i] == '$' && (is_whitespace(arg[*i + 1]) || arg[*i
@@ -113,27 +111,21 @@ void	handle_double_quotes(char *arg, int *values[2], t_queue_char *q,
 		}
 		else if (arg[*i] == '$' && arg[*i + 1] == '?')
 		{
-			// process_double_quote_3 functionality
 			exit_status_str = ft_itoa(*exit_status);
 			enqueue_str(q, exit_status_str);
-			// free(exit_status_str);
-			(*i) += 2; // skip "$?"
+			(*i) += 2;
 		}
 		else if (arg[*i] == '$')
 		{
-			// process_double_quote_2 functionality
-			(*i)++; // skip the dollar sign
+			(*i)++;
 			var_name = extract_variable_name(arg + *i);
 			var_value = get_env_value(var_name, context->env_vars);
 			if (var_value)
 				enqueue_str(q, var_value);
 			(*i) += ft_strlen(var_name);
-			// free(var_name);
 		}
 		else
-		{
 			enqueue_char(q, arg[(*i)++]);
-		}
 	}
-	(*i)++; // skip the closing double quote
+	(*i)++;
 }
