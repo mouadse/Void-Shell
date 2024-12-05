@@ -6,11 +6,12 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 01:51:48 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/05 13:42:54 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/05 16:21:46 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <time.h>
 
 void	update_shell_lvl(t_env_var **env_var_list);
 
