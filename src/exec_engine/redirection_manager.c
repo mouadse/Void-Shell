@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/05 12:20:21 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/05 15:43:45 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,7 @@ static char	*read_heredoc_input(char *del, t_shell_context *context,
 			break ;
 		if (ft_strncmp(line, del, ft_strlen(del)) == 0
 			&& line[ft_strlen(del)] == '\n')
-		{
 			break ;
-		}
 		heredoc_line = process_line(context, line, exit_status);
 		enqueue(&queue, heredoc_line);
 	}

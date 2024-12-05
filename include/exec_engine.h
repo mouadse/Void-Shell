@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 01:40:43 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/01 22:46:38 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/05 15:26:55 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,10 @@ void	execute_redirects_command(t_command *cmd, t_shell_context *context,
 			int *exit_status);
 void	execute_pipeline_command(t_command *cmd, t_shell_context *context,
 			int *exit_status);
+
+void	left_pipe(t_shell_context *context, t_command *cmd, int fd[2],
+			int *exit_status);
+void	right_pipe(t_command *cmd, t_shell_context *context, int fd[2],
+			int *exit_status);
+void	save_exit_status(t_shell_context *context, int status_code);
 #endif
