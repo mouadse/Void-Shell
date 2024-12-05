@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:23 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/05 16:40:43 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/05 17:04:03 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,15 +139,7 @@ static void	execute_builtin_command(t_exec *exec_cmd, t_shell_context *context,
 	}
 	else if (ft_strcmp(exec_cmd->argv[0], "exit") == 0)
 	{
-		// Implement exit functionality
-		status = 0;
-		if (exec_cmd->argv[1] && is_a_word(exec_cmd->argv[1]))
-			status = 2;
-		else if (exec_cmd->argv[2] != NULL)
-			status = 1;
-		else if (exec_cmd->argv[1])
-			status = atoi(exec_cmd->argv[1]);
-		terminate_cleanly(context, status);
+		ft_exit(exec_cmd->argv, context);
 	}
 	else if (ft_strcmp(exec_cmd->argv[0], "env") == 0)
 		env(exec_cmd->argv, context);
