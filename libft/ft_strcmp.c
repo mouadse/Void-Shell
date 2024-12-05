@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 19:16:45 by msennane          #+#    #+#             */
-/*   Updated: 2024/11/21 19:17:09 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/05 00:05:10 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	ft_strcmp(const char *s1, const char *s2)
 {
 	int	i;
 
+	if (!s1 || !s2)
+		return (-1);
 	i = 0;
 	while (s1[i] && s2[i] && s1[i] == s2[i])
 		i++;

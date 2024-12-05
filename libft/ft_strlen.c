@@ -11,13 +11,14 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <assert.h>
 
-size_t	ft_strlen(const char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
+// messy code here
+size_t ft_strlen(const char *str) {
+  size_t i;
+  assert(str && "str cannot be null");
+  i = 0;
+  while (str[i])
+    i++;
+  return (i);
 }

@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:26 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/04 13:50:54 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:24:38 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ char	*get_executable_path(char *command, char *path)
 	while (path_directories[i])
 	{
 		full_path = ft_strjoin(path_directories[i], command_with_slash);
-		if (access(full_path, X_OK) == 0)
+		if (full_path && (access(full_path, X_OK) == 0))
 		{
-			free_array(path_directories);
+			free_array(path_directories); // check later
 			return (full_path);
 		}
 		i++;
@@ -74,14 +74,34 @@ void	handle_executable_path(t_exec *ecmd, t_shell_context *context)
 	{
 		if (!context->empty_env_var)
 		{
-			print_exec_error(ecmd->argv[0], "command not found");
-			terminate_cleanly(context, 127);
+			// print_exec_error(ecmd->argv[0], "command not found");
+			terminate_cleanly(context, 0);
 		}
 		else
 		{
 			context->empty_env_var = 0;
 			terminate_cleanly(context, 0);
 		}
+		// else
+		// {
+		// 	char *binary_path;
+		// 	context->empty_env_var = 0;
+		// 	if (ecmd->argv[1] != NULL && ft_strcmp("exit", ecmd->argv[1]) != 0)
+		// 	{
+		// 		binary_path = get_command_path(ecmd->argv[1],
+		// 				context->env_vars);
+		// 		if (binary_path)
+		// 			handle_execve(binary_path, ecmd->argv + 1, context->envp,
+		// 				context);
+		// 		else
+		// 		{
+		// 			print_exec_error(ecmd->argv[1], "command not found");
+		// 			terminate_cleanly(context, 127);
+		// 		}
+		// 	}
+		// 	else
+		// 		terminate_cleanly(context, 0);
+		// }
 	}
 	else if (ft_strchr("./", ecmd->argv[0][0]))
 	{
@@ -111,5 +131,5 @@ void	handle_execve(char *binary_path, char **argv, char **envp,
 {
 	execve(binary_path, argv, envp);
 	print_exec_error(argv[0], "command not found");
-	terminate_cleanly(context, 127);
+	terminate_cleanly(context, 132); // switch it back to 127
 }

@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:23 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/04 20:19:29 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:21:09 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,19 @@ static int	is_builtin_command(t_exec *exec_cmd)
 	return (0);
 }
 
+static int	is_a_word(char *str)
+{
+	if (!str)
+		return (0);
+	while (*str)
+	{
+		if (!ft_isalpha(*str))
+			return (0);
+		str++;
+	}
+	return (1);
+}
+
 static void	execute_builtin_command(t_exec *exec_cmd, t_shell_context *context,
 		int *exit_status)
 {
@@ -59,21 +72,18 @@ static void	execute_builtin_command(t_exec *exec_cmd, t_shell_context *context,
 
 	if (ft_strcmp(exec_cmd->argv[0], "echo") == 0)
 	{
-		// Implement echo functionality
-		for (int i = 1; exec_cmd->argv[i]; i++)
-		{
-			printf("%s", exec_cmd->argv[i]);
-			if (exec_cmd->argv[i + 1])
-				printf(" ");
-		}
-		printf("\n");
+		echo(exec_cmd->argv);
 		*exit_status = 0;
 	}
 	else if (ft_strcmp(exec_cmd->argv[0], "exit") == 0)
 	{
 		// Implement exit functionality
 		status = 0;
-		if (exec_cmd->argv[1])
+		if (exec_cmd->argv[1] && is_a_word(exec_cmd->argv[1]))
+			status = 2;
+		else if (exec_cmd->argv[2] != NULL)
+			status = 1;
+		else if (exec_cmd->argv[1])
 			status = atoi(exec_cmd->argv[1]);
 		terminate_cleanly(context, status);
 	}
@@ -95,7 +105,7 @@ static void	execute_builtin_command(t_exec *exec_cmd, t_shell_context *context,
 	}
 	else if (ft_strcmp(exec_cmd->argv[0], "pwd") == 0)
 	{
-		gc_free_all();
+		// gc_free_all();
 		// Implement pwd functionality
 		if (getcwd(cwd, sizeof(cwd)) != NULL)
 		{
@@ -217,7 +227,7 @@ void	run_exec(t_command *cmd, t_shell_context *context, int *exit_status)
 	t_exec	*exec_cmd;
 
 	exec_cmd = (t_exec *)cmd;
-	// clean_empty_arguments(exec_cmd);
+	clean_empty_arguments(exec_cmd);
 	handle_executable_path(exec_cmd, context);
 	if (is_builtin_command(exec_cmd))
 	{
@@ -227,7 +237,7 @@ void	run_exec(t_command *cmd, t_shell_context *context, int *exit_status)
 	}
 	else
 	{
-		if (access(exec_cmd->argv[0], X_OK) == 0)
+		if (exec_cmd->argv[0] && (access(exec_cmd->argv[0], X_OK) == 0))
 		{
 			execve(exec_cmd->argv[0], exec_cmd->argv, context->envp);
 			print_exec_error(exec_cmd->argv[0], "command not found");
