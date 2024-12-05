@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 01:51:48 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/05 16:21:46 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/05 16:35:45 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,11 @@ void	extract_and_push(t_env_var **env_var_list, char *env_var)
 		value = ft_strdup(equal + 1);
 		if (!key || (equal[1] && !value))
 			return ;
-		if (ft_strcmp(key, "OLDPWD") == 0)
-			new_nod = create_env_var(key, NULL);
-		else
-			new_nod = create_env_var(key, value);
+		// if (ft_strcmp(key, "OLDPWD") == 0)
+		// 	new_nod = create_env_var(key, NULL);
+		// else
+		// 	new_nod = create_env_var(key, value);
+		new_nod = create_env_var(key, value);
 	}
 	if (new_nod)
 		insert_env_var(env_var_list, new_nod);
