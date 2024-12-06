@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:26 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/06 12:31:15 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/06 19:25:06 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,7 @@ char	*get_executable_path(char *command, char *path)
 	{
 		full_path = ft_strjoin(path_directories[i], command_with_slash);
 		if (full_path && (access(full_path, X_OK) == 0))
-		{
-			free_array(path_directories); // check later
 			return (full_path);
-		}
 		i++;
 	}
 	return (NULL);
@@ -73,21 +70,21 @@ void	handle_executable_path(t_exec *ecmd, t_shell_context *context)
 	if (ecmd->argv[0] == NULL)
 	{
 		if (ft_strchr(context->input, '$') != NULL)
-		{
 			terminate_cleanly(context, 0);
-		}
-		print_exec_error("", "command not found");
-		terminate_cleanly(context, 127);
+		else if (ft_strchr(context->input, '\"') || ft_strchr(context->input,
+				'\''))
+			(print_exec_error(ecmd->argv[0], "command not found"),
+				terminate_cleanly(context, 127));
+		else
+			terminate_cleanly(context, 0);
 	}
 	else if (ft_strchr("./", ecmd->argv[0][0]))
 	{
 		if (stat(ecmd->argv[0], &path_stat) == 0)
 			handle_invalid_executable(ecmd, context, path_stat);
 		else
-		{
-			print_exec_error(ecmd->argv[0], "No such file or directory");
-			terminate_cleanly(context, 127);
-		}
+			(print_exec_error(ecmd->argv[0], "No such file or directory"),
+				terminate_cleanly(context, 127));
 	}
 }
 char	*get_command_path(char *cmd_name, t_env_var *env_vars)

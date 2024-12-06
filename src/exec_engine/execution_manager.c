@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:23 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/06 12:53:08 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/06 19:23:10 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,19 +50,6 @@ static int	is_builtin_command(t_exec *exec_cmd)
 	return (0);
 }
 
-static int	is_a_word(char *str)
-{
-	if (!str)
-		return (0);
-	while (*str)
-	{
-		if (!ft_isalpha(*str))
-			return (0);
-		str++;
-	}
-	return (1);
-}
-
 static void	execute_builtin_command(t_exec *exec_cmd, t_shell_context *context,
 		int *exit_status)
 {
@@ -100,20 +87,14 @@ static void	execute_external_command(t_command *cmd, t_shell_context *context)
 	exec_cmd = (t_exec *)cmd;
 	binary_path = get_command_path(exec_cmd->argv[0], context->env_vars);
 	if (!binary_path)
-	{
-		print_exec_error(exec_cmd->argv[0], "command not found");
-		terminate_cleanly(context, 127);
-	}
+		(print_exec_error(exec_cmd->argv[0], "command not found"),
+			terminate_cleanly(context, 127));
 	if (!file_exists(binary_path))
-	{
-		print_exec_error(exec_cmd->argv[0], "No such file or directory");
-		terminate_cleanly(context, 127);
-	}
+		(print_exec_error(exec_cmd->argv[0], "No such file or directory"),
+			terminate_cleanly(context, 127));
 	if (!is_executable(binary_path))
-	{
-		print_exec_error(exec_cmd->argv[0], "Permission denied");
-		terminate_cleanly(context, 127);
-	}
+		(print_exec_error(exec_cmd->argv[0], "Permission denied"),
+			terminate_cleanly(context, 127));
 	handle_execve(binary_path, exec_cmd->argv, envp, context);
 }
 
@@ -122,7 +103,7 @@ void	run_exec(t_command *cmd, t_shell_context *context, int *exit_status)
 	t_exec	*exec_cmd;
 
 	exec_cmd = (t_exec *)cmd;
-	clean_empty_arguments(exec_cmd);
+	// clean_empty_arguments(exec_cmd);
 	handle_executable_path(exec_cmd, context);
 	if (is_builtin_command(exec_cmd))
 	{
