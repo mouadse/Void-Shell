@@ -6,12 +6,11 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/06 13:23:24 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/05 15:43:45 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdio.h>
 #include <unistd.h>
 
 static char	*getvar_name(char *arg)

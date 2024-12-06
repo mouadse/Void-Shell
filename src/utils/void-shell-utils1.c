@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:39:02 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/06 13:27:48 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/05 23:42:29 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,6 @@ void	clean_shell(t_shell_context *context)
 
 void	ft_close(t_shell_context *context, int fd)
 {
-	if (fd >= 0)
-	{
-		if (-1 == close(fd))
-			terminate_with_error(context, "close", 1);
-	}
+	if (-1 == close(fd))
+		terminate_with_error(context, "close", 1);
 }
