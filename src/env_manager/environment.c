@@ -6,14 +6,12 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 01:51:48 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/05 16:35:45 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/06 12:56:30 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <time.h>
 
-void	update_shell_lvl(t_env_var **env_var_list);
 
 int	update_env_var(t_env_var *env_var_list, t_env_var *new_nod)
 {
@@ -37,43 +35,6 @@ int	update_env_var(t_env_var *env_var_list, t_env_var *new_nod)
 	}
 	return (0);
 }
-
-// void	insert_env_var(t_env_var **env_var_list, t_env_var *new_nod)
-// {
-// 	t_env_var	*curr;
-// 	t_env_var	*prev;
-
-// 	if (update_env_var(*env_var_list, new_nod))
-// 		return ;
-// 	if (!*env_var_list)
-// 	{
-// 		*env_var_list = new_nod;
-// 		return ;
-// 	}
-// 	if (ft_strcmp(new_nod->key, (*env_var_list)->key) < 0)
-// 	{
-// 		new_nod->next = *env_var_list;
-// 		*env_var_list = new_nod;
-// 		return ;
-// 	}
-// 	curr = *env_var_list;
-// 	prev = NULL;
-// 	while (curr && ft_strcmp(new_nod->key, curr->key) >= 0)
-// 	{
-// 		prev = curr;
-// 		curr = curr->next;
-// 	}
-// 	if (prev == NULL)
-// 	{
-// 		new_nod->next = curr;
-// 		*env_var_list = new_nod;
-// 	}
-// 	else
-// 	{
-// 		prev->next = new_nod;
-// 		new_nod->next = curr;
-// 	}
-// }
 
 void	insert_env_var(t_env_var **env_var_list, t_env_var *new_nod)
 {
@@ -116,10 +77,6 @@ void	extract_and_push(t_env_var **env_var_list, char *env_var)
 		value = ft_strdup(equal + 1);
 		if (!key || (equal[1] && !value))
 			return ;
-		// if (ft_strcmp(key, "OLDPWD") == 0)
-		// 	new_nod = create_env_var(key, NULL);
-		// else
-		// 	new_nod = create_env_var(key, value);
 		new_nod = create_env_var(key, value);
 	}
 	if (new_nod)
