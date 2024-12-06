@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:23 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/05 17:04:03 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/06 12:30:52 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,70 +62,6 @@ static int	is_a_word(char *str)
 	}
 	return (1);
 }
-
-// static void	execute_builtin_command(t_exec *exec_cmd,
-// t_shell_context *context,
-// 		int *exit_status)
-// {
-// 	int		status;
-// 	char	cwd[1024];
-
-// 	if (ft_strcmp(exec_cmd->argv[0], "echo") == 0)
-// 	{
-// 		echo(exec_cmd->argv);
-// 		*exit_status = 0;
-// 	}
-// 	else if (ft_strcmp(exec_cmd->argv[0], "exit") == 0)
-// 	{
-// 		// Implement exit functionality
-// 		status = 0;
-// 		if (exec_cmd->argv[1] && is_a_word(exec_cmd->argv[1]))
-// 			status = 2;
-// 		else if (exec_cmd->argv[2] != NULL)
-// 			status = 1;
-// 		else if (exec_cmd->argv[1])
-// 			status = atoi(exec_cmd->argv[1]);
-// 		terminate_cleanly(context, status);
-// 	}
-// 	else if (ft_strcmp(exec_cmd->argv[0], "env") == 0)
-// 	{
-// 		// Implement env functionality
-// 		for (int i = 0; context->envp[i]; i++)
-// 			printf("%s\n", context->envp[i]);
-// 		*exit_status = 0;
-// 	}
-// 	else if (ft_strcmp(exec_cmd->argv[0], "export") == 0)
-// 	{
-// 		simple_export(exec_cmd->argv, context->env_vars);
-// 		*exit_status = 0;
-// 	}
-// 	else if (ft_strcmp(exec_cmd->argv[0], "unset") == 0)
-// 	{
-// 		*exit_status = 0;
-// 	}
-// 	else if (ft_strcmp(exec_cmd->argv[0], "pwd") == 0)
-// 	{
-// 		// gc_free_all();
-// 		// Implement pwd functionality
-// 		if (getcwd(cwd, sizeof(cwd)) != NULL)
-// 		{
-// 			printf("%s\n", cwd);
-// 			*exit_status = 0;
-// 		}
-// 		else
-// 		{
-// 			print_exec_error(exec_cmd->argv[0],
-// 				"Unable to get current directory");
-// 			*exit_status = 1;
-// 		}
-// 	}
-// 	else
-// 	{
-// 		print_exec_error(exec_cmd->argv[0], "Unknown builtin command");
-// 		*exit_status = 1;
-// 	}
-// 	// gc_free_all();
-// }
 
 static void	execute_builtin_command(t_exec *exec_cmd, t_shell_context *context,
 		int *exit_status)

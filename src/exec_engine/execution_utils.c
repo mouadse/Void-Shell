@@ -6,12 +6,11 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:26 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/06 00:45:53 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/06 12:31:15 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdio.h>
 
 void	clean_empty_arguments(t_exec *exec_cmd)
 {
@@ -108,5 +107,5 @@ void	handle_execve(char *binary_path, char **argv, char **envp,
 {
 	execve(binary_path, argv, envp);
 	print_exec_error(argv[0], "command not found");
-	terminate_cleanly(context, 132); // switch it back to 127
+	terminate_cleanly(context, 127);
 }
