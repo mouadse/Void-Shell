@@ -7,10 +7,14 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:29 by msennane          #+#    #+#             */
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*   Updated: 2024/12/06 13:30:17 by msennane         ###   ########.fr       */
 =======
 /*   Updated: 2024/12/05 15:43:49 by msennane         ###   ########.fr       */
 >>>>>>> parent of f85bae5 (Fixed zombies process issues in our pipe part)
+=======
+/*   Updated: 2024/12/05 15:43:49 by msennane         ###   ########.fr       */
+>>>>>>> f611e46 (Revert "Fixed zombies process issues in our pipe part")
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +40,7 @@
 // 	}
 // }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 // static pid_t	handle_pipeline_child_processes(t_pipe *pipe_cmd, int fd[2],
 // 		t_shell_context *context, int *exit_status)
@@ -99,6 +104,8 @@
 // 	terminate_cleanly(context, *exit_status);
 // }
 =======
+=======
+>>>>>>> f611e46 (Revert "Fixed zombies process issues in our pipe part")
 static void	handle_pipeline_child_processes(t_pipe *pipe_cmd, int fd[2],
 		t_shell_context *context, int *exit_status)
 {
