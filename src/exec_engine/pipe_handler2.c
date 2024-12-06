@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:29 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/05 15:43:49 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/06 13:10:09 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,11 @@ static void	handle_heredoc(pid_t pid1, int fd[2], t_shell_context *context,
 	}
 }
 
-static void	handle_pipeline_child_processes(t_pipe *pipe_cmd, int fd[2],
+static pid_t	handle_pipeline_child_processes(t_pipe *pipe_cmd, int fd[2],
 		t_shell_context *context, int *exit_status)
 {
 	pid_t	pid1;
-	int		status;
-	int		is_heredoc;
 
-	is_heredoc = 0;
 	pid1 = ft_fork(context);
 	if (pid1 == 0)
 	{
@@ -56,20 +53,23 @@ static void	handle_pipeline_child_processes(t_pipe *pipe_cmd, int fd[2],
 	}
 	if (pipe_cmd->left->type == CMD_REDIR
 		&& ((t_redir *)pipe_cmd->left)->redir_type == '%')
+	{
 		handle_heredoc(pid1, fd, context, exit_status);
+	}
+	return (pid1);
 }
 
 void	execute_pipeline_command(t_command *cmd, t_shell_context *context,
 		int *exit_status)
 {
 	int		fd[2];
-	pid_t	pid2;
 	int		status;
 	t_pipe	*pipe_cmd;
 
+	pid_t pid1, pid2;
 	pipe_cmd = (t_pipe *)cmd;
 	ft_pipe(fd, context);
-	handle_pipeline_child_processes(pipe_cmd, fd, context, exit_status);
+	pid1 = handle_pipeline_child_processes(pipe_cmd, fd, context, exit_status);
 	pid2 = ft_fork(context);
 	if (pid2 == 0)
 		right_pipe(pipe_cmd->right, context, fd, exit_status);
@@ -81,6 +81,15 @@ void	execute_pipeline_command(t_command *cmd, t_shell_context *context,
 		*exit_status = WEXITSTATUS(status);
 	else
 		*exit_status = 1;
+	if (!(pipe_cmd->left->type == CMD_REDIR
+			&& ((t_redir *)pipe_cmd->left)->redir_type == '%'))
+	{
+		waitpid(pid1, &status, 0);
+		if (WIFEXITED(status))
+			*exit_status = WEXITSTATUS(status);
+		else
+			*exit_status = 1;
+	}
 	save_exit_status(context, *exit_status);
 	terminate_cleanly(context, *exit_status);
 }
