@@ -6,11 +6,12 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:26 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/05 13:56:40 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/06 00:45:53 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <stdio.h>
 
 void	clean_empty_arguments(t_exec *exec_cmd)
 {
@@ -70,18 +71,14 @@ void	handle_executable_path(t_exec *ecmd, t_shell_context *context)
 {
 	struct stat	path_stat;
 
-	if (ecmd->argv[0] == NULL || ecmd->argv[0][0] == '\0')
+	if (ecmd->argv[0] == NULL)
 	{
-		if (!context->empty_env_var)
+		if (ft_strchr(context->input, '$') != NULL)
 		{
-			// print_exec_error(ecmd->argv[0], "command not found");
 			terminate_cleanly(context, 0);
 		}
-		else
-		{
-			context->empty_env_var = 0;
-			terminate_cleanly(context, 0);
-		}
+		print_exec_error("", "command not found");
+		terminate_cleanly(context, 127);
 	}
 	else if (ft_strchr("./", ecmd->argv[0][0]))
 	{

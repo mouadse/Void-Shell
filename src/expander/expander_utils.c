@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:28 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/05 12:32:40 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/06 00:47:28 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ void	process_variable(char *str, int *values[2], t_queue_char *queue,
 	var_value = get_env_value(var_name, context->env_vars);
 	if (var_value)
 		enqueue_str(queue, var_value);
-	else
-		context->empty_env_var = 1;
 	(*i) += ft_strlen(var_name);
 }
 
