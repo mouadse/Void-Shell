@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 20:46:40 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/01 21:50:59 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/09 23:47:24 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,5 @@ t_command	*parsecmd(char *line, int *exit_status);
 t_command	*parsepipe(char **ps, char *es, int *ret);
 t_command	*parseredirs(t_command *sub_cmd, char **ps, char *es);
 t_command	*parseexec(char **ps, char *es, int *ret);
-
+char		**ft_split_beta(const char *s, char sep);
 #endif
