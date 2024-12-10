@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/10 00:35:44 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/10 02:34:38 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,22 +69,30 @@ static char *clean_argument(char *arg, t_shell_context *context,
 
 // addition here
 void clean_nulls_from_argv(char **argv, int size) {
-  int i;
-  int j;
+	int i;
+	int j;
 
-  i = 0;
-  j = 0;
-  while (i < size) {
-    if (argv[i] != NULL && argv[i][0] != '\x01') {
-      argv[j] = argv[i];
-      j++;
-    }
-    i++;
-  }
-  while (j < size) {
-    argv[j] = NULL;
-    j++;
-  }
+	i = 0;
+	j = 0;
+	while (i < size) {
+		if (argv[i] != NULL) {
+			if (argv[i][0] == '\x01' && argv[i][1] == '\0') {
+				// If the argument is only '\x01', skip it
+				i++;
+				continue;
+			} else if (argv[i][0] == '\x01') {
+				// If the argument starts with '\x01', remove it
+				ft_memmove(argv[i], argv[i] + 1, strlen(argv[i]));
+			}
+			argv[j] = argv[i];
+			j++;
+		}
+		i++;
+	}
+	while (j < size) {
+		argv[j] = NULL;
+		j++;
+	}
 }
 
 char *remove_quotes(const char *str) {
@@ -114,18 +122,26 @@ char *remove_quotes(const char *str) {
   return result;
 }
 
-static void clean_execution_command_args(t_command *cmd,
-                                         t_shell_context *context,
-                                         int *exit_status) {
+void clean_execution_command_args(t_command *cmd, t_shell_context *context,
+                                  int *exit_status) {
   int i;
   int size;
   t_exec *exec;
 
+  if (!cmd || !context)
+    return;
+
   exec = (t_exec *)cmd;
   i = 0;
   size = 0;
+
+  // Calculate size only if argv exists
+  if (!exec->argv[0])
+    return;
+
   while (exec->argv[size])
     size++;
+
   while (exec->argv[i]) {
     if (has_special_characters(exec->argv[i]))
       exec->argv[i] = clean_argument(exec->argv[i], context, exit_status);
@@ -135,13 +151,23 @@ static void clean_execution_command_args(t_command *cmd,
     }
     i++;
   }
+
   clean_nulls_from_argv(exec->argv, size);
   char *res = queue_str_convert(&context->queue);
+  // Check if res is not NULL before splitting
+  if (!res)
+    return;
   char **vector = ft_split_beta(res, ' ');
+  // Add NULL check for vector
+  if (!vector)
+    return;
   clean_nulls_from_argv(vector, size);
-  for (int i = 0; vector[i]; i++) {
+  i = 0;
+  while (vector[i]) {
     vector[i] = remove_quotes(vector[i]);
+    i++;
   }
+
   i = 0;
   while (vector[i]) {
     exec->argv[i] = vector[i];
@@ -163,8 +189,22 @@ void process_all_commands(t_command *cmd, t_shell_context *context,
     process_all_commands(pipe->right, context, exit_status);
   } else if (cmd->type == CMD_REDIR) {
     redir = (t_redir *)cmd;
-    if (redir->redir_type != '%' && has_special_characters(redir->file))
+    if (redir->redir_type != '%' && has_special_characters(redir->file)) {
       redir->file = clean_argument(redir->file, context, exit_status);
+    }
     process_all_commands(redir->sub_cmd, context, exit_status);
   }
+}
+
+int count_redirections(t_command *cmd) {
+  t_redir *redir;
+  int count;
+
+  count = 0;
+  if (cmd->type == CMD_REDIR) {
+    redir = (t_redir *)cmd;
+    count += count_redirections(redir->sub_cmd);
+    count++;
+  }
+  return count;
 }
