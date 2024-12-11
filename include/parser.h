@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 20:46:40 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/10 01:15:34 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/11 21:39:43 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,9 @@ t_command	*parseredirs(t_command *sub_cmd, char **ps, char *es);
 t_command	*parseexec(char **ps, char *es, int *ret);
 char		**ft_split_beta(const char *s, char sep);
 int			count_redirections(t_command *cmd);
+
+// filename cleaner
+char		*clean_argument2(char *arg, t_shell_context *context,
+				int *exit_status);
+int			is_ambiguous_redirect(const char *filename);
 #endif

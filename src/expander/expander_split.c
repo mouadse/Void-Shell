@@ -93,3 +93,30 @@ char **ft_split_beta(const char *s, char sep) {
   result[i] = NULL;
   return result;
 }
+
+int is_ambiguous_redirect(const char *filename) {
+  if (!filename)
+    return 1; // NULL filename is ambiguous
+
+  // Check if filename contains only the special character we use for empty vars
+  if (filename[0] == '\x01' && filename[1] == '\0')
+    return 1;
+
+  // Only flag as ambiguous if there's a special character AND spaces
+  // This allows quoted filenames with spaces to work
+  int has_special = 0;
+  int has_spaces = 0;
+
+  const char *ptr = filename;
+  while (*ptr) {
+    if (*ptr == '\x01') {
+      has_special = 1;
+    }
+    if (is_separator(*ptr, ' ')) {
+      has_spaces = 1;
+    }
+    ptr++;
+  }
+  // Only ambiguous if we have both special chars and spaces
+  return (has_special && has_spaces);
+}
