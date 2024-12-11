@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/11 21:37:53 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/11 22:06:20 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,4 +112,3 @@ char *clean_argument2(char *arg, t_shell_context *context, int *exit_status) {
   }
   return (cleaned_arg);
 }
-
