@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:28 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/11 21:00:26 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/11 21:02:45 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void handle_double_quotes(char *arg, int *values[2], t_queue_char *q,
     }
   }
   if (arg[*i] == '\"') {
-    enqueue_char(q, '\"'); // Keep closing quote
+    enqueue_char(q, '\"');
     (*i)++;
   }
 }

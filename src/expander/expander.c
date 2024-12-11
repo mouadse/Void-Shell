@@ -6,13 +6,14 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/11 20:59:12 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/11 21:17:09 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-// static void process_argument(char *arg, t_queue_char *queue, int *exit_status,
+// static void process_argument(char *arg, t_queue_char *queue, int
+// *exit_status,
 //                              t_shell_context *context) {
 //   int i;
 //   int *values[2];
@@ -46,41 +47,33 @@
 //   }
 // }
 
+static void process_argument(char *arg, t_queue_char *queue, int *exit_status,
+                             t_shell_context *context) {
+  int i;
+  int *values[2];
+  int prev_i;
 
-static void	process_argument(char *arg, t_queue_char *queue, int *exit_status,
-		t_shell_context *context)
-{
-	int	i;
-	int	*values[2];
-	int	prev_i;
-
-	if (!arg || !queue || !exit_status || !context)
-		return ;
-	i = 0;
-	while (arg[i] != '\0')
-	{
-		prev_i = i;
-		if (arg[i] == '\'')
-			handle_single_quotes(arg, &i, queue);
-		else if (arg[i] == '\"')
-		{
-			values[0] = &i;
-			values[1] = exit_status;
-			handle_double_quotes(arg, values, queue, context);
-		}
-		else if (arg[i] == '$')
-		{
-			values[0] = &i;
-			values[1] = exit_status;
-			handle_dollar_sign(arg, values, queue, context);
-		}
-		else
-			enqueue_char(queue, arg[i++]);
-		if (prev_i == i && arg[i] != '\0')
-			i++;
-	}
+  if (!arg || !queue || !exit_status || !context)
+    return;
+  i = 0;
+  while (arg[i] != '\0') {
+    prev_i = i;
+    if (arg[i] == '\'')
+      handle_single_quotes(arg, &i, queue);
+    else if (arg[i] == '\"') {
+      values[0] = &i;
+      values[1] = exit_status;
+      handle_double_quotes(arg, values, queue, context);
+    } else if (arg[i] == '$') {
+      values[0] = &i;
+      values[1] = exit_status;
+      handle_dollar_sign(arg, values, queue, context);
+    } else
+      enqueue_char(queue, arg[i++]);
+    if (prev_i == i && arg[i] != '\0')
+      i++;
+  }
 }
-
 
 static char *clean_argument(char *arg, t_shell_context *context,
                             int *exit_status) {
@@ -105,33 +98,64 @@ static char *clean_argument(char *arg, t_shell_context *context,
 }
 
 // addition here
+// void clean_nulls_from_argv(char **argv, int size) {
+//   int i;
+//   int j;
+
+//   i = 0;
+//   j = 0;
+//   while (i < size) {
+//     if (argv[i] != NULL) {
+//       if (argv[i][0] == '\x01' && argv[i][1] == '\0') {
+//         // If the argument is only '\x01', skip it
+//         i++;
+//         continue;
+//       } else if (argv[i][0] == '\x01') {
+//         // If the argument starts with '\x01', remove it
+//         ft_memmove(argv[i], argv[i] + 1, strlen(argv[i]));
+//       }
+//       argv[j] = argv[i];
+//       j++;
+//     }
+//     i++;
+//   }
+//   while (j < size) {
+//     argv[j] = NULL;
+//     j++;
+//   }
+// }
+
 void clean_nulls_from_argv(char **argv, int size) {
-	int i;
-	int j;
+  int i = 0;
+  int j = 0;
 
-	i = 0;
-	j = 0;
-	while (i < size) {
-		if (argv[i] != NULL) {
-			if (argv[i][0] == '\x01' && argv[i][1] == '\0') {
-				// If the argument is only '\x01', skip it
-				i++;
-				continue;
-			} else if (argv[i][0] == '\x01') {
-				// If the argument starts with '\x01', remove it
-				ft_memmove(argv[i], argv[i] + 1, strlen(argv[i]));
-			}
-			argv[j] = argv[i];
-			j++;
-		}
-		i++;
-	}
-	while (j < size) {
-		argv[j] = NULL;
-		j++;
-	}
+  while (i < size) {
+    if (argv[i] != NULL) {
+      // Skip arguments that are only special characters
+      if (argv[i][0] == '\x01' && argv[i][1] == '\0') {
+        i++;
+        continue;
+      }
+      // Remove special character from start
+      if (argv[i][0] == '\x01') {
+        ft_memmove(argv[i], argv[i] + 1, strlen(argv[i]));
+      }
+      // Remove all special characters from the end
+      size_t len = strlen(argv[i]);
+      while (len > 0 && argv[i][len - 1] == '\x01') {
+        argv[i][len - 1] = '\0';
+        len--;
+      }
+      argv[j] = argv[i];
+      j++;
+    }
+    i++;
+  }
+  while (j < size) {
+    argv[j] = NULL;
+    j++;
+  }
 }
-
 char *remove_quotes(const char *str) {
   int i = 0, j = 0;
   int in_double_quotes = 0;
