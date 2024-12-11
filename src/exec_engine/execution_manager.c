@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:23 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/11 01:57:21 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/11 01:58:51 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,5 @@ void run_exec(t_command *cmd, t_shell_context *context, int *exit_status) {
       terminate_cleanly(context, 127);
     } else
       execute_external_command(cmd, context);
-    terminate_cleanly(context, *exit_status);
   }
 }
