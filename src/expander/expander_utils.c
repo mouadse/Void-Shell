@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:28 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/10 01:50:21 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/11 21:00:26 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,8 @@ void handle_double_quotes(char *arg, int *values[2], t_queue_char *q,
 
   int *i = values[0];
   int *exit_status = values[1];
-
-  (*i)++; // Skip opening quote
+  enqueue_char(q, '\"'); // Keep opening quote
+  (*i)++;                // Skip opening quote
   while (arg[*i] && arg[*i] != '\"') {
     if (arg[*i] == '$') {
       if (!arg[*i + 1] || is_whitespace(arg[*i + 1]) || arg[*i + 1] == '\"') {
@@ -126,6 +126,8 @@ void handle_double_quotes(char *arg, int *values[2], t_queue_char *q,
       (*i)++;
     }
   }
-  if (arg[*i] == '\"')
-    (*i)++; // Skip closing quote if found
+  if (arg[*i] == '\"') {
+    enqueue_char(q, '\"'); // Keep closing quote
+    (*i)++;
+  }
 }
