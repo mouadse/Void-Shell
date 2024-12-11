@@ -6,44 +6,70 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/10 02:34:38 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/11 02:55:16 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static void process_argument(char *arg, t_queue_char *queue, int *exit_status,
-                             t_shell_context *context) {
-  int i;
-  int *values[2];
-  int prev_i;
+// static void process_argument(char *arg, t_queue_char *queue, int *exit_status,
+//                              t_shell_context *context) {
+//   int i;
+//   int *values[2];
+//   int prev_i;
 
-  if (!arg || !queue || !exit_status || !context)
-    return;
+//   if (!arg || !queue || !exit_status || !context)
+//     return;
 
-  i = 0;
-  while (arg[i] != '\0') {
-    prev_i = i;
+//   i = 0;
+//   while (arg[i] != '\0') {
+//     prev_i = i;
 
-    if (arg[i] == '\'') {
-      handle_single_quotes(arg, &i, queue);
-    } else if (arg[i] == '$') {
-      if (!arg[i + 1] || is_whitespace(arg[i + 1]) || arg[i + 1] == '\"') {
-        enqueue_char(queue, '$');
-        i++;
-      } else {
-        values[0] = &i;
-        values[1] = exit_status;
-        handle_dollar_sign(arg, values, queue, context);
-      }
-    } else {
-      enqueue_char(queue, arg[i++]);
+//     if (arg[i] == '\'') {
+//       handle_single_quotes(arg, &i, queue);
+//     } else if (arg[i] == '$') {
+//       if (!arg[i + 1] || is_whitespace(arg[i + 1]) || arg[i + 1] == '\"') {
+//         enqueue_char(queue, '$');
+//         i++;
+//       } else {
+//         values[0] = &i;
+//         values[1] = exit_status;
+//         handle_dollar_sign(arg, values, queue, context);
+//       }
+//     } else {
+//       enqueue_char(queue, arg[i++]);
+//     }
+//     // Prevent infinite loop
+//     if (prev_i == i && arg[i] != '\0') {
+//       i++;
+//     }
+//   }
+// }
+
+static void process_argument(char *arg, t_queue_char *queue, int *exit_status, t_shell_context *context) {
+    int i = 0;
+    int *values[2];
+    int in_single_quotes = 0;
+    int in_double_quotes = 0;
+
+    if (!arg || !queue || !exit_status || !context)
+        return;
+
+    while (arg[i] != '\0') {
+        if (arg[i] == '\'' && !in_double_quotes) {
+            in_single_quotes = !in_single_quotes;
+            i++;
+        } else if (arg[i] == '\"' && !in_single_quotes) {
+            in_double_quotes = !in_double_quotes;
+            i++;
+        } else if (arg[i] == '$' && !in_single_quotes) {
+            values[0] = &i;
+            values[1] = exit_status;
+            handle_dollar_sign(arg, values, queue, context);
+        } else {
+            enqueue_char(queue, arg[i++]);
+        }
     }
-    // Prevent infinite loop
-    if (prev_i == i && arg[i] != '\0') {
-      i++;
-    }
-  }
 }
 static char *clean_argument(char *arg, t_shell_context *context,
                             int *exit_status) {
