@@ -6,71 +6,104 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/12 22:37:51 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/12 23:22:27 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static void	handle_single_quote(char *str, int *index, t_queue_char *queue)
+static void handle_dollar_sign_del(char *str, int *index, t_queue_char *queue)
 {
-	int	i;
+    int i;
 
-	(*index)++;
-	i = *index;
-	while (str[i] && str[i] != '\'')
-	{
-		enqueue_char(queue, str[i]);
-		i++;
-	}
-	*index = i;
+    i = *index;
+    if (str[i + 1] == '"') // Handle $"..." case
+    {
+        i += 2; // Skip $"
+        while (str[i] && str[i] != '"')
+        {
+            enqueue_char(queue, str[i]);
+            i++;
+        }
+        if (str[i] == '"')
+            i++; // Skip closing quote
+    }
+    else // Handle regular $ case
+    {
+        i++; // Skip $
+        if (str[i]) // Ensure there's a character after $
+        {
+            enqueue_char(queue, str[i]);
+            i++;
+        }
+    }
+    *index = i - 1; // -1 because main loop will increment
 }
 
-static void	handle_double_quote(char *str, int *index, t_queue_char *queue)
+static void handle_single_quote(char *str, int *index, t_queue_char *queue)
 {
-	int	i;
+    int i;
 
-	(*index)++;
-	i = *index;
-	while (str[i] && str[i] != '"')
-	{
-		enqueue_char(queue, str[i]);
-		i++;
-	}
-	*index = i;
+    (*index)++;
+    i = *index;
+    while (str[i] && str[i] != '\'')
+    {
+        enqueue_char(queue, str[i]);
+        i++;
+    }
+    *index = i;
 }
 
-static void	clean_del_helper(char *str, t_queue_char *queue, int *is_quoted)
+static void handle_double_quote(char *str, int *index, t_queue_char *queue)
 {
-	int	i;
+    int i;
 
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '\'')
-		{
-			handle_single_quote(str, &i, queue);
-			*is_quoted = 1;
-		}
-		else if (str[i] == '"')
-		{
-			handle_double_quote(str, &i, queue);
-			*is_quoted = 1;
-		}
-		else
-			enqueue_char(queue, str[i]);
-		i++;
-	}
+    (*index)++;
+    i = *index;
+    while (str[i] && str[i] != '"')
+    {
+        enqueue_char(queue, str[i]);
+        i++;
+    }
+    *index = i;
 }
 
-char	*clean_delimiter(char *str, int *is_quoted)
+static void clean_del_helper(char *str, t_queue_char *queue, int *is_quoted)
 {
-	t_queue_char	queue;
-	char			*cleaned;
+    int i;
 
-	init_queue_char(&queue);
-	*is_quoted = 0;
-	clean_del_helper(str, &queue, is_quoted);
-	cleaned = queue_char_str_convert(&queue);
-	return (cleaned);
+    i = 0;
+    while (str[i])
+    {
+        if (str[i] == '\'')
+        {
+            handle_single_quote(str, &i, queue);
+            *is_quoted = 1;
+        }
+        else if (str[i] == '"')
+        {
+            handle_double_quote(str, &i, queue);
+            *is_quoted = 1;
+        }
+        else if (str[i] == '$')
+        {
+            handle_dollar_sign_del(str, &i, queue);
+            *is_quoted = 1;
+        }
+        else
+            enqueue_char(queue, str[i]);
+        i++;
+    }
+}
+
+char *clean_delimiter(char *str, int *is_quoted)
+{
+    t_queue_char queue;
+    char        *cleaned;
+
+    init_queue_char(&queue);
+    *is_quoted = 0;
+    clean_del_helper(str, &queue, is_quoted);
+    cleaned = queue_char_str_convert(&queue);
+    return (cleaned);
 }
