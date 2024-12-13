@@ -53,9 +53,9 @@ static void run_cmd(t_shell_context *context, int *exit_status) {
   context->tree = parsecmd(context->input, exit_status);
   if (!context->tree)
     return;
-  if (count_redirections(context->tree) > 5) {
-    printf("minishell: too many redirections dude chill\n");
-    *exit_status = 1;
+  if (count_redirections(context->tree) > 16) {
+    ft_putstr_fd("void-shell: bash: maximum here-document count exceeded\n", 2);
+    *exit_status = 2;
     ft_free(context->input);
     return;
   }
