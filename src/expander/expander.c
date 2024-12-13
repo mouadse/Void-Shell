@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/11 21:34:21 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/13 01:33:27 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,8 +264,9 @@ int count_redirections(t_command *cmd) {
   count = 0;
   if (cmd->type == CMD_REDIR) {
     redir = (t_redir *)cmd;
+    if (redir->redir_type == '%')
+	  count++;
     count += count_redirections(redir->sub_cmd);
-    count++;
   }
   return count;
 }

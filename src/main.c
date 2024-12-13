@@ -1,7 +1,5 @@
 #include "../include/minishell.h"
-#include <complex.h>
-#include <readline/chardefs.h>
-#include <stdio.h>
+// #include <readline/chardefs.h>
 
 static int is_shell_input_valid(char *input, int *exit_status) {
   if (!ft_strlen(input) || is_whitespace_string(input) ||
