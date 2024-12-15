@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:28 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/16 00:47:12 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/16 00:49:50 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,23 +62,18 @@ char *extract_variable_name(char *arg) {
     return ft_substr(arg, 0, 1);
   }
 
-  int i = 0;
-
-  // For regular variables, first character must be letter or underscore
-  if (arg[i] && (ft_isalpha(arg[i]) || arg[i] == '_')) {
-    i++;
-    // Subsequent characters can be alphanumeric or underscore
-    while (arg[i] && (ft_isalnum(arg[i]) || arg[i] == '_'))
-      i++;
-  }
-
-  // If no valid characters found, return empty string
-  if (i == 0)
+  // Return empty string if first character is not valid
+  // Added check for '=' to stop variable name extraction
+  if (!arg[0] || arg[0] == '=' || (!ft_isalpha(arg[0]) && arg[0] != '_'))
     return ft_strdup("");
+
+  int i = 0;
+  // Continue only while valid variable name characters are found
+  while (arg[i] && (ft_isalnum(arg[i]) || arg[i] == '_'))
+    i++;
 
   return ft_substr(arg, 0, i);
 }
-
 void process_variable(char *str, int *values[2], t_queue_char *queue,
                       t_shell_context *context) {
   if (!str || !values || !queue || !context)
@@ -86,7 +81,7 @@ void process_variable(char *str, int *values[2], t_queue_char *queue,
 
   int *i = values[0];
   char *var_name = extract_variable_name(str + *i);
-//   printf("var_name: %s\n", var_name);
+  //   printf("var_name: %s\n", var_name);
   if (!var_name) {
     // printf("var_name is NULL\n");
     // enqueue_char(queue, '$');
