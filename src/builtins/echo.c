@@ -1,4 +1,34 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/15 23:27:01 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/15 23:27:04 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
+
+static int	is_n_flag(char *arg)
+{
+	int	i;
+
+	i = 1;
+	if (arg[0] != '-')
+		return (0);
+	if (arg[1] == '\0')
+		return (0);
+	while (arg[i])
+	{
+		if (arg[i] != 'n')
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 void	echo(char **args)
 {
@@ -7,7 +37,7 @@ void	echo(char **args)
 
 	new_line = 1;
 	i = 1;
-	if (args[1] && ft_strncmp(args[1], "-n", 3) == 0)
+	while (args[i] && is_n_flag(args[i]))
 	{
 		new_line = 0;
 		i++;
