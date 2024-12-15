@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:28 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/16 00:52:41 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/16 00:53:12 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,7 @@ void process_variable(char *str, int *values[2], t_queue_char *queue,
   int *i = values[0];
   char *var_name = extract_variable_name(str + *i);
   if (!var_name || !var_name[0]) {
-    printf("var_name is NULL\n");
     enqueue_char(queue, '$');
-    // (*i)++;
     return;
   }
   char *var_value = get_env_value(var_name, context->env_vars);
