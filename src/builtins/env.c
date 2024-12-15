@@ -6,11 +6,18 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 16:03:46 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/05 16:30:49 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/16 00:05:10 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+static void	print_env_error(char *arg)
+{
+	ft_putstr_fd("env: ", STDERR_FILENO);
+	ft_putstr_fd(arg, STDERR_FILENO);
+	ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+}
 
 void	env(char **args, t_shell_context *context)
 {
@@ -29,10 +36,8 @@ void	env(char **args, t_shell_context *context)
 			}
 			curr = curr->next;
 		}
-		ft_putstr_fd("env: ", STDERR_FILENO);
-		ft_putstr_fd(args[1], STDERR_FILENO);
-		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
-		terminate_cleanly(context, 127); // Exit with an error code
+		print_env_error(args[1]);
+		terminate_cleanly(context, 127);
 	}
 	curr = context->env_vars;
 	while (curr)
