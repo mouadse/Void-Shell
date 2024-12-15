@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:28 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/16 00:42:28 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/16 00:46:21 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,46 @@ void handle_single_quotes(char *str, int *index, t_queue_char *queue) {
   }
 }
 
+// char *extract_variable_name(char *arg) {
+//   if (!arg)
+//     return NULL;
+//   int i = 0;
+
+//   if (ft_isdigit(arg[i])) {
+//     int n = arg[i] - '0';
+//     return ft_itoa(n);
+//   }
+
+//   while (arg[i] && (ft_isalnum(arg[i]) || arg[i] == '_'))
+//     i++;
+//   return ft_substr(arg, 0, i);
+// }
+
 char *extract_variable_name(char *arg) {
   if (!arg)
     return NULL;
-  int i = 0;
 
-  if (ft_isdigit(arg[i])) {
-    int n = arg[i] - '0';
-    return ft_itoa(n);
+  // Handle special parameters first
+  if (arg[0] &&
+      (arg[0] == '@' || arg[0] == '*' || arg[0] == '#' || arg[0] == '?' ||
+       arg[0] == '-' || arg[0] == '$' || arg[0] == '!' || ft_isdigit(arg[0]))) {
+    return ft_substr(arg, 0, 1);
   }
 
-  while (arg[i] && (ft_isalnum(arg[i]) || arg[i] == '_'))
+  int i = 0;
+
+  // For regular variables, first character must be letter or underscore
+  if (arg[i] && (ft_isalpha(arg[i]) || arg[i] == '_')) {
     i++;
+    // Subsequent characters can be alphanumeric or underscore
+    while (arg[i] && (ft_isalnum(arg[i]) || arg[i] == '_'))
+      i++;
+  }
+
+  // If no valid characters found, return empty string
+  if (i == 0)
+    return ft_strdup("");
+
   return ft_substr(arg, 0, i);
 }
 
@@ -60,9 +88,9 @@ void process_variable(char *str, int *values[2], t_queue_char *queue,
   char *var_name = extract_variable_name(str + *i);
   printf("var_name: %s\n", var_name);
   if (!var_name) {
-	// printf("var_name is NULL\n");
+    // printf("var_name is NULL\n");
     // enqueue_char(queue, '$');
-	// (*i)++;
+    // (*i)++;
     return;
   }
   char *var_value = get_env_value(var_name, context->env_vars);
