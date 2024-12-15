@@ -60,7 +60,7 @@ void	insert_exported_var(char *equal_sign, char *key,
 	else
 	{
 		value = ft_strdup(equal_sign + 1);
-		if (equal_sign[-1] == '+') // Check for += operator
+		if (equal_sign[-1] == '+')
 		{
 			existing_value = get_env_value(key, *env_var_list);
 			if (existing_value)
