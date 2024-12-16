@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/16 14:12:20 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:53:45 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,6 +240,19 @@ char *remove_quotes(const char *str) {
   return result;
 }
 
+void restore_quotes(char **vector) {
+  if (!vector)
+    return;
+
+  for (int i = 0; vector[i]; i++) {
+    char *str = vector[i];
+    for (int j = 0; str[j]; j++) {
+      if (str[j] == '\x1F')
+        str[j] = '\'';
+    }
+  }
+}
+
 void clean_execution_command_args(t_command *cmd, t_shell_context *context,
                                   int *exit_status) {
   int i;
@@ -286,7 +299,7 @@ void clean_execution_command_args(t_command *cmd, t_shell_context *context,
     vector[i] = remove_quotes(vector[i]);
     i++;
   }
-
+  restore_quotes(vector);
   i = 0;
   while (vector[i]) {
     // printf("vector[%d]: %s\n", i, vector[i]);

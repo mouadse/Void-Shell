@@ -6,12 +6,25 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:28 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/16 12:41:31 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:53:21 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdio.h>
+
+static char *replace_quotes_with_x(char *str) {
+  if (!str)
+    return NULL;
+  char *result = ft_strdup(str);
+  int i = 0;
+
+  while (result && result[i]) {
+    if (result[i] == '\'')
+      result[i] = '\x1F';
+    i++;
+  }
+  return result;
+}
 int has_special_characters(char *str) {
   if (!str)
     return 0;
@@ -87,7 +100,7 @@ void process_variable(char *str, int *values[2], t_queue_char *queue,
   }
   char *var_value = get_env_value(var_name, context->env_vars);
   if (var_value)
-    enqueue_str(queue, var_value);
+    enqueue_str(queue, replace_quotes_with_x(var_value));
   else
     enqueue_char(queue, '\x01');
   (*i) += ft_strlen(var_name);
@@ -143,7 +156,7 @@ void handle_double_quotes(char *arg, int *values[2], t_queue_char *q,
         if (var_name) {
           char *var_value = get_env_value(var_name, context->env_vars);
           if (var_value)
-            enqueue_str(q, var_value);
+            enqueue_str(q, replace_quotes_with_x(var_value));
           (*i) += ft_strlen(var_name);
         }
       }
