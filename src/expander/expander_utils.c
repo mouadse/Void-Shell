@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:28 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/16 01:01:36 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/16 01:02:27 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,10 @@ char *extract_variable_name(char *arg) {
     return ft_substr(arg, 0, 1);
   }
 
-  // Return NULL if first character is not valid
+  // Return empty string if first character is not valid
   // Added check for '=' to stop variable name extraction
   if (!arg[0] || arg[0] == '=' || (!ft_isalpha(arg[0]) && arg[0] != '_'))
-    return NULL;
+    return ft_strdup("");
 
   int i = 0;
   // Continue only while valid variable name characters are found
@@ -74,7 +74,6 @@ char *extract_variable_name(char *arg) {
 
   return ft_substr(arg, 0, i);
 }
-
 void process_variable(char *str, int *values[2], t_queue_char *queue,
                       t_shell_context *context) {
   if (!str || !values || !queue || !context)
