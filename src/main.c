@@ -1,5 +1,4 @@
 #include "../include/minishell.h"
-// #include <readline/chardefs.h>
 
 static int is_shell_input_valid(char *input, int *exit_status) {
   if (!ft_strlen(input) || is_whitespace_string(input) ||
@@ -25,7 +24,6 @@ static void run_cmd_helper(t_shell_context *context, int *exit_status) {
 
   set_signal_handler(context->tree);
   if (ft_fork(context) == 0) {
-    // printf("We are inside fork\n");
     store_subprocess_pid(getpid(), context);
     execute_command(context->tree, context, exit_status);
   }
@@ -49,7 +47,7 @@ static void run_cmd_helper(t_shell_context *context, int *exit_status) {
 static void run_cmd(t_shell_context *context, int *exit_status) {
   t_exec *exec_cmd;
 
-  add_history(context->input);
+  //   add_history(context->input); original place of add_history
   context->tree = parsecmd(context->input, exit_status);
   if (!context->tree)
     return;
@@ -98,6 +96,7 @@ int main(int argc, char **argv, char **envp) {
       ft_putstr_fd("exit\n", 1);
       break;
     }
+    add_history(context.input); // moved from run_cmd
     if (!is_shell_input_valid(context.input, &exit_status)) {
       ft_free(context.input);
       context.input = NULL;
