@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 16:03:46 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/05 17:04:58 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/16 02:47:35 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,20 @@
 
 static int	check_overflow(long long num, int sign, int digit)
 {
-	if (num > LONG_MAX / 10 || (num == LONG_MAX / 10 && digit > LLONG_MAX % 10))
+	long long	max_div_10;
+	long long	min_div_10;
+
+	max_div_10 = LLONG_MAX / 10;
+	min_div_10 = LLONG_MIN / 10;
+	if (sign == 1)
 	{
-		if (sign == 1 || (sign == -1 && (digit > 8)))
+		if (num > max_div_10 || (num == max_div_10 && digit > LLONG_MAX % 10))
+			return (1);
+	}
+	else
+	{
+		if (num < min_div_10 || (num == min_div_10 && digit > -(LLONG_MIN
+					% 10)))
 			return (1);
 	}
 	return (0);
@@ -35,18 +46,20 @@ long long	ft_atoll(const char *str, int *over_under_flow)
 		i++;
 	if (str[i] && (str[i] == '+' || str[i] == '-'))
 	{
-		if (str[i] == '-')
+		if (str[i++] == '-')
 			sign = -1;
-		i++;
 	}
 	while (str[i] && (str[i] >= '0' && str[i] <= '9'))
 	{
 		if (check_overflow(num, sign, str[i] - '0'))
 			return (*over_under_flow = 1, 0);
-		num = (num * 10) + (str[i] - '0');
+		if (sign == 1)
+			num = (num * 10) + (str[i] - '0');
+		else
+			num = (num * 10) - (str[i] - '0');
 		i++;
 	}
-	return (*over_under_flow = 0, num * sign);
+	return (*over_under_flow = 0, num);
 }
 
 void	non_num_arg(char *arg, t_shell_context *context)
