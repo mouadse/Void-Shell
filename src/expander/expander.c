@@ -6,11 +6,12 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/16 00:35:58 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:12:20 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <stdio.h>
 
 // static void process_argument(char *arg, t_queue_char *queue, int
 // *exit_status,
@@ -156,26 +157,82 @@ void clean_nulls_from_argv(char **argv, int size) {
     j++;
   }
 }
+// char *remove_quotes(const char *str) {
+//   int i = 0;
+//   int j = 0;
+//   int in_double_quotes = 0;
+//   int in_single_quotes = 0;
+//   char *result = gc_malloc(strlen(str) + 1);
+
+//   if (!result)
+//     return ft_strdup("");
+
+//   while (str[i] != '\0') {
+//     if (str[i] == '\"' && !in_single_quotes) {
+//       // Handle double quotes when not in single quotes
+//       in_double_quotes = !in_double_quotes;
+//       i++;
+//     } else if (str[i] == '\'' && !in_double_quotes) {
+//       // Handle single quotes when not in double quotes
+//       in_single_quotes = !in_single_quotes;
+//       i++;
+//     } else {
+//       // Keep all characters inside quotes
+//       result[j++] = str[i++];
+//     }
+//   }
+//   result[j] = '\0';
+//   return result;
+// }
+
 char *remove_quotes(const char *str) {
-  int i = 0, j = 0;
+  int i = 0;
+  int j = 0;
   int in_double_quotes = 0;
-  int in_single_quotes = 0;
   char *result = gc_malloc(strlen(str) + 1);
 
   if (!result)
     return ft_strdup("");
 
   while (str[i] != '\0') {
-    if (str[i] == '\"' && !in_single_quotes) {
-      // Handle double quotes when not in single quotes
-      in_double_quotes = !in_double_quotes;
+    if (str[i] == '\"' && !in_double_quotes) {
+      in_double_quotes = 1;
+      i++;
+    } else if (str[i] == '\"' && in_double_quotes) {
+      in_double_quotes = 0;
       i++;
     } else if (str[i] == '\'' && !in_double_quotes) {
-      // Handle single quotes when not in double quotes
-      in_single_quotes = !in_single_quotes;
-      i++;
+      // Handle empty single quotes
+      if (str[i + 1] == '\'') {
+        i += 2; // Skip both quotes
+        continue;
+      }
+
+      // Check for consecutive single quotes
+      int count = 0;
+      int k = i;
+      while (str[k] == '\'') {
+        count++;
+        k++;
+      }
+
+      // If we have multiple consecutive quotes followed by content, copy them
+      if (count > 1 && str[k] != '\0') {
+        while (count > 0) {
+          result[j++] = '\'';
+          i++;
+          count--;
+        }
+      } else {
+        // Regular quote handling
+        i++; // Skip opening quote
+        while (str[i] && str[i] != '\'') {
+          result[j++] = str[i++];
+        }
+        if (str[i] == '\'')
+          i++; // Skip closing quote
+      }
     } else {
-      // Keep all characters inside quotes
       result[j++] = str[i++];
     }
   }
@@ -225,12 +282,14 @@ void clean_execution_command_args(t_command *cmd, t_shell_context *context,
   clean_nulls_from_argv(vector, size);
   i = 0;
   while (vector[i]) {
+    // printf("vector[%d]: %s\n", i, vector[i]);
     vector[i] = remove_quotes(vector[i]);
     i++;
   }
 
   i = 0;
   while (vector[i]) {
+    // printf("vector[%d]: %s\n", i, vector[i]);
     exec->argv[i] = vector[i];
     i++;
   }
