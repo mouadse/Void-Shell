@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:28 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/17 01:35:05 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/17 01:48:22 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,48 @@ void handle_dollar_sign(char *str, int *values[2], t_queue_char *queue,
     process_variable(str, values, queue, context);
   }
 }
+// void handle_double_quotes(char *arg, int *values[2], t_queue_char *q,
+//                           t_shell_context *context) {
+//   if (!arg || !values || !q || !context)
+//     return;
+
+//   int *i = values[0];
+//   int *exit_status = values[1];
+//   enqueue_char(q, '\"');
+//   (*i)++;
+//   while (arg[*i] && arg[*i] != '\"') {
+//     if (arg[*i] == '$') {
+//       if (!arg[*i + 1] || is_whitespace(arg[*i + 1]) || arg[*i + 1] == '\"')
+//       {
+//         enqueue_char(q, '$');
+//         (*i)++;
+//       } else if (arg[*i + 1] == '?') {
+//         char *exit_status_str = ft_itoa(*exit_status);
+//         if (exit_status_str) {
+//           enqueue_str(q, exit_status_str);
+//           (*i) += 2;
+//         }
+//       } else {
+//         (*i)++;
+//         char *var_name = extract_variable_name(arg + *i);
+//         if (var_name) {
+//           char *var_value = get_env_value(var_name, context->env_vars);
+//           if (var_value)
+//             enqueue_str(q, replace_quotes_with_x(var_value));
+//           (*i) += ft_strlen(var_name);
+//         }
+//       }
+//     } else {
+//       enqueue_char(q, arg[*i]);
+//       (*i)++;
+//     }
+//   }
+//   if (arg[*i] == '\"') {
+//     enqueue_char(q, '\"');
+//     (*i)++;
+//   }
+// }
+
 void handle_double_quotes(char *arg, int *values[2], t_queue_char *q,
                           t_shell_context *context) {
   if (!arg || !values || !q || !context)
@@ -134,6 +176,14 @@ void handle_double_quotes(char *arg, int *values[2], t_queue_char *q,
         if (exit_status_str) {
           enqueue_str(q, exit_status_str);
           (*i) += 2;
+        }
+      } else if (arg[*i + 1] == '%') {
+        // Dynamically handle multiple '%' characters after '$'
+        enqueue_char(q, '$');
+        (*i)++;
+        while (arg[*i] == '%') {
+          enqueue_char(q, '%');
+          (*i)++;
         }
       } else {
         (*i)++;
