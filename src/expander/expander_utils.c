@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:28 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/17 01:33:53 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/17 01:35:05 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ char *extract_variable_name(char *arg) {
     return NULL;
 
   // Handle special parameters first
-  if (arg[0] && (arg[0] == '@' || arg[0] == '*' || arg[0] == '#' ||
-                 arg[0] == '?' || arg[0] == '-' || arg[0] == '%' ||
-                 arg[0] == '$' || arg[0] == '!' || ft_isdigit(arg[0]))) {
+  if (arg[0] &&
+      (arg[0] == '@' || arg[0] == '*' || arg[0] == '#' || arg[0] == '?' ||
+       arg[0] == '-' || arg[0] == '$' || arg[0] == '!' || ft_isdigit(arg[0]))) {
     return ft_substr(arg, 0, 1);
   }
 
