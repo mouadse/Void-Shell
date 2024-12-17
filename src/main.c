@@ -27,8 +27,8 @@ static void run_cmd_helper(t_shell_context *context, int *exit_status) {
     store_subprocess_pid(getpid(), context);
     execute_command(context->tree, context, exit_status);
   }
-  // this is the parent process
-  waitpid(-1, &status, 0); // wait for the child process to finish
+
+  waitpid(-1, &status, 0);
   retrieve_exit_status(context->tree, context, exit_status, status);
   exec = (t_exec *)context->tree;
   // first test is to check if the user demanded to exit the shell
