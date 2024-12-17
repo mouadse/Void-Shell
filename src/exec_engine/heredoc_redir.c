@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/17 01:04:59 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/17 01:09:19 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,9 @@
 
 static void handle_dollar_sign_del(char *str, int *index, t_queue_char *queue) {
   int i;
-  int is_heredoc;
 
   i = *index;
-  is_heredoc = (i >= 2 && str[i - 2] == '<' && str[i - 1] == '<');
-
-  if (is_heredoc) {
-    // If it's part of a heredoc marker, preserve the $
-    enqueue_char(queue, str[i]);
-    i++;
-  } else if (str[i + 1] == '"') // Handle $"..." case
+  if (str[i + 1] == '"') // Handle $"..." case
   {
     i += 2; // Skip $"
     while (str[i] && str[i] != '"') {
@@ -32,10 +25,16 @@ static void handle_dollar_sign_del(char *str, int *index, t_queue_char *queue) {
     }
     if (str[i] == '"')
       i++; // Skip closing quote
-  } else   // Handle regular $ case
+  } else if (str[i + 1] &&
+             (str[i + 1] == '$' || str[i + 1] == '\0' || str[i + 1] == ' ')) {
+    // Handle edge cases where $ is standalone or followed by spaces/null
+    enqueue_char(queue, str[i]);
+    i++;
+  } else // Handle regular $ case or $EOF
   {
-    i++;        // Skip $
-    if (str[i]) // Ensure there's a character after $
+    enqueue_char(queue, str[i]); // Keep the $
+    i++;
+    if (str[i]) // Check if there's a character after $
     {
       enqueue_char(queue, str[i]);
       i++;
@@ -43,6 +42,7 @@ static void handle_dollar_sign_del(char *str, int *index, t_queue_char *queue) {
   }
   *index = i - 1; // -1 because main loop will increment
 }
+
 static void handle_single_quote(char *str, int *index, t_queue_char *queue) {
   int i;
 
