@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/19 00:18:02 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/19 00:45:30 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static char	*read_heredoc_input(char *del, t_shell_context *context,
 		int *exit_status)
 {
 	char	*line;
-	char	*heredoc_line;
+	// char	*heredoc_line;
 	t_queue	queue;
 	int		tty_fd;
 	int		is_quoted;
@@ -138,11 +138,14 @@ static char	*read_heredoc_input(char *del, t_shell_context *context,
 				clean_del, ft_strlen(clean_del)) == 0
 			&& line[ft_strlen(clean_del)] == '\n')
 			break ;
+		// if (is_quoted)
+		// 	heredoc_line = ft_strdup(line);
+		// else
+		// 	heredoc_line = process_line(context, line, exit_status);
 		if (is_quoted)
-			heredoc_line = ft_strdup(line);
+			enqueue(&queue, ft_strdup(line));
 		else
-			heredoc_line = process_line(context, line, exit_status);
-		enqueue(&queue, heredoc_line);
+			enqueue(&queue, process_line(context, line, exit_status));
 	}
 	return (queue_str_convert(&queue));
 }
