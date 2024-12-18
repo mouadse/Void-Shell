@@ -14,7 +14,6 @@ static void init_shell_env(t_shell_context *context, char **envp,
   init_env_var(&context->env_vars, envp);
   init_queue(&context->queue);
   context->last_cmd = NULL;
-  context->empty_env_var = 0;
   *exit_status = EXIT_SUCCESS;
 }
 
