@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/18 04:03:29 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/19 00:18:02 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ static char	*read_heredoc_input(char *del, t_shell_context *context,
 	init_queue(&queue);
 	is_quoted = 0;
 	clean_del = clean_delimiter(del, &is_quoted);
-	if (!clean_del) // Handle NULL case
+	if (!clean_del)
 		clean_del = ft_strdup("");
 	while (1)
 	{
@@ -132,9 +132,7 @@ static char	*read_heredoc_input(char *del, t_shell_context *context,
 		if (clean_del[0] == '\0')
 		{
 			if (line[0] == '\n')
-			{
 				break ;
-			}
 		}
 		else if (ft_strlen(line) >= ft_strlen(clean_del) && ft_strncmp(line,
 				clean_del, ft_strlen(clean_del)) == 0
