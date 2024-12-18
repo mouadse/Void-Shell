@@ -95,24 +95,20 @@ char **ft_split_beta(const char *s, char sep) {
 }
 
 int is_ambiguous_redirect(const char *filename) {
-  if (!filename)
+  // If filename is NULL or empty after expansion
+  if (!filename || filename[0] == '\0') {
     return 1;
+  }
 
-  if (filename[0] == '\x01' && filename[1] == '\0')
+  // If the filename contains the unset variable placeholder
+  if (ft_strchr(filename, '\x01')) {
     return 1;
+  }
 
-  int has_special = 0;
-  int has_spaces = 0;
-
-  const char *ptr = filename;
+  // If multiple words are found in the filename
   if (count_words(filename, ' ') > 1) {
-    has_spaces = 1;
+    return 1;
   }
-  while (*ptr) {
-    if (*ptr == '\x01') {
-      has_special = 1;
-    }
-    ptr++;
-  }
-  return (has_special && has_spaces);
+
+  return 0;
 }
