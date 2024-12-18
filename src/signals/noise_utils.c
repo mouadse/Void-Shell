@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 01:31:03 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/18 23:39:03 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/18 23:40:14 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,4 @@ void	signal_handler_heredoc(int signum)
 	}
 	else if (signum == SIGQUIT)
 		ft_putstr_fd("\b\b  \b\b", STDOUT_FILENO);
-}
-
-static void	setup_signal_action(int signum, void (*handler)(int), int flags)
-{
-	struct sigaction	act;
-
-	sigemptyset(&act.sa_mask);
-	act.sa_handler = handler;
-	act.sa_flags = flags;
-	sigaction(signum, &act, NULL);
 }

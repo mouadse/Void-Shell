@@ -6,11 +6,21 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 01:31:03 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/18 23:39:13 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/18 23:40:22 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+static void	setup_signal_action(int signum, void (*handler)(int), int flags)
+{
+	struct sigaction	act;
+
+	sigemptyset(&act.sa_mask);
+	act.sa_handler = handler;
+	act.sa_flags = flags;
+	sigaction(signum, &act, NULL);
+}
 
 void	setup_signals(void)
 {
