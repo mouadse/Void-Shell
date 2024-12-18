@@ -12,7 +12,6 @@
 
 #include "../../include/minishell.h"
 
-
 int	update_env_var(t_env_var *env_var_list, t_env_var *new_nod)
 {
 	t_env_var	*tmp;
