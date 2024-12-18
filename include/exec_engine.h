@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 01:40:43 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/05 15:26:55 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/19 00:24:46 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	execute_command(t_command *cmd, t_shell_context *context,
 			int *exit_status);
 void	execute_pipeline_command(t_command *cmd, t_shell_context *context,
 			int *exit_status);
-void	clean_empty_arguments(t_exec *exec_cmd);
 char	*get_executable_path(char *command, char *path);
 void	handle_invalid_executable(t_exec *cmd, t_shell_context *context,
 			struct stat path_stat);

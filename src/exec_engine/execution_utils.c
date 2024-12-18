@@ -6,28 +6,11 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:26 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/11 02:02:40 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/19 00:24:40 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdio.h>
-
-void	clean_empty_arguments(t_exec *exec_cmd)
-{
-	int	i;
-
-	while (exec_cmd->argv[0] && exec_cmd->argv[0][0] == '\0')
-	{
-		i = 0;
-		while (exec_cmd->argv[i] && exec_cmd->argv[i + 1])
-		{
-			exec_cmd->argv[i] = exec_cmd->argv[i + 1];
-			i++;
-		}
-		exec_cmd->argv[i] = NULL;
-	}
-}
 
 char	*get_executable_path(char *command, char *path)
 {
@@ -88,6 +71,7 @@ void	handle_executable_path(t_exec *ecmd, t_shell_context *context)
 				terminate_cleanly(context, 127));
 	}
 }
+
 char	*get_command_path(char *cmd_name, t_env_var *env_vars)
 {
 	char	*path_env;

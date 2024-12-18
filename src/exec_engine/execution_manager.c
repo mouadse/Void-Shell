@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:23 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/11 01:58:51 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/19 00:24:25 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ void	run_exec(t_command *cmd, t_shell_context *context, int *exit_status)
 	t_exec	*exec_cmd;
 
 	exec_cmd = (t_exec *)cmd;
-	// clean_empty_arguments(exec_cmd);
 	handle_executable_path(exec_cmd, context);
 	if (is_builtin_command(exec_cmd))
 	{
