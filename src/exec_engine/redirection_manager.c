@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/18 03:16:11 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/18 03:42:51 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,22 +120,10 @@ void execute_redirects_command(t_command *cmd, t_shell_context *context,
   signal(SIGQUIT, SIG_IGN);
 
   if (redir_cmd->redir_type != '%') {
-    // Check if ambiguous
-    if (is_ambiguous_redirect(redir_cmd->file)) {
-      // Print only the first word (Bash-like behavior)
-      char *error_str = ft_strdup(redir_cmd->file);
-      char *space = ft_strchr(error_str, ' ');
-      if (space)
-        *space = '\0';
-
-      ft_putstr_fd("bash: ", STDERR_FILENO);
-      ft_putstr_fd(error_str, STDERR_FILENO);
-      ft_putstr_fd(": ambiguous redirect\n", STDERR_FILENO);
+    if (ft_strcmp(redir_cmd->file, "\x01\x01\x01") == 0) {
       *exit_status = 1;
       terminate_cleanly(context, *exit_status);
-      return;
     }
-
     ft_close(context, redir_cmd->fd);
     if (open(redir_cmd->file, redir_cmd->mode, 0644) < 0)
       terminate_with_error(context, "open", 1);
