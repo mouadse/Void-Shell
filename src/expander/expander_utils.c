@@ -12,113 +12,130 @@
 
 #include "../../include/minishell.h"
 
-static char *replace_quotes_with_x(char *str) {
-  if (!str)
-    return NULL;
-  char *result = ft_strdup(str);
-  int i = 0;
+static char	*replace_quotes_with_x(char *str)
+{
+	char	*result;
+	int		i;
 
-  while (result && result[i]) {
-    if (result[i] == '\'')
-      result[i] = '\x1F';
-    i++;
-  }
-  return result;
+	if (!str)
+		return (NULL);
+	result = ft_strdup(str);
+	i = 0;
+	while (result && result[i])
+	{
+		if (result[i] == '\'')
+			result[i] = '\x1F';
+		i++;
+	}
+	return (result);
 }
-int has_special_characters(char *str) {
-  if (!str)
-    return 0;
-  return (ft_strchr(str, '\'') || ft_strchr(str, '\"') || ft_strchr(str, '$') ||
-          ft_strchr(str, '~') || ft_strchr(str, '\\'));
+int	has_special_characters(char *str)
+{
+	if (!str)
+		return (0);
+	return (ft_strchr(str, '\'') || ft_strchr(str, '\"') || ft_strchr(str, '$')
+			|| ft_strchr(str, '~') || ft_strchr(str, '\\'));
 }
-void handle_single_quotes(char *str, int *index, t_queue_char *queue) {
-  if (!str || !index || !queue)
-    return;
-
-  enqueue_char(queue, '\''); // Keep the opening quote
-  (*index)++;
-
-  while (str[*index] && str[*index] != '\'') {
-    enqueue_char(queue, str[*index]);
-    (*index)++;
-  }
-
-  if (str[*index] == '\'') {
-    enqueue_char(queue, '\''); // Keep the closing quote
-    (*index)++;
-  }
-}
-
-char *extract_variable_name(char *arg) {
-  if (!arg)
-    return NULL;
-
-  // Handle special parameters first
-  if (arg[0] &&
-      (arg[0] == '@' || arg[0] == '*' || arg[0] == '#' || arg[0] == '?' ||
-       arg[0] == '-' || arg[0] == '$' || arg[0] == '!' || ft_isdigit(arg[0]))) {
-    return ft_substr(arg, 0, 1);
-  }
-
-  // Return empty string if first character is not valid
-  // Added check for '=' to stop variable name extraction
-  if (!arg[0] || arg[0] == '=' || (!ft_isalpha(arg[0]) && arg[0] != '_'))
-    return ft_strdup("");
-
-  int i = 0;
-  // Continue only while valid variable name characters are found
-  while (arg[i] && (ft_isalnum(arg[i]) || arg[i] == '_'))
-    i++;
-
-  return ft_substr(arg, 0, i);
-}
-void process_variable(char *str, int *values[2], t_queue_char *queue,
-                      t_shell_context *context) {
-  if (!str || !values || !queue || !context)
-    return;
-
-  int *i = values[0];
-  char *var_name = extract_variable_name(str + *i);
-  if (!var_name) {
-    enqueue_char(queue, '$');
-    return;
-  }
-  char *var_value = get_env_value(var_name, context->env_vars);
-  if (var_value)
-    enqueue_str(queue, replace_quotes_with_x(var_value));
-  else
-    enqueue_char(queue, '\x01');
-  (*i) += ft_strlen(var_name);
+void	handle_single_quotes(char *str, int *index, t_queue_char *queue)
+{
+	if (!str || !index || !queue)
+		return ;
+	enqueue_char(queue, '\''); // Keep the opening quote
+	(*index)++;
+	while (str[*index] && str[*index] != '\'')
+	{
+		enqueue_char(queue, str[*index]);
+		(*index)++;
+	}
+	if (str[*index] == '\'')
+	{
+		enqueue_char(queue, '\''); // Keep the closing quote
+		(*index)++;
+	}
 }
 
-void handle_dollar_sign(char *str, int *values[2], t_queue_char *queue,
-                        t_shell_context *context) {
-  if (!str || !values || !queue || !context)
-    return;
+char	*extract_variable_name(char *arg)
+{
+	int	i;
 
-  int *index = values[0];
-  int *exit_status = values[1];
+	if (!arg)
+		return (NULL);
+	// Handle special parameters first
+	if (arg[0] && (arg[0] == '@' || arg[0] == '*' || arg[0] == '#'
+			|| arg[0] == '?' || arg[0] == '-' || arg[0] == '$' || arg[0] == '!'
+			|| ft_isdigit(arg[0])))
+	{
+		return (ft_substr(arg, 0, 1));
+	}
+	// Return empty string if first character is not valid
+	// Added check for '=' to stop variable name extraction
+	if (!arg[0] || arg[0] == '=' || (!ft_isalpha(arg[0]) && arg[0] != '_'))
+		return (ft_strdup(""));
+	i = 0;
+	// Continue only while valid variable name characters are found
+	while (arg[i] && (ft_isalnum(arg[i]) || arg[i] == '_'))
+		i++;
+	return (ft_substr(arg, 0, i));
+}
+void	process_variable(char *str, int *values[2], t_queue_char *queue,
+		t_shell_context *context)
+{
+	int		*i;
+	char	*var_name;
+	char	*var_value;
 
-  (*index)++;
-  if (!str[*index] || is_whitespace(str[*index])) {
-    enqueue_char(queue, '$');
-    return;
-  }
+	if (!str || !values || !queue || !context)
+		return ;
+	i = values[0];
+	var_name = extract_variable_name(str + *i);
+	if (!var_name)
+	{
+		enqueue_char(queue, '$');
+		return ;
+	}
+	var_value = get_env_value(var_name, context->env_vars);
+	if (var_value)
+		enqueue_str(queue, replace_quotes_with_x(var_value));
+	else
+		enqueue_char(queue, '\x01');
+	(*i) += ft_strlen(var_name);
+}
 
-  if (str[*index] == '?') {
-    char *exit_status_str = ft_itoa(*exit_status);
-    if (exit_status_str) {
-      enqueue_str(queue, exit_status_str);
-      (*index)++;
-    }
-  } else {
-    process_variable(str, values, queue, context);
-  }
+void	handle_dollar_sign(char *str, int *values[2], t_queue_char *queue,
+		t_shell_context *context)
+{
+	int		*index;
+	int		*exit_status;
+	char	*exit_status_str;
+
+	if (!str || !values || !queue || !context)
+		return ;
+	index = values[0];
+	exit_status = values[1];
+	(*index)++;
+	if (!str[*index] || is_whitespace(str[*index]))
+	{
+		enqueue_char(queue, '$');
+		return ;
+	}
+	if (str[*index] == '?')
+	{
+		exit_status_str = ft_itoa(*exit_status);
+		if (exit_status_str)
+		{
+			enqueue_str(queue, exit_status_str);
+			(*index)++;
+		}
+	}
+	else
+	{
+		process_variable(str, values, queue, context);
+	}
 }
 // void handle_double_quotes(char *arg, int *values[2], t_queue_char *q,
 //                           t_shell_context *context) {
 //   if (!arg || !values || !q || !context)
-//     return;
+//     return ;
 
 //   int *i = values[0];
 //   int *exit_status = values[1];
@@ -157,51 +174,73 @@ void handle_dollar_sign(char *str, int *values[2], t_queue_char *queue,
 //   }
 // }
 
-void handle_double_quotes(char *arg, int *values[2], t_queue_char *q,
-                          t_shell_context *context) {
-  if (!arg || !values || !q || !context)
-    return;
+void	handle_double_quotes(char *arg, int *values[2], t_queue_char *q,
+		t_shell_context *context)
+{
+	int		*i;
+	int		*exit_status;
+	char	*exit_status_str;
+	char	*var_name;
+	char	*var_value;
 
-  int *i = values[0];
-  int *exit_status = values[1];
-  enqueue_char(q, '\"');
-  (*i)++;
-  while (arg[*i] && arg[*i] != '\"') {
-    if (arg[*i] == '$') {
-      if (!arg[*i + 1] || is_whitespace(arg[*i + 1]) || arg[*i + 1] == '\"') {
-        enqueue_char(q, '$');
-        (*i)++;
-      } else if (arg[*i + 1] == '?') {
-        char *exit_status_str = ft_itoa(*exit_status);
-        if (exit_status_str) {
-          enqueue_str(q, exit_status_str);
-          (*i) += 2;
-        }
-      } else if (arg[*i + 1] == '%') {
-        // Dynamically handle multiple '%' characters after '$'
-        enqueue_char(q, '$');
-        (*i)++;
-        while (arg[*i] == '%') {
-          enqueue_char(q, '%');
-          (*i)++;
-        }
-      } else {
-        (*i)++;
-        char *var_name = extract_variable_name(arg + *i);
-        if (var_name) {
-          char *var_value = get_env_value(var_name, context->env_vars);
-          if (var_value)
-            enqueue_str(q, replace_quotes_with_x(var_value));
-          (*i) += ft_strlen(var_name);
-        }
-      }
-    } else {
-      enqueue_char(q, arg[*i]);
-      (*i)++;
-    }
-  }
-  if (arg[*i] == '\"') {
-    enqueue_char(q, '\"');
-    (*i)++;
-  }
+	if (!arg || !values || !q || !context)
+		return ;
+	i = values[0];
+	exit_status = values[1];
+	enqueue_char(q, '\"');
+	(*i)++;
+	while (arg[*i] && arg[*i] != '\"')
+	{
+		if (arg[*i] == '$')
+		{
+			if (!arg[*i + 1] || is_whitespace(arg[*i + 1]) || arg[*i
+				+ 1] == '\"')
+			{
+				enqueue_char(q, '$');
+				(*i)++;
+			}
+			else if (arg[*i + 1] == '?')
+			{
+				exit_status_str = ft_itoa(*exit_status);
+				if (exit_status_str)
+				{
+					enqueue_str(q, exit_status_str);
+					(*i) += 2;
+				}
+			}
+			else if (arg[*i + 1] == '%')
+			{
+				// Dynamically handle multiple '%' characters after '$'
+				enqueue_char(q, '$');
+				(*i)++;
+				while (arg[*i] == '%')
+				{
+					enqueue_char(q, '%');
+					(*i)++;
+				}
+			}
+			else
+			{
+				(*i)++;
+				var_name = extract_variable_name(arg + *i);
+				if (var_name)
+				{
+					var_value = get_env_value(var_name, context->env_vars);
+					if (var_value)
+						enqueue_str(q, replace_quotes_with_x(var_value));
+					(*i) += ft_strlen(var_name);
+				}
+			}
+		}
+		else
+		{
+			enqueue_char(q, arg[*i]);
+			(*i)++;
+		}
+	}
+	if (arg[*i] == '\"')
+	{
+		enqueue_char(q, '\"');
+		(*i)++;
+	}
 }

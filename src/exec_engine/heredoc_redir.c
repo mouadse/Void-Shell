@@ -62,7 +62,7 @@ static void	handle_dollar_sign_del(char *str, int *index, t_queue_char *queue)
 			i++;
 	}
 	else if (str[i + 1] && (str[i + 1] == '$' || str[i + 1] == '\0' || str[i
-				+ 1] == ' '))
+			+ 1] == ' '))
 		enqueue_char(queue, str[i++]);
 	else
 	{
