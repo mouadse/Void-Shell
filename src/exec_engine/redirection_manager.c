@@ -6,12 +6,11 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/18 03:42:51 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/18 04:01:32 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdio.h>
 
 static char *getvar_name(char *arg) {
   int i;
@@ -63,6 +62,40 @@ static char *process_line(t_shell_context *context, char *line,
   return (queue_char_str_convert(&q));
 }
 
+// static char *read_heredoc_input(char *del, t_shell_context *context,
+//                                 int *exit_status) {
+//   char *line;
+//   char *heredoc_line;
+//   t_queue queue;
+//   int tty_fd;
+//   int is_quoted;
+//   char *clean_del;
+
+//   tty_fd = open("/dev/tty", O_RDONLY);
+//   if (tty_fd < 0)
+//     terminate_with_error(context, "open", 1);
+//   dup2(tty_fd, STDIN_FILENO);
+//   ft_close(context, tty_fd);
+//   init_queue(&queue);
+//   is_quoted = 0;
+//   clean_del = clean_delimiter(del, &is_quoted);
+//   while (1) {
+//     ft_putstr_fd("> ", STDERR_FILENO);
+//     line = get_next_line(STDIN_FILENO);
+//     if (!line)
+//       break;
+//     if (ft_strncmp(line, clean_del, ft_strlen(clean_del)) == 0 &&
+//         line[ft_strlen(clean_del)] == '\n')
+//       break;
+//     if (is_quoted)
+//       heredoc_line = ft_strdup(line);
+//     else
+//       heredoc_line = process_line(context, line, exit_status);
+//     enqueue(&queue, heredoc_line);
+//   }
+//   return (queue_str_convert(&queue));
+// }
+
 static char *read_heredoc_input(char *del, t_shell_context *context,
                                 int *exit_status) {
   char *line;
@@ -80,20 +113,30 @@ static char *read_heredoc_input(char *del, t_shell_context *context,
   init_queue(&queue);
   is_quoted = 0;
   clean_del = clean_delimiter(del, &is_quoted);
+  if (!clean_del) // Handle NULL case
+    clean_del = ft_strdup("");
+
   while (1) {
     ft_putstr_fd("> ", STDERR_FILENO);
     line = get_next_line(STDIN_FILENO);
     if (!line)
       break;
-    if (ft_strncmp(line, clean_del, ft_strlen(clean_del)) == 0 &&
-        line[ft_strlen(clean_del)] == '\n')
+    if (clean_del[0] == '\0') {
+      if (line[0] == '\n') {
+        break;
+      }
+    } else if (ft_strlen(line) >= ft_strlen(clean_del) &&
+               ft_strncmp(line, clean_del, ft_strlen(clean_del)) == 0 &&
+               line[ft_strlen(clean_del)] == '\n')
       break;
+
     if (is_quoted)
       heredoc_line = ft_strdup(line);
     else
       heredoc_line = process_line(context, line, exit_status);
     enqueue(&queue, heredoc_line);
   }
+
   return (queue_str_convert(&queue));
 }
 
@@ -121,6 +164,11 @@ void execute_redirects_command(t_command *cmd, t_shell_context *context,
 
   if (redir_cmd->redir_type != '%') {
     if (ft_strcmp(redir_cmd->file, "\x01\x01\x01") == 0) {
+      *exit_status = 1;
+      terminate_cleanly(context, *exit_status);
+    }
+    if (!redir_cmd->file) {
+      ft_putstr_fd("minishell: No such file or directory\n", STDERR_FILENO);
       *exit_status = 1;
       terminate_cleanly(context, *exit_status);
     }
