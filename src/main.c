@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 00:03:09 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/19 00:07:01 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/19 00:08:34 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,98 +59,48 @@ static void	run_cmd_helper(t_shell_context *context, int *exit_status)
 	clean_shell(context);
 }
 
-// static void	run_cmd(t_shell_context *context, int *exit_status)
-// {
-// 	t_exec	*exec_cmd;
-
-// 	context->tree = parsecmd(context->input, exit_status);
-// 	if (!context->tree)
-// 		return ;
-// 	if (count_redirections(context->tree) > 16)
-// 	{
-// 		ft_putstr_fd("void-shell: maximum here-document count exceeded\n", 2);
-// 		*exit_status = 2;
-// 		ft_free(context->input);
-// 		return ;
-// 	}
-// 	process_all_commands(context->tree, context, exit_status);
-// 	if (context->tree && context->tree->type == CMD_EXEC)
-// 	{
-// 		exec_cmd = (t_exec *)context->tree;
-// 		insert_env_var(&context->env_vars, create_env_var("_",
-// 				exec_cmd->argv[0]));
-// 	}
-// 	if (!context->input)
-// 	{
-// 		if (context->tree && context->tree->type == CMD_EXEC)
-// 		{
-// 			exec_cmd = (t_exec *)context->tree;
-// 			insert_env_var(&context->env_vars, create_env_var("_",
-// 					exec_cmd->argv[0]));
-// 		}
-// 		else
-// 		{
-// 			insert_env_var(&context->env_vars, create_env_var("_",
-// 					context->input));
-// 		}
-// 	}
-// 	if (is_built_in_command(context->tree))
-// 	{
-// 		run_built_in_command((t_exec *)context->tree, &context->env_vars,
-// 			exit_status);
-// 		release_command_resources(context->tree);
-// 		free_queue(&context->queue);
-// 	}
-// 	else
-// 		run_cmd_helper(context, exit_status);
-// 	ft_free(context->input);
-// }
-
-static void	check_redirect_limits(t_shell_context *context, int *exit_status)
+static void	run_cmd(t_shell_context *context, int *exit_status)
 {
+	t_exec	*exec_cmd;
+
+	context->tree = parsecmd(context->input, exit_status);
+	if (!context->tree)
+		return ;
 	if (count_redirections(context->tree) > 16)
 	{
 		ft_putstr_fd("void-shell: maximum here-document count exceeded\n", 2);
 		*exit_status = 2;
 		ft_free(context->input);
+		return ;
 	}
-}
-
-static void	update_env_underscore(t_shell_context *context)
-{
-	t_exec	*exec_cmd;
-
+	process_all_commands(context->tree, context, exit_status);
 	if (context->tree && context->tree->type == CMD_EXEC)
 	{
 		exec_cmd = (t_exec *)context->tree;
 		insert_env_var(&context->env_vars, create_env_var("_",
 				exec_cmd->argv[0]));
 	}
-	else
-		insert_env_var(&context->env_vars, create_env_var("_", context->input));
-}
-
-static void	execute_built_in(t_shell_context *context, int *exit_status)
-{
-	run_built_in_command((t_exec *)context->tree, &context->env_vars,
-		exit_status);
-	release_command_resources(context->tree);
-	free_queue(&context->queue);
-}
-
-static void	run_cmd(t_shell_context *context, int *exit_status)
-{
-	context->tree = parsecmd(context->input, exit_status);
-	if (!context->tree)
-		return ;
-	check_redirect_limits(context, exit_status);
-	if (*exit_status == 2)
-		return ;
-	process_all_commands(context->tree, context, exit_status);
 	if (!context->input)
-		update_env_underscore(context);
+	{
+		if (context->tree && context->tree->type == CMD_EXEC)
+		{
+			exec_cmd = (t_exec *)context->tree;
+			insert_env_var(&context->env_vars, create_env_var("_",
+					exec_cmd->argv[0]));
+		}
+		else
+		{
+			insert_env_var(&context->env_vars, create_env_var("_",
+					context->input));
+		}
+	}
 	if (is_built_in_command(context->tree))
-		execute_built_in(context, exit_status);
+	{
+		run_built_in_command((t_exec *)context->tree, &context->env_vars,
+			exit_status);
+		release_command_resources(context->tree);
+		free_queue(&context->queue);
+	}
 	else
 		run_cmd_helper(context, exit_status);
 	ft_free(context->input);
