@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/19 19:31:26 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:33:45 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,34 +61,31 @@ static void	handle_single_quote_content(const char *str, char *result,
 
 static void	process_quotes(const char *str, char *result)
 {
-	int	i;
-	int	j;
-	int	in_double_quotes;
+	int	val[3];
 
-	i = 0;
-	j = 0;
-	in_double_quotes = 0;
-	while (str[i])
+	val[0] = 0;
+	val[1] = 0;
+	val[2] = 0;
+	while (str[val[0]])
 	{
-		if (str[i] == '\"' && (!in_double_quotes || in_double_quotes))
-			handle_double_quotes_rem(str, &i, &in_double_quotes);
-		else if (str[i] == '\'' && !in_double_quotes)
+		if (str[val[0]] == '\"' && (!val[2] || val[2]))
+			handle_double_quotes_rem(str, &val[0], &val[2]);
+		else if (str[val[0]] == '\'' && !val[2])
 		{
-			if (str[i + 1] == '\'')
+			if (str[val[0] + 1] == '\'')
+				val[0] += 2;
+			else
 			{
-				i += 2;
-				continue ;
+				handle_consecutive_quotes(str, result, &val[0], &val[1]);
+				if (str[val[0]] == '\'')
+					handle_single_quote_content(str, result, &val[0], &val[1]);
 			}
-			handle_consecutive_quotes(str, result, &i, &j);
-			if (str[i] == '\'')
-				handle_single_quote_content(str, result, &i, &j);
 		}
 		else
-			result[j++] = str[i++];
+			result[val[1]++] = str[val[0]++];
 	}
-	result[j] = '\0';
+	result[val[1]] = '\0';
 }
-
 char	*remove_quotes(const char *str)
 {
 	char	*result;
