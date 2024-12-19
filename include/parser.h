@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 20:46:40 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/19 01:13:08 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:26:18 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,5 @@ int			is_ambiguous_redirect(const char *filename);
 // HEREDOC PART
 char	*clean_delimiter(char *str, int *is_quoted);
 char	*replace_quotes_with_x(char *str);
+char	*remove_quotes(const char *str);
 #endif
