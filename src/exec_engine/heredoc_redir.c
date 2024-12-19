@@ -6,47 +6,11 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/19 00:22:03 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 00:40:06 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-// static void	handle_dollar_sign_del(char *str, int *index,
-// t_queue_char *queue)
-// {
-// 	int	i;
-
-// 	i = *index;
-// 	if (str[i + 1] == '"')
-// 	{
-// 		i += 2;
-// 		while (str[i] && str[i] != '"')
-// 		{
-// 			enqueue_char(queue, str[i]);
-// 			i++;
-// 		}
-// 		if (str[i] == '"')
-// 			i++;
-// 	}
-// 	else if (str[i + 1] && (str[i + 1] == '$' || str[i + 1] == '\0' || str[i
-// 			+ 1] == ' '))
-// 	{
-// 		enqueue_char(queue, str[i]);
-// 		i++;
-// 	}
-// 	else
-// 	{
-// 		enqueue_char(queue, str[i]);
-// 		i++;
-// 		if (str[i])
-// 		{
-// 			enqueue_char(queue, str[i]);
-// 			i++;
-// 		}
-// 	}
-// 	*index = i - 1;
-// }
 
 static void	handle_dollar_sign_del(char *str, int *index, t_queue_char *queue)
 {
