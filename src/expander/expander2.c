@@ -6,23 +6,21 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/19 19:29:07 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:31:26 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-static int	handle_double_quotes_rem(const char *str, char *result, int *i, int *j)
+static void	handle_double_quotes_rem(const char *str, int *i, int *in_double_quotes)
 {
-	if (str[*i] == '\"')
-	{
-		(*i)++;
-		return (!1);
-	}
-	return (1);
+	if (*in_double_quotes == 0)
+		*in_double_quotes = 1;
+	else
+		*in_double_quotes = 0;
+	(*i)++;
 }
 
-static void	handle_single_quotes_sequence(const char *str, char *result,
+static void	handle_consecutive_quotes(const char *str, char *result,
 		int *i, int *j)
 {
 	int	count;
@@ -47,7 +45,7 @@ static void	handle_single_quotes_sequence(const char *str, char *result,
 	}
 }
 
-static void	handle_single_quotes_content(const char *str, char *result,
+static void	handle_single_quote_content(const char *str, char *result,
 		int *i, int *j)
 {
 	(*i)++;
@@ -61,50 +59,43 @@ static void	handle_single_quotes_content(const char *str, char *result,
 		(*i)++;
 }
 
-static void	process_quotes(const char *str, char *result, int *i,
-		int *j)
+static void	process_quotes(const char *str, char *result)
 {
+	int	i;
+	int	j;
 	int	in_double_quotes;
 
+	i = 0;
+	j = 0;
 	in_double_quotes = 0;
-	while (str[*i])
+	while (str[i])
 	{
-		if (str[*i] == '\"')
-			in_double_quotes = handle_double_quotes_rem(str, result, i, j);
-		else if (str[*i] == '\'' && !in_double_quotes)
+		if (str[i] == '\"' && (!in_double_quotes || in_double_quotes))
+			handle_double_quotes_rem(str, &i, &in_double_quotes);
+		else if (str[i] == '\'' && !in_double_quotes)
 		{
-			if (str[*i + 1] == '\'')
+			if (str[i + 1] == '\'')
 			{
-				*i += 2;
+				i += 2;
 				continue ;
 			}
-			handle_single_quotes_sequence(str, result, i, j);
-			if (str[*i] == '\'')
-				handle_single_quotes_content(str, result, i, j);
+			handle_consecutive_quotes(str, result, &i, &j);
+			if (str[i] == '\'')
+				handle_single_quote_content(str, result, &i, &j);
 		}
 		else
-		{
-			result[*j] = str[*i];
-			(*j)++;
-			(*i)++;
-		}
+			result[j++] = str[i++];
 	}
+	result[j] = '\0';
 }
 
 char	*remove_quotes(const char *str)
 {
-	int		i;
-	int		j;
 	char	*result;
 
-	i = 0;
-	j = 0;
 	result = gc_malloc(strlen(str) + 1);
 	if (!result)
 		return (ft_strdup(""));
-	process_quotes(str, result, &i, &j);
-	result[j] = '\0';
+	process_quotes(str, result);
 	return (result);
 }
-
-
