@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/18 02:56:36 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/19 00:54:25 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ static void	process_argument(char *arg, t_queue_char *queue, int *exit_status,
 		}
 		else if (arg[i + 1] == '%')
 		{
-			// Dynamically handle multiple '%' characters after '$'
 			enqueue_char(queue, '$');
 			i++;
 			while (arg[i] == '%')
@@ -95,18 +94,13 @@ void	clean_nulls_from_argv(char **argv, int size)
 	{
 		if (argv[i] != NULL)
 		{
-			// Skip arguments that are only special characters
 			if (argv[i][0] == '\x01' && argv[i][1] == '\0')
 			{
 				i++;
 				continue ;
 			}
-			// Remove special character from start
 			if (argv[i][0] == '\x01')
-			{
 				ft_memmove(argv[i], argv[i] + 1, strlen(argv[i]));
-			}
-			// Remove all special characters from the end
 			len = strlen(argv[i]);
 			while (len > 0 && argv[i][len - 1] == '\x01')
 			{
@@ -154,13 +148,11 @@ char	*remove_quotes(const char *str)
 		}
 		else if (str[i] == '\'' && !in_double_quotes)
 		{
-			// Handle empty single quotes
 			if (str[i + 1] == '\'')
 			{
-				i += 2; // Skip both quotes
+				i += 2;
 				continue ;
 			}
-			// Check for consecutive single quotes
 			count = 0;
 			k = i;
 			while (str[k] == '\'')
@@ -168,8 +160,6 @@ char	*remove_quotes(const char *str)
 				count++;
 				k++;
 			}
-			// If we have multiple consecutive quotes followed by content,
-			// copy them
 			if (count > 1 && str[k] != '\0')
 			{
 				while (count > 0)
@@ -181,20 +171,15 @@ char	*remove_quotes(const char *str)
 			}
 			else
 			{
-				// Regular quote handling
-				i++; // Skip opening quote
+				i++;
 				while (str[i] && str[i] != '\'')
-				{
 					result[j++] = str[i++];
-				}
 				if (str[i] == '\'')
-					i++; // Skip closing quote
+					i++;
 			}
 		}
 		else
-		{
 			result[j++] = str[i++];
-		}
 	}
 	result[j] = '\0';
 	return (result);
@@ -231,7 +216,6 @@ void	clean_execution_command_args(t_command *cmd, t_shell_context *context,
 	exec = (t_exec *)cmd;
 	i = 0;
 	size = 0;
-	// Calculate size only if argv exists
 	if (!exec->argv[0])
 		return ;
 	while (exec->argv[size])
@@ -249,18 +233,15 @@ void	clean_execution_command_args(t_command *cmd, t_shell_context *context,
 	}
 	clean_nulls_from_argv(exec->argv, size);
 	res = queue_str_convert(&context->queue);
-	// Check if res is not NULL before splitting
 	if (!res)
 		return ;
 	vector = ft_split_beta(res, ' ');
-	// Add NULL check for vector
 	if (!vector)
 		return ;
 	clean_nulls_from_argv(vector, size);
 	i = 0;
 	while (vector[i])
 	{
-		// printf("vector[%d]: %s\n", i, vector[i]);
 		vector[i] = remove_quotes(vector[i]);
 		i++;
 	}
@@ -268,7 +249,6 @@ void	clean_execution_command_args(t_command *cmd, t_shell_context *context,
 	i = 0;
 	while (vector[i])
 	{
-		// printf("vector[%d]: %s\n", i, vector[i]);
 		exec->argv[i] = vector[i];
 		i++;
 	}

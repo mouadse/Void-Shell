@@ -1,12 +1,10 @@
 #include "../../include/minishell.h"
 
-// Function to check if a character is a separator
 static bool	is_separator(char c, char sep)
 {
 	return (c == sep || c == ' ' || c == '\t' || c == '\n');
 }
 
-// Function to count the number of words, considering quotes
 static int	count_words(const char *s, char sep)
 {
 	int		count;
@@ -25,9 +23,7 @@ static int	count_words(const char *s, char sep)
 		else if (*s == '\"' && !in_single_quote)
 			in_double_quote = !in_double_quote;
 		if (!in_single_quote && !in_double_quote && is_separator(*s, sep))
-		{
 			in_word = false;
-		}
 		else if (!in_word)
 		{
 			in_word = true;
@@ -38,7 +34,6 @@ static int	count_words(const char *s, char sep)
 	return (count);
 }
 
-// Function to get the next word, considering quotes
 static char	*get_next_word(const char **s_ptr, char sep)
 {
 	const char	*s;
@@ -52,7 +47,6 @@ static char	*get_next_word(const char **s_ptr, char sep)
 	len = 0;
 	in_single_quote = false;
 	in_double_quote = false;
-	// Skip initial separators
 	while (*s && is_separator(*s, sep))
 	{
 		s++;
@@ -81,7 +75,6 @@ static char	*get_next_word(const char **s_ptr, char sep)
 	return (word);
 }
 
-// Main split function
 char	**ft_split_beta(const char *s, char sep)
 {
 	char	**result;
@@ -110,17 +103,14 @@ char	**ft_split_beta(const char *s, char sep)
 
 int	is_ambiguous_redirect(const char *filename)
 {
-	// If filename is NULL or empty after expansion
 	if (!filename || filename[0] == '\0')
 	{
 		return (1);
 	}
-	// If the filename contains the unset variable placeholder
 	if (ft_strchr(filename, '\x01'))
 	{
 		return (1);
 	}
-	// If multiple words are found in the filename
 	if (count_words(filename, ' ') > 1)
 	{
 		return (1);
