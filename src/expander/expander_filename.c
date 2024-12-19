@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/20 00:27:11 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 00:30:19 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ static void	handle_dollar_in_quotes2(t_quote_params *params)
 	char	*var_name;
 	char	*var_value;
 
-	if (!params->arg[*params->i + 1] || is_whitespace(params->arg[*params->i + 1])
-		|| params->arg[*params->i + 1] == '\"')
+	if (!params->arg[*params->i + 1] || is_whitespace(params->arg[*params->i
+			+ 1]) || params->arg[*params->i + 1] == '\"')
 	{
 		enqueue_char(params->q, '$');
 		(*params->i)++;
@@ -55,8 +55,10 @@ static void	handle_dollar_in_quotes2(t_quote_params *params)
 	}
 	(*params->i)++;
 	var_name = extract_variable_name(params->arg + *params->i);
-	if (var_name && (var_value = get_env_value(var_name, params->context->env_vars)))
-		(enqueue_str(params->q, var_value), (*params->i) += ft_strlen(var_name));
+	if (var_name && (var_value = get_env_value(var_name,
+				params->context->env_vars)))
+		(enqueue_str(params->q, var_value), (*params->i)
+			+= ft_strlen(var_name));
 }
 
 static void	handle_double_quotes2(t_quote_params *params)
@@ -79,14 +81,13 @@ static void	handle_double_quotes2(t_quote_params *params)
 		(*params->i)++;
 }
 
-
 static void	process_argument2(char *arg, t_queue_char *queue, int *exit_status,
 		t_shell_context *context, int *was_quoted)
 {
-	int	i;
-	int	*values[2];
-	int	prev_i;
-	t_quote_params params;
+	int				i;
+	int				*values[2];
+	int				prev_i;
+	t_quote_params	params;
 
 	if (!arg || !queue || !exit_status || !context || !was_quoted)
 		return ;
@@ -139,9 +140,7 @@ char	*clean_argument2(char *arg, t_shell_context *context, int *exit_status)
 		cleaned_arg = queue_char_str_convert(&queue);
 	}
 	if (is_ambiguous_redirect(cleaned_arg) && !was_quoted)
-	{
-		ft_putstr_fd("minishell: ambiguous redirect\n", STDERR_FILENO);
-		cleaned_arg = ft_strdup("\x01\x01\x01");
-	}
+		(ft_putstr_fd("minishell: ambiguous redirect\n", STDERR_FILENO),
+			cleaned_arg = ft_strdup("\x01\x01\x01"));
 	return (cleaned_arg);
 }
