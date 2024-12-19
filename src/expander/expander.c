@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/19 00:54:25 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:10:23 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,8 @@ void	clean_nulls_from_argv(char **argv, int size)
 				continue ;
 			}
 			if (argv[i][0] == '\x01')
-				ft_memmove(argv[i], argv[i] + 1, strlen(argv[i]));
-			len = strlen(argv[i]);
+				ft_memmove(argv[i], argv[i] + 1, ft_strlen(argv[i]));
+			len = ft_strlen(argv[i]);
 			while (len > 0 && argv[i][len - 1] == '\x01')
 			{
 				argv[i][len - 1] = '\0';

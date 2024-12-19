@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/19 00:45:30 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:07:56 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,45 +69,10 @@ static char	*process_line(t_shell_context *context, char *line,
 	return (queue_char_str_convert(&q));
 }
 
-// static char *read_heredoc_input(char *del, t_shell_context *context,
-//                                 int *exit_status) {
-//   char *line;
-//   char *heredoc_line;
-//   t_queue queue;
-//   int tty_fd;
-//   int is_quoted;
-//   char *clean_del;
-
-//   tty_fd = open("/dev/tty", O_RDONLY);
-//   if (tty_fd < 0)
-//     terminate_with_error(context, "open", 1);
-//   dup2(tty_fd, STDIN_FILENO);
-//   ft_close(context, tty_fd);
-//   init_queue(&queue);
-//   is_quoted = 0;
-//   clean_del = clean_delimiter(del, &is_quoted);
-//   while (1) {
-//     ft_putstr_fd("> ", STDERR_FILENO);
-//     line = get_next_line(STDIN_FILENO);
-//     if (!line)
-//       break ;
-//     if (ft_strncmp(line, clean_del, ft_strlen(clean_del)) == 0 &&
-//         line[ft_strlen(clean_del)] == '\n')
-//       break ;
-//     if (is_quoted)
-//       heredoc_line = ft_strdup(line);
-//     else
-//       heredoc_line = process_line(context, line, exit_status);
-//     enqueue(&queue, heredoc_line);
-//   }
-//   return (queue_str_convert(&queue));
-// }
-
 static char	*read_heredoc_input(char *del, t_shell_context *context,
 		int *exit_status)
 {
 	char	*line;
-	// char	*heredoc_line;
 	t_queue	queue;
 	int		tty_fd;
 	int		is_quoted;
@@ -138,10 +103,6 @@ static char	*read_heredoc_input(char *del, t_shell_context *context,
 				clean_del, ft_strlen(clean_del)) == 0
 			&& line[ft_strlen(clean_del)] == '\n')
 			break ;
-		// if (is_quoted)
-		// 	heredoc_line = ft_strdup(line);
-		// else
-		// 	heredoc_line = process_line(context, line, exit_status);
 		if (is_quoted)
 			enqueue(&queue, ft_strdup(line));
 		else

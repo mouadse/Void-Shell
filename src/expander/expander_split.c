@@ -67,9 +67,7 @@ static char	*get_next_word(const char **s_ptr, char sep)
 	if (!word)
 		return (NULL);
 	for (int i = 0; i < len; i++)
-	{
 		word[i] = start[i];
-	}
 	word[len] = '\0';
 	*s_ptr = s;
 	return (word);
