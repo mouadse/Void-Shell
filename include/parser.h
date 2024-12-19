@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 20:46:40 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/19 19:26:18 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 00:21:49 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,16 @@
 # define PARSER_H
 
 # include "command.h"
+
+typedef struct s_quote_params {
+	char			*arg;
+	int				*i;
+	int				*exit_status;
+	t_queue_char	*q;
+	t_shell_context	*context;
+	int				*was_quoted;
+}	t_quote_params;
+
 
 t_command	*cmd_null_terminate(t_command *cmd);
 void		release_command_resources(t_command *cmd);

@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/20 00:17:32 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 00:27:11 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,152 +30,55 @@ static void	handle_single_quotes2(char *str, int *index, t_queue_char *queue,
 	}
 }
 
-// static void	handle_double_quotes2(char *arg, int *values[2],
-//		t_queue_char *q,
-// 		t_shell_context *context, int *was_quoted)
-// {
-// 	int		*i;
-// 	int		*exit_status;
-// 	char	*exit_status_str;
-// 	char	*var_name;
-// 	char	*var_value;
-
-// 	if (!arg || !values || !q || !context || !was_quoted)
-// 		return ;
-// 	i = values[0];
-// 	exit_status = values[1];
-// 	(*was_quoted) = 1;
-// 	(*i)++;
-// 	while (arg[*i] && arg[*i] != '\"')
-// 	{
-// 		if (arg[*i] == '$')
-// 		{
-// 			if (!arg[*i + 1] || is_whitespace(arg[*i + 1]) || arg[*i
-// 				+ 1] == '\"')
-// 			{
-// 				enqueue_char(q, '$');
-// 				(*i)++;
-// 			}
-// 			else if (arg[*i + 1] == '?')
-// 			{
-// 				exit_status_str = ft_itoa(*exit_status);
-// 				if (exit_status_str)
-// 				{
-// 					enqueue_str(q, exit_status_str);
-// 					(*i) += 2;
-// 				}
-// 			}
-// 			else
-// 			{
-// 				(*i)++;
-// 				var_name = extract_variable_name(arg + *i);
-// 				if (var_name)
-// 				{
-// 					var_value = get_env_value(var_name, context->env_vars);
-// 					if (var_value)
-// 						enqueue_str(q, var_value);
-// 					(*i) += ft_strlen(var_name);
-// 				}
-// 			}
-// 		}
-// 		else
-// 		{
-// 			enqueue_char(q, arg[*i]);
-// 			(*i)++;
-// 		}
-// 	}
-// 	if (arg[*i] == '\"')
-// 		(*i)++;
-// }
-
-static void	handle_dollar_in_quotes2(char *arg, int *i, int *exit_status,
-		t_queue_char *q, t_shell_context *context)
+static void	handle_dollar_in_quotes2(t_quote_params *params)
 {
 	char	*exit_status_str;
 	char	*var_name;
 	char	*var_value;
 
-	if (!arg[*i + 1] || is_whitespace(arg[*i + 1]) || arg[*i + 1] == '\"')
+	if (!params->arg[*params->i + 1] || is_whitespace(params->arg[*params->i + 1])
+		|| params->arg[*params->i + 1] == '\"')
 	{
-		enqueue_char(q, '$');
-		(*i)++;
+		enqueue_char(params->q, '$');
+		(*params->i)++;
 		return ;
 	}
-	if (arg[*i + 1] == '?')
+	if (params->arg[*params->i + 1] == '?')
 	{
-		exit_status_str = ft_itoa(*exit_status);
+		exit_status_str = ft_itoa(*params->exit_status);
 		if (exit_status_str)
 		{
-			enqueue_str(q, exit_status_str);
-			(*i) += 2;
+			enqueue_str(params->q, exit_status_str);
+			(*params->i) += 2;
 		}
 		return ;
 	}
-	(*i)++;
-	var_name = extract_variable_name(arg + *i);
-	if (var_name && (var_value = get_env_value(var_name, context->env_vars)))
-		(enqueue_str(q, var_value), (*i) += ft_strlen(var_name));
+	(*params->i)++;
+	var_name = extract_variable_name(params->arg + *params->i);
+	if (var_name && (var_value = get_env_value(var_name, params->context->env_vars)))
+		(enqueue_str(params->q, var_value), (*params->i) += ft_strlen(var_name));
 }
-static void	handle_double_quotes2(char *arg, int *values[2], t_queue_char *q,
-		t_shell_context *context, int *was_quoted)
-{
-	int	*i;
-	int	*exit_status;
 
-	if (!arg || !values || !q || !context || !was_quoted)
+static void	handle_double_quotes2(t_quote_params *params)
+{
+	if (!params->arg || !params->q || !params->context || !params->was_quoted)
 		return ;
-	i = values[0];
-	exit_status = values[1];
-	(*was_quoted) = 1;
-	(*i)++;
-	while (arg[*i] && arg[*i] != '\"')
+	(*params->was_quoted) = 1;
+	(*params->i)++;
+	while (params->arg[*params->i] && params->arg[*params->i] != '\"')
 	{
-		if (arg[*i] == '$')
-			handle_dollar_in_quotes2(arg, i, exit_status, q, context);
+		if (params->arg[*params->i] == '$')
+			handle_dollar_in_quotes2(params);
 		else
 		{
-			enqueue_char(q, arg[*i]);
-			(*i)++;
+			enqueue_char(params->q, params->arg[*params->i]);
+			(*params->i)++;
 		}
 	}
-	if (arg[*i] == '\"')
-		(*i)++;
+	if (params->arg[*params->i] == '\"')
+		(*params->i)++;
 }
 
-// static void	process_argument2(char *arg, t_queue_char *queue,
-//		int *exit_status,
-// 		t_shell_context *context, int *was_quoted)
-// {
-// 	int	i;
-// 	int	*values[2];
-// 	int	prev_i;
-
-// 	if (!arg || !queue || !exit_status || !context || !was_quoted)
-// 		return ;
-// 	i = 0;
-// 	while (arg[i] != '\0')
-// 	{
-// 		prev_i = i;
-// 		if (arg[i] == '\'')
-// 			handle_single_quotes2(arg, &i, queue, was_quoted);
-// 		else if (arg[i] == '\"')
-// 		{
-// 			values[0] = &i;
-// 			values[1] = exit_status;
-// 			handle_double_quotes2(arg, values, queue, context, was_quoted);
-// 		}
-// 		else if (arg[i] == '$')
-// 		{
-// 			values[0] = &i;
-// 			values[1] = exit_status;
-// 			handle_dollar_sign(arg, values, queue, context);
-// 		}
-// 		else
-// 			enqueue_char(queue, arg[i++]);
-// 		if (prev_i == i && arg[i] != '\0')
-// 			i++;
-// 	}
-// }
 
 static void	process_argument2(char *arg, t_queue_char *queue, int *exit_status,
 		t_shell_context *context, int *was_quoted)
@@ -183,6 +86,7 @@ static void	process_argument2(char *arg, t_queue_char *queue, int *exit_status,
 	int	i;
 	int	*values[2];
 	int	prev_i;
+	t_quote_params params;
 
 	if (!arg || !queue || !exit_status || !context || !was_quoted)
 		return ;
@@ -195,7 +99,14 @@ static void	process_argument2(char *arg, t_queue_char *queue, int *exit_status,
 		if (arg[i] == '\'')
 			handle_single_quotes2(arg, &i, queue, was_quoted);
 		else if (arg[i] == '\"')
-			handle_double_quotes2(arg, values, queue, context, was_quoted);
+		{
+			params.arg = arg;
+			params.i = values[0];
+			params.q = queue;
+			params.context = context;
+			params.was_quoted = was_quoted;
+			handle_double_quotes2(&params);
+		}
 		else if (arg[i] == '$')
 			handle_dollar_sign(arg, values, queue, context);
 		else
