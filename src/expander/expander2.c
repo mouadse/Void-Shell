@@ -6,12 +6,14 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/19 19:33:45 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 00:01:31 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-static void	handle_double_quotes_rem(const char *str, int *i, int *in_double_quotes)
+
+static void	handle_double_quotes_rem(const char *str, int *i,
+		int *in_double_quotes)
 {
 	if (*in_double_quotes == 0)
 		*in_double_quotes = 1;
@@ -20,8 +22,8 @@ static void	handle_double_quotes_rem(const char *str, int *i, int *in_double_quo
 	(*i)++;
 }
 
-static void	handle_consecutive_quotes(const char *str, char *result,
-		int *i, int *j)
+static void	handle_consecutive_quotes(const char *str, char *result, int *i,
+		int *j)
 {
 	int	count;
 	int	k;
@@ -45,8 +47,8 @@ static void	handle_consecutive_quotes(const char *str, char *result,
 	}
 }
 
-static void	handle_single_quote_content(const char *str, char *result,
-		int *i, int *j)
+static void	handle_single_quote_content(const char *str, char *result, int *i,
+		int *j)
 {
 	(*i)++;
 	while (str[*i] && str[*i] != '\'')
@@ -86,6 +88,7 @@ static void	process_quotes(const char *str, char *result)
 	}
 	result[val[1]] = '\0';
 }
+
 char	*remove_quotes(const char *str)
 {
 	char	*result;
