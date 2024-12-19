@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/19 00:57:19 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 00:09:51 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,40 @@ static void	handle_double_quotes2(char *arg, int *values[2], t_queue_char *q,
 		(*i)++;
 }
 
+// static void	process_argument2(char *arg, t_queue_char *queue, int *exit_status,
+// 		t_shell_context *context, int *was_quoted)
+// {
+// 	int	i;
+// 	int	*values[2];
+// 	int	prev_i;
+
+// 	if (!arg || !queue || !exit_status || !context || !was_quoted)
+// 		return ;
+// 	i = 0;
+// 	while (arg[i] != '\0')
+// 	{
+// 		prev_i = i;
+// 		if (arg[i] == '\'')
+// 			handle_single_quotes2(arg, &i, queue, was_quoted);
+// 		else if (arg[i] == '\"')
+// 		{
+// 			values[0] = &i;
+// 			values[1] = exit_status;
+// 			handle_double_quotes2(arg, values, queue, context, was_quoted);
+// 		}
+// 		else if (arg[i] == '$')
+// 		{
+// 			values[0] = &i;
+// 			values[1] = exit_status;
+// 			handle_dollar_sign(arg, values, queue, context);
+// 		}
+// 		else
+// 			enqueue_char(queue, arg[i++]);
+// 		if (prev_i == i && arg[i] != '\0')
+// 			i++;
+// 	}
+// }
+
 static void	process_argument2(char *arg, t_queue_char *queue, int *exit_status,
 		t_shell_context *context, int *was_quoted)
 {
@@ -100,20 +134,14 @@ static void	process_argument2(char *arg, t_queue_char *queue, int *exit_status,
 	while (arg[i] != '\0')
 	{
 		prev_i = i;
+		values[0] = &i;
+		values[1] = exit_status;
 		if (arg[i] == '\'')
 			handle_single_quotes2(arg, &i, queue, was_quoted);
 		else if (arg[i] == '\"')
-		{
-			values[0] = &i;
-			values[1] = exit_status;
 			handle_double_quotes2(arg, values, queue, context, was_quoted);
-		}
 		else if (arg[i] == '$')
-		{
-			values[0] = &i;
-			values[1] = exit_status;
 			handle_dollar_sign(arg, values, queue, context);
-		}
 		else
 			enqueue_char(queue, arg[i++]);
 		if (prev_i == i && arg[i] != '\0')
