@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 20:46:40 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/20 23:34:44 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/21 00:47:30 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,5 @@ char	*remove_quotes(const char *str);
 // EXPANDER PART
 
 char	*remove_quotes(const char *str);
+void	clean_nulls_from_argv(char **argv, int size);
 #endif

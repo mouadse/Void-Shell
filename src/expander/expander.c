@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/21 00:43:09 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/21 00:48:17 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,43 +80,6 @@ static char	*clean_argument(char *arg, t_shell_context *context,
 	enqueue(&context->queue, cleaned_arg);
 	enqueue(&context->queue, " ");
 	return (cleaned_arg);
-}
-
-void	clean_nulls_from_argv(char **argv, int size)
-{
-	int		i;
-	int		j;
-	size_t	len;
-
-	i = 0;
-	j = 0;
-	while (i < size)
-	{
-		if (argv[i] != NULL)
-		{
-			if (argv[i][0] == '\x01' && argv[i][1] == '\0')
-			{
-				i++;
-				continue ;
-			}
-			if (argv[i][0] == '\x01')
-				ft_memmove(argv[i], argv[i] + 1, ft_strlen(argv[i]));
-			len = ft_strlen(argv[i]);
-			while (len > 0 && argv[i][len - 1] == '\x01')
-			{
-				argv[i][len - 1] = '\0';
-				len--;
-			}
-			argv[j] = argv[i];
-			j++;
-		}
-		i++;
-	}
-	while (j < size)
-	{
-		argv[j] = NULL;
-		j++;
-	}
 }
 
 void	restore_quotes(char **vector)
