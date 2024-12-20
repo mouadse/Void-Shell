@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/20 16:29:05 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 20:23:57 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,12 @@ static void	init_heredoc(t_shell_context *context, t_queue *queue,
 		*clean_del = ft_strdup("");
 }
 
+static void handle_eof_warning(char *delimiter) {
+    ft_putstr_fd("warning: here-document delimited by end-of-file (wanted `", 2);
+    ft_putstr_fd(delimiter, 2);
+    ft_putstr_fd("')\n", 2);
+}
+
 char	*read_heredoc_input(char *del, t_shell_context *context,
 			int *exit_status)
 {
@@ -58,8 +64,12 @@ char	*read_heredoc_input(char *del, t_shell_context *context,
 	{
 		ft_putstr_fd("> ", STDERR_FILENO);
 		line = get_next_line(STDIN_FILENO);
-		if (!line || is_delimiter(line, clean_del))
-			break ;
+		if (!line) {
+            handle_eof_warning(clean_del);
+            break;
+        }
+        if (is_delimiter(line, clean_del))
+            break;
 		if (is_quoted)
 			enqueue(&queue, ft_strdup(line));
 		else
