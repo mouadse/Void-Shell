@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 01:40:43 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/19 00:24:46 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 14:05:29 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,9 @@ void	left_pipe(t_shell_context *context, t_command *cmd, int fd[2],
 void	right_pipe(t_command *cmd, t_shell_context *context, int fd[2],
 			int *exit_status);
 void	save_exit_status(t_shell_context *context, int status_code);
+
+
+// Heredoc functions
+
+void ignore_signals_heredoc(void);
 #endif

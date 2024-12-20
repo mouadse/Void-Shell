@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/19 19:07:56 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 14:05:51 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,8 +132,7 @@ void	execute_redirects_command(t_command *cmd, t_shell_context *context,
 	char	*heredoc_content;
 
 	redir_cmd = (t_redir *)cmd;
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
+	ignore_signals_heredoc();
 	if (redir_cmd->redir_type != '%')
 	{
 		if (ft_strcmp(redir_cmd->file, "\x01\x01\x01") == 0)
