@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander_split.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/20 23:22:53 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/20 23:24:37 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 static bool	is_separator(char c, char sep)
@@ -67,7 +79,9 @@ static char	*get_next_word(const char **s_ptr, char sep)
 	if (!word)
 		return (NULL);
 	for (int i = 0; i < len; i++)
+	{
 		word[i] = start[i];
+	}
 	word[len] = '\0';
 	*s_ptr = s;
 	return (word);

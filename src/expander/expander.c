@@ -6,10 +6,11 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/19 19:29:26 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 23:22:34 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../include/minishell.h"
 #include "../../include/minishell.h"
 
 static void	process_argument(char *arg, t_queue_char *queue, int *exit_status,
@@ -100,8 +101,8 @@ void	clean_nulls_from_argv(char **argv, int size)
 				continue ;
 			}
 			if (argv[i][0] == '\x01')
-				ft_memmove(argv[i], argv[i] + 1, ft_strlen(argv[i]));
-			len = ft_strlen(argv[i]);
+				ft_memmove(argv[i], argv[i] + 1, strlen(argv[i]));
+			len = strlen(argv[i]);
 			while (len > 0 && argv[i][len - 1] == '\x01')
 			{
 				argv[i][len - 1] = '\0';
@@ -119,92 +120,86 @@ void	clean_nulls_from_argv(char **argv, int size)
 	}
 }
 
-// char	*remove_quotes(const char *str)
-// {
-// 	int		i;
-// 	int		j;
-// 	int		in_double_quotes;
-// 	char	*result;
-// 	int		count;
-// 	int		k;
+char	*remove_quotes(const char *str)
+{
+	int		i;
+	int		j;
+	int		in_double_quotes;
+	char	*result;
+	int		count;
+	int		k;
 
-// 	i = 0;
-// 	j = 0;
-// 	in_double_quotes = 0;
-// 	result = gc_malloc(strlen(str) + 1);
-// 	if (!result)
-// 		return (ft_strdup(""));
-// 	while (str[i] != '\0')
-// 	{
-// 		if (str[i] == '\"' && !in_double_quotes)
-// 		{
-// 			in_double_quotes = 1;
-// 			i++;
-// 		}
-// 		else if (str[i] == '\"' && in_double_quotes)
-// 		{
-// 			in_double_quotes = 0;
-// 			i++;
-// 		}
-// 		else if (str[i] == '\'' && !in_double_quotes)
-// 		{
-// 			if (str[i + 1] == '\'')
-// 			{
-// 				i += 2;
-// 				continue ;
-// 			}
-// 			count = 0;
-// 			k = i;
-// 			while (str[k] == '\'')
-// 			{
-// 				count++;
-// 				k++;
-// 			}
-// 			if (count > 1 && str[k] != '\0')
-// 			{
-// 				while (count > 0)
-// 				{
-// 					result[j++] = '\'';
-// 					i++;
-// 					count--;
-// 				}
-// 			}
-// 			else
-// 			{
-// 				i++;
-// 				while (str[i] && str[i] != '\'')
-// 					result[j++] = str[i++];
-// 				if (str[i] == '\'')
-// 					i++;
-// 			}
-// 		}
-// 		else
-// 			result[j++] = str[i++];
-// 	}
-// 	result[j] = '\0';
-// 	return (result);
-// }
+	i = 0;
+	j = 0;
+	in_double_quotes = 0;
+	result = gc_malloc(strlen(str) + 1);
+	if (!result)
+		return (ft_strdup(""));
+	while (str[i] != '\0')
+	{
+		if (str[i] == '\"' && !in_double_quotes)
+		{
+			in_double_quotes = 1;
+			i++;
+		}
+		else if (str[i] == '\"' && in_double_quotes)
+		{
+			in_double_quotes = 0;
+			i++;
+		}
+		else if (str[i] == '\'' && !in_double_quotes)
+		{
+			if (str[i + 1] == '\'')
+			{
+				i += 2;
+				continue ;
+			}
+			count = 0;
+			k = i;
+			while (str[k] == '\'')
+			{
+				count++;
+				k++;
+			}
+			if (count > 1 && str[k] != '\0')
+			{
+				while (count > 0)
+				{
+					result[j++] = '\'';
+					i++;
+					count--;
+				}
+			}
+			else
+			{
+				i++;
+				while (str[i] && str[i] != '\'')
+					result[j++] = str[i++];
+				if (str[i] == '\'')
+					i++;
+			}
+		}
+		else
+			result[j++] = str[i++];
+	}
+	result[j] = '\0';
+	return (result);
+}
 
 void	restore_quotes(char **vector)
 {
 	char	*str;
-	int		i;
-	int		j;
 
 	if (!vector)
 		return ;
-	i = 0;
-	while (vector[i])
+	for (int i = 0; vector[i]; i++)
 	{
 		str = vector[i];
-		j = 0;
-		while (str[j])
+		for (int j = 0; str[j]; j++)
 		{
 			if (str[j] == '\x1F')
 				str[j] = '\'';
-			j++;
 		}
-		i++;
 	}
 }
 
