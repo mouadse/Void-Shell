@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/20 14:41:33 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 14:41:58 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ static char	*read_heredoc_input(char *del, t_shell_context *context,
 	int		is_quoted;
 	char	*clean_del;
 
-	// tty_fd = open("/dev/tty", O_RDONLY);
-	// if (tty_fd < 0)
-	// 	terminate_with_error(context, "open", 1);
-	// dup2(tty_fd, STDIN_FILENO);
-	// ft_close(context, tty_fd);
+	tty_fd = open("/dev/tty", O_RDONLY);
+	if (tty_fd < 0)
+		terminate_with_error(context, "open", 1);
+	dup2(tty_fd, STDIN_FILENO);
+	ft_close(context, tty_fd);
 	init_queue(&queue);
 	is_quoted = 0;
 	clean_del = clean_delimiter(del, &is_quoted);
