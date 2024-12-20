@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/20 15:16:19 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:19:23 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static char	*read_heredoc_input(char *del, t_shell_context *context,
 	clean_del = clean_delimiter(del, &is_quoted);
 	if (!clean_del)
 		clean_del = ft_strdup("");
-	printf("clean_del: %s\n", clean_del);
 	while (1)
 	{
 		ft_putstr_fd("> ", STDERR_FILENO);
@@ -105,5 +104,6 @@ void	execute_redirects_command(t_command *cmd, t_shell_context *context,
 		if (open(SHELL_HEREDOC_FILE, redir_cmd->mode, 0644) < 0)
 			terminate_with_error(context, "open", 1);
 	}
+	printf("redir_cmd->sub_cmd->type: %d\n", redir_cmd->sub_cmd->type);
 	execute_command(redir_cmd->sub_cmd, context, exit_status);
 }
