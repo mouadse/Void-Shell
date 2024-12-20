@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:26 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/20 15:20:34 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:22:32 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,14 @@ void	handle_invalid_executable(t_exec *cmd, t_shell_context *context,
 void	handle_executable_path(t_exec *ecmd, t_shell_context *context)
 {
 	struct stat	path_stat;
-	printf("ecmd->argv[0]: %s\n", ecmd->argv[0]);
 	if (ecmd->argv[0] == NULL)
 	{
 		if (ft_strchr(context->input, '$') != NULL)
 			terminate_cleanly(context, 0);
-		else if (ft_strchr(context->input, '\"') || ft_strchr(context->input,
-				'\''))
-			(print_exec_error(ecmd->argv[0], "command not found"),
-				terminate_cleanly(context, 127));
+		// else if (ft_strchr(context->input, '\"') || ft_strchr(context->input,
+		// 		'\''))
+		// 	(print_exec_error(ecmd->argv[0], "command not found"),
+		// 		terminate_cleanly(context, 127));
 		else
 			terminate_cleanly(context, 0);
 	}
