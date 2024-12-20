@@ -6,11 +6,12 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:46:26 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/19 00:24:40 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:20:34 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <stdio.h>
 
 char	*get_executable_path(char *command, char *path)
 {
@@ -50,7 +51,7 @@ void	handle_invalid_executable(t_exec *cmd, t_shell_context *context,
 void	handle_executable_path(t_exec *ecmd, t_shell_context *context)
 {
 	struct stat	path_stat;
-
+	printf("ecmd->argv[0]: %s\n", ecmd->argv[0]);
 	if (ecmd->argv[0] == NULL)
 	{
 		if (ft_strchr(context->input, '$') != NULL)
