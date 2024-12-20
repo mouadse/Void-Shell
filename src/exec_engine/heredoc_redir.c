@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/20 00:40:06 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 22:56:26 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	handle_dollar_sign_del(char *str, int *index, t_queue_char *queue)
 			i++;
 	}
 	else if (str[i + 1] && (str[i + 1] == '$' || str[i + 1] == '\0' || str[i
-			+ 1] == ' '))
+				+ 1] == ' '))
 		enqueue_char(queue, str[i++]);
 	else
 	{

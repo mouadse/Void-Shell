@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/20 15:01:20 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 22:56:08 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	replace_var_in_line(char *line, int *i, t_shell_context *context,
 	*i += ft_strlen(var_name);
 }
 
-void ignore_signals_heredoc(void)
+void	ignore_signals_heredoc(void)
 {
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
