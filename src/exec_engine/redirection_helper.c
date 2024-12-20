@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/20 14:15:12 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:01:20 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,3 @@ char	*process_line_hd(t_shell_context *context, char *line,
 	}
 	return (queue_char_str_convert(&q));
 }
-
-

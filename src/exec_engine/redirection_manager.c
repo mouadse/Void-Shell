@@ -6,15 +6,26 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/20 15:00:06 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:03:24 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+char *dummy_test(char *str)
+{
+	t_queue_char q;
+	int i;
 
-
-
+	i = 0;
+	init_queue_char(&q);
+	while (str[i])
+	{
+		enqueue_char(&q, str[i]);
+		i++;
+	}
+	return (queue_char_str_convert(&q));
+}
 
 static char	*read_heredoc_input(char *del, t_shell_context *context,
 		int *exit_status)
@@ -51,7 +62,7 @@ static char	*read_heredoc_input(char *del, t_shell_context *context,
 			&& line[ft_strlen(clean_del)] == '\n')
 			break ;
 		if (is_quoted)
-			enqueue(&queue, (void *)ft_strdup(line));
+			enqueue(&queue, dummy_test(line));
 		else
 			enqueue(&queue, process_line_hd(context, line, exit_status));
 	}
