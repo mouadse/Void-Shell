@@ -1,0 +1,5348 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/05 18:03:44 by msennane          #+#    #+#             */
+/*   Updated: 2023/12/03 16:24:53 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	if (!haystack && needle && !len)
+		return (NULL);
+	if (needle[i] == '\0')
+		return ((char *)haystack);
+	while (haystack[i] && i < len)
+	{
+		j = 0;
+		while (haystack[i + j] == needle[j] && (i + j) < len)
+		{
+			if (needle[j + 1] == '\0')
+				return ((char *)haystack + i);
+			j++;
+		}
+		i++;
+	}
+	return (NULL);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/04 14:20:36 by mouad             #+#    #+#             */
+/*   Updated: 2023/11/27 00:44:24 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+int	ft_isdigit(int c)
+{
+	return (c >= '0' && c <= '9');
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/06 19:21:56 by msennane          #+#    #+#             */
+/*   Updated: 2023/12/05 19:47:57 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	if (!(s))
+		return ;
+	write(fd, s, ft_strlen(s));
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstadd_front_bonus.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/26 23:49:36 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/01 21:42:00 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_lstadd_front(t_list **lst, t_list *new_node)
+{
+	if (lst && new_node)
+	{
+		new_node->next = *lst;
+		*lst = new_node;
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstdelone_bonus.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/27 00:13:25 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/03 15:24:40 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_lstdelone(t_list *lst, void (*del)(void *))
+{
+	if (lst && del)
+	{
+		if (lst->content)
+			del(lst->content);
+		// free(lst);
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstadd_back_bonus.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/27 00:00:34 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/01 21:42:23 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_lstadd_back(t_list **lst, t_list *new_node)
+{
+	t_list	*last;
+
+	if (lst)
+	{
+		if (*lst)
+		{
+			last = ft_lstlast(*lst);
+			last->next = new_node;
+		}
+		else
+		{
+			*lst = new_node;
+		}
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/05 19:28:53 by msennane          #+#    #+#             */
+/*   Updated: 2023/11/05 19:28:54 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+{
+	size_t	i;
+	size_t	src_len;
+
+	src_len = ft_strlen(src);
+	if (size == 0)
+		return (src_len);
+	i = 0;
+	while (src[i] && i < (size - 1))
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (src_len);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/04 14:50:51 by mouad             #+#    #+#             */
+/*   Updated: 2024/12/09 23:49:06 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+#include <assert.h>
+
+// messy code here
+size_t ft_strlen(const char *str) {
+  size_t i;
+//   assert(str && "str cannot be null");
+  i = 0;
+  while (str[i])
+    i++;
+  return (i);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstmap_bonus.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/27 00:36:28 by msennane          #+#    #+#             */
+/*   Updated: 2023/12/03 00:46:00 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+{
+	t_list	*node;
+	t_list	*new;
+	void	*content;
+
+	if (!lst || !f || !del)
+		return (NULL);
+	new = NULL;
+	while (lst != NULL)
+	{
+		content = f(lst->content);
+		node = ft_lstnew(content);
+		if (!node)
+		{
+			del(content);
+			ft_lstclear(&new, del);
+			return (NULL);
+		}
+		ft_lstadd_back(&new, node);
+		lst = lst->next;
+	}
+	return (new);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/06 02:17:17 by msennane          #+#    #+#             */
+/*   Updated: 2023/11/06 03:00:36 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
+{
+	size_t	i;
+
+	if (!s1 && !s2)
+		return (0);
+	i = 0;
+	while (i < n)
+	{
+		if (((unsigned char *)s1)[i] != ((unsigned char *)s2)[i])
+		{
+			return (((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]);
+		}
+		i++;
+	}
+	return (0);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/07 20:12:48 by msennane          #+#    #+#             */
+/*   Updated: 2023/11/07 20:16:57 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_putnbr_fd(int n, int fd)
+{
+	if (n == -2147483648)
+	{
+		ft_putstr_fd("-2147483648", fd);
+		return ;
+	}
+	if (n < 0)
+	{
+		ft_putchar_fd('-', fd);
+		n = -n;
+	}
+	if (n >= 10)
+	{
+		ft_putnbr_fd(n / 10, fd);
+		ft_putnbr_fd(n % 10, fd);
+	}
+	else
+	{
+		ft_putchar_fd(n + '0', fd);
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/04 18:56:19 by msennane          #+#    #+#             */
+/*   Updated: 2023/11/27 01:35:56 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+char	*ft_strchr(const char *s, int c)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if ((char)c == s[i])
+			return ((char *)&s[i]);
+		i++;
+	}
+	if ((char)c == s[i])
+		return ((char *)&s[i]);
+	return (NULL);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/07 21:19:51 by msennane          #+#    #+#             */
+/*   Updated: 2023/12/05 13:43:53 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_striteri(char *s, void (*f)(unsigned int, char *))
+{
+	int	i;
+
+	if (!s || !f)
+		return ;
+	i = 0;
+	while (s[i])
+	{
+		f(i, &s[i]);
+		i++;
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/05 18:29:57 by msennane          #+#    #+#             */
+/*   Updated: 2023/11/27 01:38:47 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_bzero(void *s, size_t n)
+{
+	size_t	i;
+	char	*t;
+
+	t = (char *)s;
+	i = 0;
+	while (i < n)
+	{
+		t[i] = 0;
+		i++;
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/06 18:20:02 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/03 15:23:57 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	size_t	s1_len;
+	size_t	s2_len;
+	char	*str;
+
+	if (!s1 || !s2)
+		return (NULL);
+	s1_len = ft_strlen(s1);
+	s2_len = ft_strlen(s2);
+	str = (char *)gc_malloc(sizeof(char) * (s1_len + s2_len + 1));
+	if (!str)
+		return (NULL);
+	ft_strlcpy(str, s1, s1_len + 1);
+	ft_strlcat(str + s1_len, s2, s2_len + 1);
+	return (str);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_isascii.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/04 14:45:16 by mouad             #+#    #+#             */
+/*   Updated: 2023/11/27 00:45:55 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+int	ft_isascii(int c)
+{
+	return (c >= 0 && c <= 127);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/06 01:05:52 by msennane          #+#    #+#             */
+/*   Updated: 2023/12/03 15:59:46 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	*ft_memcpy(void *dst, const void *src, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	if (dst == src)
+		return (dst);
+	if (!dst && !src)
+		return (NULL);
+	while (i < n)
+	{
+		((char *)dst)[i] = ((char *)src)[i];
+		i++;
+	}
+	return (dst);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/27 00:20:13 by msennane          #+#    #+#             */
+/*   Updated: 2023/11/27 00:30:13 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_lstclear(t_list **lst, void (*del)(void *))
+{
+	t_list	*tmp;
+
+	if (lst && del)
+	{
+		while (*lst)
+		{
+			tmp = (*lst)->next;
+			ft_lstdelone(*lst, del);
+			*lst = tmp;
+		}
+		lst = NULL;
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_isprint.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/04 14:48:46 by mouad             #+#    #+#             */
+/*   Updated: 2023/11/27 00:44:52 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+int	ft_isprint(int c)
+{
+	return (c >= 32 && c <= 126);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/07 19:48:08 by msennane          #+#    #+#             */
+/*   Updated: 2023/12/05 19:45:16 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_putendl_fd(char *s, int fd)
+{
+	if (!(s))
+		return ;
+	ft_putstr_fd(s, fd);
+	ft_putchar_fd('\n', fd);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_toupper.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/04 15:46:58 by mouad             #+#    #+#             */
+/*   Updated: 2023/11/27 00:45:06 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+int	ft_toupper(int c)
+{
+	if (c >= 'a' && c <= 'z')
+		return (c - 32);
+	return (c);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstiter.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/27 00:31:37 by msennane          #+#    #+#             */
+/*   Updated: 2023/11/27 00:35:22 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_lstiter(t_list *lst, void (*f)(void *))
+{
+	while (lst)
+	{
+		f(lst->content);
+		lst = lst->next;
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/06 23:42:07 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/03 15:28:08 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+static int	is_separator(char c, char sep)
+{
+	return (c == sep || c == ' ' || c == '\t' || c == '\n' || c == '\f'
+		|| c == '\r' || c == '\v');
+}
+
+static int	count_words(char const *s, char sep)
+{
+	int	count;
+	int	in_word;
+
+	count = 0;
+	in_word = 0;
+	while (*s)
+	{
+		if (is_separator(*s, sep))
+			in_word = 0;
+		else if (!in_word)
+		{
+			in_word = 1;
+			count++;
+		}
+		s++;
+	}
+	return (count);
+}
+
+static char	*get_next_word(char const **s, char sep)
+{
+	char	*word;
+	int		len;
+	int		i;
+
+	len = 0;
+	while (**s && is_separator(**s, sep))
+		(*s)++;
+	while ((*s)[len] && !is_separator((*s)[len], sep))
+		len++;
+	word = gc_malloc(sizeof(char) * (len + 1));
+	if (!word)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		word[i] = (*s)[i];
+		i++;
+	}
+	word[i] = '\0';
+	*s += len;
+	return (word);
+}
+
+// static void	free_split(char **split, int count)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (i < count)
+// 	{
+// 		// free(split[i]);
+// 		i++;
+// 	}
+// 	// free(split);
+// }
+
+char	**ft_split(char const *s, char sep)
+{
+	char	**result;
+	int		word_count;
+	int		i;
+
+	if (!s)
+		return (NULL);
+	word_count = count_words(s, sep);
+	result = gc_malloc(sizeof(char *) * (word_count + 1));
+	if (!result)
+		return (NULL);
+	i = 0;
+	while (i < word_count)
+	{
+		result[i] = get_next_word(&s, sep);
+		if (!result[i])
+		{
+			// free_split(result, i);
+			return (NULL);
+		}
+		i++;
+	}
+	result[i] = NULL;
+	return (result);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/05 17:09:56 by msennane          #+#    #+#             */
+/*   Updated: 2023/11/27 01:08:22 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+char	*ft_strrchr(const char *s, int c)
+{
+	size_t	i;
+	char	*str;
+
+	i = 0;
+	str = (char *)s;
+	while (str[i])
+		i++;
+	while (i > 0)
+	{
+		if (str[i] == (char)c)
+			return (&str[i]);
+		i--;
+	}
+	if (str[i] == (char)c)
+		return (&str[i]);
+	return (NULL);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstlast.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/26 23:55:51 by msennane          #+#    #+#             */
+/*   Updated: 2023/11/26 23:56:12 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+t_list	*ft_lstlast(t_list *lst)
+{
+	t_list	*last;
+
+	last = lst;
+	if (last)
+	{
+		while (last->next)
+			last = last->next;
+	}
+	return (last);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/04 14:16:56 by mouad             #+#    #+#             */
+/*   Updated: 2023/11/27 00:45:16 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+int	ft_isalpha(int c)
+{
+	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/06 02:11:34 by msennane          #+#    #+#             */
+/*   Updated: 2023/11/06 02:14:33 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	*ft_memchr(const void *s, int c, size_t n)
+{
+	size_t			i;
+	unsigned char	*p;
+
+	i = 0;
+	p = (unsigned char *)s;
+	while (i < n)
+	{
+		if (p[i] == (unsigned char)c)
+		{
+			return ((void *)(p + i));
+		}
+		i++;
+	}
+	return (NULL);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/06 19:25:27 by msennane          #+#    #+#             */
+/*   Updated: 2023/11/06 19:25:37 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/05 20:15:10 by msennane          #+#    #+#             */
+/*   Updated: 2023/12/05 18:11:57 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	*ft_memset(void *s, int c, size_t n)
+{
+	size_t			i;
+	unsigned char	*tab;
+
+	i = 0;
+	tab = (unsigned char *)s;
+	while (i < n)
+	{
+		tab[i] = (unsigned char)c;
+		i++;
+	}
+	return (s);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/06 16:20:42 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/03 15:24:11 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	char	*sub_str;
+	size_t	new_len;
+
+	if (!s)
+		return (NULL);
+	if (ft_strlen(s) < start)
+	{
+		sub_str = gc_malloc(sizeof(char));
+		if (!sub_str)
+			return (NULL);
+		sub_str[0] = '\0';
+	}
+	else
+	{
+		new_len = ft_strlen(s + start);
+		if (new_len < len)
+			len = new_len;
+		sub_str = gc_malloc(sizeof(char) * (len + 1));
+		if (!sub_str)
+			return (NULL);
+		ft_strlcpy(sub_str, s + start, len + 1);
+	}
+	return (sub_str);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/04 18:51:37 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/05 00:03:30 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t	i;
+
+	if (!s1 || !s2)
+		return (0);
+	i = 0;
+	if (n == 0)
+	{
+		return (0);
+	}
+	while (s1[i] && s2[i] && i < n - 1)
+	{
+		if (s1[i] != s2[i])
+		{
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		}
+		i++;
+	}
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/08 01:51:53 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/03 15:24:02 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
+{
+	char	*res;
+	size_t	i;
+	size_t	s_len;
+
+	if (!s || !f)
+		return (NULL);
+	s_len = ft_strlen(s);
+	res = gc_malloc(sizeof(char) * (s_len + 1));
+	if (!res)
+		return (NULL);
+	i = 0;
+	while (s[i])
+	{
+		res[i] = f(i, s[i]);
+		i++;
+	}
+	res[i] = '\0';
+	return (res);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/23 01:30:53 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/03 15:24:05 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+static size_t	find_start(char const *s1, char const *set)
+{
+	size_t	i;
+
+	i = 0;
+	while (s1[i] && ft_strchr(set, s1[i]))
+		i++;
+	return (i);
+}
+
+static size_t	find_end(char const *s1, char const *set, size_t start)
+{
+	size_t	last;
+
+	last = ft_strlen(s1) - 1;
+	while (s1[last] && ft_strchr(set, s1[last]) && last > start)
+		last--;
+	return (last);
+}
+
+char	*ft_strtrim(char const *s1, char const *set)
+{
+	size_t	start;
+	size_t	end;
+	size_t	len;
+	char	*str;
+
+	if (!s1 || !set)
+		return (NULL);
+	start = find_start(s1, set);
+	end = find_end(s1, set, start);
+	len = end - start + 1;
+	if (start > end)
+		return (ft_strdup(""));
+	str = gc_malloc(sizeof(char) * (len + 1));
+	if (!str)
+		return (NULL);
+	ft_strlcpy(str, s1 + start, len + 1);
+	return (str);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/26 23:53:04 by msennane          #+#    #+#             */
+/*   Updated: 2023/11/26 23:54:10 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_lstsize(t_list *lst)
+{
+	int	i;
+
+	i = 0;
+	while (lst)
+	{
+		lst = lst->next;
+		i++;
+	}
+	return (i);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/06 01:45:37 by msennane          #+#    #+#             */
+/*   Updated: 2023/12/03 16:00:21 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	*ft_memmove(void *dst, const void *src, size_t len)
+{
+	char	*d;
+	char	*s;
+	char	*lasts;
+	char	*lastd;
+
+	if (dst == src)
+		return (dst);
+	if (!dst && !src)
+		return (NULL);
+	d = (char *)dst;
+	s = (char *)src;
+	lasts = s + (len - 1);
+	lastd = d + (len - 1);
+	if (dst < src)
+	{
+		while (len--)
+			*d++ = *s++;
+	}
+	else
+	{
+		while (len--)
+			*lastd-- = *lasts--;
+	}
+	return (dst);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/26 23:45:52 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/03 15:23:44 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+t_list	*ft_lstnew(void *content)
+{
+	t_list	*new;
+
+	new = (t_list *)gc_malloc(sizeof(t_list));
+	if (!new)
+		return (NULL);
+	new->content = content;
+	new->next = NULL;
+	return (new);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/04 16:11:34 by mouad             #+#    #+#             */
+/*   Updated: 2023/12/03 16:22:11 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
+{
+	size_t	dst_len;
+	size_t	i;
+
+	if (!dstsize)
+		return (ft_strlen(src));
+	dst_len = ft_strlen(dst);
+	i = 0;
+	if (dstsize <= dst_len)
+		return (dstsize + ft_strlen(src));
+	while (src[i] && (dst_len + i) < dstsize - 1)
+	{
+		dst[dst_len + i] = src[i];
+		i++;
+	}
+	dst[dst_len + i] = '\0';
+	return (dst_len + ft_strlen(src));
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/05 19:29:09 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/03 15:23:26 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	char	*ptr;
+
+	if (size != 0 && count > SIZE_MAX / size)
+		return (NULL);
+	ptr = gc_malloc(count * size);
+	if (!ptr)
+		return (NULL);
+	ft_bzero(ptr, count * size);
+	return (ptr);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/06 03:08:26 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/03 15:23:55 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+char	*ft_strdup(const char *s1)
+{
+	char	*ptr;
+	size_t	len;
+	size_t	i;
+
+	i = 0;
+	len = ft_strlen(s1);
+	ptr = (char *)gc_malloc(len + 1);
+	if (!ptr)
+		return (NULL);
+	while (i < len)
+	{
+		ptr[i] = s1[i];
+		i++;
+	}
+	ptr[i] = '\0';
+	return (ptr);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/05 15:32:13 by msennane          #+#    #+#             */
+/*   Updated: 2023/11/25 17:41:36 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+int	ft_atoi(const char *str)
+{
+	int	i;
+	int	sign;
+	int	result;
+
+	i = 0;
+	sign = 1;
+	result = 0;
+	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
+	{
+		i++;
+	}
+	if (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i] == '-')
+			sign *= -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		result = result * 10 + str[i] - '0';
+		i++;
+	}
+	return (result * sign);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/04 14:24:14 by mouad             #+#    #+#             */
+/*   Updated: 2023/11/27 00:45:47 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_isalnum(int c)
+{
+	return (ft_isalpha(c) || ft_isdigit(c));
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/08 03:05:55 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/03 15:23:38 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+static int	calculate_len(int n)
+{
+	int	len;
+
+	len = 0;
+	while (n)
+	{
+		n /= 10;
+		len++;
+	}
+	return (len);
+}
+
+static void	gen_char_array(char *int_str, long number, int len, int sign)
+{
+	while (number && len--)
+	{
+		int_str[len + sign] = (number % 10) + 48;
+		number /= 10;
+	}
+}
+
+char	*ft_itoa(int n)
+{
+	int		sign;
+	int		len;
+	char	*int_str;
+	long	number;
+
+	number = (long)n;
+	if (n == 0)
+		return (ft_strdup("0"));
+	sign = 0;
+	if (n < 0)
+	{
+		sign = 1;
+		number = -number;
+	}
+	len = calculate_len(number);
+	int_str = (char *)gc_malloc(sizeof(char) * (len + sign + 1));
+	if (!int_str)
+		return (NULL);
+	if (sign)
+		int_str[0] = '-';
+	int_str[len + sign] = '\0';
+	gen_char_array(int_str, number, len, sign);
+	return (int_str);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_tolower.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/04 15:31:17 by mouad             #+#    #+#             */
+/*   Updated: 2023/11/27 00:44:59 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+int	ft_tolower(int c)
+{
+	if (c >= 'A' && c <= 'Z')
+	{
+		return (c + 32);
+	}
+	return (c);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/21 19:16:45 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/05 00:05:10 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	int	i;
+
+	if (!s1 || !s2)
+		return (-1);
+	i = 0;
+	while (s1[i] && s2[i] && s1[i] == s2[i])
+		i++;
+	return (s1[i] - s2[i]);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   loop.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/22 17:32:45 by lalex-ku          #+#    #+#             */
+/*   Updated: 2022/06/22 17:32:50 by lalex-ku         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
+
+int	main(int argc, char const *argv[])
+{
+	int	pid;
+
+	pid = fork();
+	open("infile", O_RDONLY);
+	while (1)
+	{
+		printf("Helloo miniHELL %i\n", pid);
+		sleep(1);
+	}
+	return (0);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/28 01:08:03 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/03 15:22:03 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "get_next_line.h"
+
+void	initialize_queue(t_list *node)
+{
+	node->head = NULL;
+	node->tail = NULL;
+}
+
+void	push_node(t_list *node, char c)
+{
+	struct s_list_node	*new_node;
+
+	new_node = gc_malloc(sizeof(struct s_list_node));
+	if (!new_node)
+		return ;
+	new_node->data = c;
+	new_node->next = NULL;
+	if (node->head == NULL)
+	{
+		node->head = new_node;
+		node->tail = new_node;
+	}
+	else
+	{
+		node->tail->next = new_node;
+		node->tail = new_node;
+	}
+}
+
+char	pop_node(t_list *node)
+{
+	struct s_list_node	*temp;
+	char				data;
+
+	temp = node->head;
+	data = temp->data;
+	node->head = node->head->next;
+	// free(temp);
+	if (node->head == NULL)
+		node->tail = NULL;
+	return (data);
+}
+
+int	has_new_line(t_list *node)
+{
+	struct s_list_node	*temp;
+
+	temp = node->head;
+	while (temp)
+	{
+		if (temp->data == '\n')
+			return (1);
+		temp = temp->next;
+	}
+	return (0);
+}
+
+int	is_it_empty(t_list *node)
+{
+	return (node->head == NULL);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/28 01:08:01 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/03 15:28:45 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "get_next_line.h"
+
+// static void	free_queue(t_list *node)
+// {
+// 	struct s_list_node	*temp;
+
+// 	while (node->head)
+// 	{
+// 		temp = node->head;
+// 		node->head = node->head->next;
+// 		// free(temp);
+// 	}
+// 	node->tail = NULL;
+// }
+
+static char	*extract_line(t_list *node)
+{
+	char				*line;
+	int					i;
+	struct s_list_node	*temp;
+
+	i = 0;
+	temp = node->head;
+	while (temp && temp->data != '\n')
+	{
+		temp = temp->next;
+		i++;
+	}
+	line = gc_malloc(sizeof(char) * (i + 2));
+	if (!line)
+		return (NULL);
+	i = 0;
+	while (node->head && node->head->data != '\n')
+		line[i++] = pop_node(node);
+	line[i++] = pop_node(node);
+	line[i] = '\0';
+	return (line);
+}
+
+static char	*extract_rest(t_list *node)
+{
+	char				*rest;
+	int					i;
+	struct s_list_node	*temp;
+
+	i = 0;
+	temp = node->head;
+	while (temp)
+	{
+		temp = temp->next;
+		i++;
+	}
+	rest = gc_malloc(sizeof(char) * (i + 1));
+	if (!rest)
+		return (NULL);
+	i = 0;
+	while (node->head)
+		rest[i++] = pop_node(node);
+	rest[i] = '\0';
+	return (rest);
+}
+
+static char	*handle_cases(ssize_t bytes, t_list *node, char *rest, int *fd)
+{
+	ssize_t	i;
+
+	if (bytes == -1)
+	{
+		// free(rest);
+		// free_queue(node);
+		return (NULL);
+	}
+	else if (bytes == 0)
+	{
+		// free(rest);
+		if (is_it_empty(node))
+			return (NULL);
+		else
+			return (extract_rest(node));
+	}
+	else
+	{
+		i = 0;
+		while (i < bytes)
+			push_node(node, rest[i++]);
+		// free(rest);
+		return (get_next_line(*fd));
+	}
+}
+
+char	*get_next_line(int fd)
+{
+	static t_list	node;
+	ssize_t			bytes;
+	char			*rest;
+	static int		flag = 0;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	if (flag == 0)
+	{
+		initialize_queue(&node);
+		flag = 1;
+	}
+	if (!is_it_empty(&node) && has_new_line(&node))
+		return (extract_line(&node));
+	rest = gc_malloc(sizeof(char) * (BUFFER_SIZE));
+	if (!rest)
+		return (NULL);
+	bytes = read(fd, rest, BUFFER_SIZE);
+	return (handle_cases(bytes, &node, rest, &fd));
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   validator_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/07 23:38:44 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/18 22:28:42 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+int	check_redirection_syntax(char **ps, char *es, int *exit_status)
+{
+	char	*q;
+	char	*eq;
+	int		ret;
+
+	ret = gettoken(ps, es, &q, &eq);
+	if (ret == '\0')
+	{
+		ft_putstr_fd("Void-shell: syntax error near \
+unexpected token `newline'\n",
+			STDERR_FILENO);
+		*exit_status = 258;
+		return (0);
+	}
+	else if (ret != 'a')
+	{
+		*eq = '\0';
+		ft_putstr_fd("Void-shell: syntax error near unexpected token `",
+			STDERR_FILENO);
+		ft_putstr_fd(q, STDERR_FILENO);
+		ft_putstr_fd("'\n", STDERR_FILENO);
+		*exit_status = 258;
+		return (0);
+	}
+	return (1);
+}
+
+int	validate_pipe_syntax(char **ps, char *es, int *exit_status)
+{
+	if (peek(ps, es, "|"))
+	{
+		ft_putstr_fd("Void-shell: syntax error near unexpected token `|'\n",
+			STDERR_FILENO);
+		*exit_status = 258;
+		return (0);
+	}
+	return (1);
+}
+
+int	check_pipe_usage(char **ps, char *es, int *exit_status)
+{
+	int	ret;
+
+	ret = gettoken(ps, es, 0, 0);
+	if (ret == '|' || ret == '\0')
+	{
+		ft_putstr_fd("Void-shell: syntax error near unexpected token `|'\n",
+			STDERR_FILENO);
+		*exit_status = 258;
+		return (0);
+	}
+	return (1);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   validator.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/07 23:38:33 by msennane          #+#    #+#             */
+/*   Updated: 2024/11/07 23:38:57 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+static void	display_error(int ret)
+{
+	ft_putstr_fd("Void-shell: : unexpected EOF while looking for matching `",
+		STDERR_FILENO);
+	ft_putchar_fd(ret, STDERR_FILENO);
+	ft_putstr_fd("'\n", STDERR_FILENO);
+}
+
+static int	check_unbalanced_quotes(char *line, int *exit_status)
+{
+	int	ret;
+	int	i;
+
+	i = 0;
+	while (line[i] != '\0')
+	{
+		if (line[i] == '\"' || line[i] == '\'')
+		{
+			ret = line[i];
+			i++;
+			while (line[i] && line[i] != ret)
+				i++;
+			if (line[i] == '\0')
+			{
+				display_error(ret);
+				*exit_status = 258;
+				return (0);
+			}
+			i++;
+		}
+		else
+			i++;
+	}
+	return (1);
+}
+
+static int	check_command_syntax(char *line, int *exit_status)
+{
+	char	*ps;
+	char	*es;
+	int		ret;
+
+	ps = line;
+	es = ps + ft_strlen(ps);
+	if (!validate_pipe_syntax(&ps, es, exit_status))
+		return (0);
+	while (peek(&ps, es, "\0") == 0)
+	{
+		ret = gettoken(&ps, es, 0, 0);
+		if (ret == '>' || ret == '<' || ret == '+' || ret == '%')
+		{
+			if (!check_redirection_syntax(&ps, es, exit_status))
+				return (0);
+		}
+		else if (ret == '|')
+		{
+			if (!check_pipe_usage(&ps, es, exit_status))
+				return (0);
+		}
+		else if (ret == '\0')
+			break ;
+	}
+	return (1);
+}
+
+int	check_command_validity(char *line, int *exit_status)
+{
+	if (!check_unbalanced_quotes(line, exit_status))
+		return (0);
+	if (!check_command_syntax(line, exit_status))
+		return (0);
+	return (1);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenizer_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/06 20:18:35 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/05 13:31:40 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+int	peek(char **ps, char *es, char *toks)
+{
+	char	*s;
+
+	s = *ps;
+	while (s < es && is_whitespace(*s))
+		s++;
+	return (*s && ft_strchr(toks, *s));
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/06 20:18:35 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/05 13:31:50 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+static void	determine_greater_than_token(char **input, int *token)
+{
+	(*input)++;
+	if (**input == '>')
+	{
+		*token = '+';
+		(*input)++;
+	}
+	else
+		*token = '>';
+}
+
+static void	determine_less_than_token(char **input, int *token)
+{
+	(*input)++;
+	if (**input == '<')
+	{
+		*token = '%';
+		(*input)++;
+	}
+	else
+		*token = '<';
+}
+
+static void	determine_special_tokens(char **input, int *token)
+{
+	if (**input == '\0')
+		*token = '\0';
+	else if (**input == '|')
+	{
+		*token = '|';
+		(*input)++;
+	}
+	else if (**input == '>')
+		determine_greater_than_token(input, token);
+	else if (**input == '<')
+		determine_less_than_token(input, token);
+	else
+		*token = 'a';
+}
+
+static void	skip_tokens(char **current, char *end)
+{
+	while (*current < end && !is_whitespace(**current) && !ft_strchr("<|>",
+			**current))
+	{
+		if (**current == '\"')
+		{
+			(*current)++;
+			while (*current < end && **current != '\"')
+				(*current)++;
+			if (*current >= end)
+				break ;
+		}
+		else if (**current == '\'')
+		{
+			(*current)++;
+			while (*current < end && **current != '\'')
+				(*current)++;
+			if (*current >= end)
+				break ;
+		}
+		if (*current < end)
+			(*current)++;
+	}
+}
+
+int	gettoken(char **ps, char *es, char **q, char **eq)
+{
+	char	*s;
+	int		ret;
+
+	s = *ps;
+	while (s < es && is_whitespace(*s))
+		s++;
+	if (q)
+		*q = s;
+	determine_special_tokens(&s, &ret);
+	if (ret == 'a')
+		skip_tokens(&s, es);
+	if (eq)
+		*eq = s;
+	*ps = s;
+	return (ret);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   noise_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/01 01:31:03 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/18 23:40:14 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+void	signal_handler_general(int signum)
+{
+	if (signum == SIGINT)
+	{
+		ft_putstr_fd("\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+}
+
+void	signal_handler_input(int signum)
+{
+	char	*msg;
+
+	if (signum == SIGQUIT)
+	{
+		msg = "Quit: 3\n";
+		ft_putstr_fd(msg, 1);
+	}
+	else if (signum == SIGINT)
+		ft_putstr_fd("\n", 1);
+}
+
+void	signal_handler_heredoc(int signum)
+{
+	int		fd;
+	pid_t	child_pid;
+
+	if (signum == SIGINT)
+	{
+		write(STDOUT_FILENO, "\n", 1);
+		fd = open(SHELL_CHILD_PID_FILE, O_RDONLY);
+		if (fd < 0)
+		{
+			ft_putstr_fd("Error: Failed to open PID file\n", STDERR_FILENO);
+			_exit(1);
+		}
+		if (read(fd, &child_pid, sizeof(pid_t)) < 0)
+		{
+			ft_putstr_fd("Error: Failed to read PID\n", STDERR_FILENO);
+			close(fd);
+			_exit(1);
+		}
+		close(fd);
+		kill(child_pid, SIGKILL);
+	}
+	else if (signum == SIGQUIT)
+		ft_putstr_fd("\b\b  \b\b", STDOUT_FILENO);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   noise.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/01 01:31:03 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/18 23:40:22 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+static void	setup_signal_action(int signum, void (*handler)(int), int flags)
+{
+	struct sigaction	act;
+
+	sigemptyset(&act.sa_mask);
+	act.sa_handler = handler;
+	act.sa_flags = flags;
+	sigaction(signum, &act, NULL);
+}
+
+void	setup_signals(void)
+{
+	setup_signal_action(SIGINT, signal_handler_general, SA_RESTART);
+	setup_signal_action(SIGQUIT, SIG_IGN, 0);
+}
+
+void	set_signal_handler(t_command *tree)
+{
+	if (tree && tree->type == CMD_REDIR)
+	{
+		setup_signal_action(SIGINT, signal_handler_heredoc, SA_RESTART);
+		setup_signal_action(SIGQUIT, signal_handler_heredoc, SA_RESTART);
+	}
+	else
+	{
+		setup_signal_action(SIGINT, signal_handler_input, SA_RESTART);
+		setup_signal_action(SIGQUIT, signal_handler_input, SA_RESTART);
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redircmd.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/30 02:32:09 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/05 12:38:22 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+t_redir_data	create_redirdata(char *file, char *efile, int fd, int mode)
+{
+	t_redir_data	data;
+
+	data.file = file;
+	data.efile = efile;
+	data.fd = fd;
+	data.mode = mode;
+	return (data);
+}
+
+t_command	*create_redircmd(t_command *subcmd, t_redir_data redir,
+		char redir_type)
+{
+	t_redir	*cmd;
+
+	cmd = ft_calloc(1, sizeof(*cmd));
+	if (!cmd)
+	{
+		perror("ft_calloc failed");
+		return (NULL);
+	}
+	cmd->type = CMD_REDIR;
+	cmd->sub_cmd = subcmd;
+	cmd->file = redir.file;
+	cmd->efile = redir.efile;
+	cmd->mode = redir.mode;
+	cmd->fd = redir.fd;
+	cmd->redir_type = redir_type;
+	return ((t_command *)cmd);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execcmd.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/30 02:32:03 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/05 12:38:11 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+t_command	*create_execcmd(void)
+{
+	t_exec	*cmd;
+
+	cmd = ft_calloc(1, sizeof(*cmd));
+	if (!cmd)
+		return (NULL);
+	cmd->type = CMD_EXEC;
+	return ((t_command *)cmd);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipecmd.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/30 02:32:06 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/02 16:48:29 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+t_command	*create_pipecmd(t_command *left, t_command *right)
+{
+	t_pipe	*pipecmd;
+
+	pipecmd = ft_calloc(1, sizeof(*pipecmd));
+	if (!pipecmd)
+		return (NULL);
+	pipecmd->type = CMD_PIPE;
+	pipecmd->left = left;
+	pipecmd->right = right;
+	return ((t_command *)pipecmd);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   void-shell-utils.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/21 18:39:02 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/06 18:33:35 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+int	is_whitespace(char c)
+{
+	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f'
+		|| c == '\r')
+		return (1);
+	return (0);
+}
+
+int	is_whitespace_string(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!is_whitespace(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	is_numeric(const char *str)
+{
+	if (*str && (*str == '+' || *str == '-'))
+		str++;
+	if (*str == '\0')
+		return (0);
+	while (*str)
+	{
+		if (*str < '0' || *str > '9')
+			return (0);
+		str++;
+	}
+	return (1);
+}
+
+int	ft_fork(t_shell_context *context)
+{
+	int	pid;
+
+	pid = fork();
+	if (pid == -1)
+		terminate_with_error(context, "fork", 1);
+	return (pid);
+}
+
+void	ft_pipe(int fd[2], t_shell_context *context)
+{
+	if (pipe(fd) == -1)
+		terminate_with_error(context, "pipe", 1);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   memory_cleanup.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/21 12:29:51 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/18 22:38:16 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+static void	cleanup_resources(t_shell_context *context)
+{
+	release_command_resources(context->tree);
+	free_env(context->env_vars);
+	free_queue(&context->queue);
+}
+
+void	ft_free(void *ptr)
+{
+	if (ptr)
+	{
+		free(ptr);
+		ptr = NULL;
+	}
+}
+
+void	terminate_cleanly(t_shell_context *context, int status)
+{
+	ft_free(context->input);
+	gc_free_all();
+	exit(status);
+}
+
+void	terminate_with_error(t_shell_context *context, char *message,
+		int status)
+{
+	gc_free_all();
+	perror(message);
+	exit(status);
+}
+
+void	free_array(char **array)
+{
+	int	i;
+
+	i = 0;
+	while (array[i])
+	{
+		i++;
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   queue_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/21 18:52:49 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/18 23:37:09 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+void	init_queue(t_queue *queue)
+{
+	queue->front = NULL;
+	queue->rear = NULL;
+}
+
+void	enqueue(t_queue *queue, void *data)
+{
+	t_node	*new_node;
+
+	new_node = (t_node *)gc_malloc(sizeof(t_node));
+	if (!new_node)
+		return ;
+	new_node->data = data;
+	new_node->next = NULL;
+	if (queue->rear)
+		queue->rear->next = new_node;
+	queue->rear = new_node;
+	if (!queue->front)
+		queue->front = queue->rear;
+}
+
+void	*dequeue(t_queue *queue)
+{
+	t_node	*tmp;
+	void	*data;
+
+	if (!queue || !queue->front)
+		return (NULL);
+	tmp = queue->front;
+	data = tmp->data;
+	queue->front = queue->front->next;
+	if (!queue->front)
+		queue->rear = NULL;
+	return (data);
+}
+
+void	*queue_str_convert(t_queue *queue)
+{
+	int		len;
+	char	*str;
+	char	*line;
+	t_node	*tmp;
+
+	if (!queue || !queue->front)
+		return (NULL);
+	len = 0;
+	tmp = queue->front;
+	while (tmp)
+	{
+		len += ft_strlen(tmp->data);
+		tmp = tmp->next;
+	}
+	str = (char *)ft_calloc(len + 1, sizeof(char));
+	while (queue->front)
+	{
+		line = dequeue(queue);
+		ft_strlcat(str, line, len + 1);
+	}
+	return (str);
+}
+
+void	free_queue(t_queue *queue)
+{
+	t_node	*tmp;
+
+	if (!queue)
+		return ;
+	while (queue->front)
+	{
+		tmp = queue->front;
+		queue->front = queue->front->next;
+	}
+	queue->rear = NULL;
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   void-shell-utils2.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/21 18:39:02 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/18 23:32:41 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+void	ft_close(t_shell_context *context, int fd)
+{
+	if (-1 == close(fd))
+		terminate_with_error(context, "close", 1);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   queue_utils1.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/21 18:52:49 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/18 23:36:09 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+void	init_queue_char(t_queue_char *queue)
+{
+	queue->front = NULL;
+	queue->rear = NULL;
+}
+
+void	enqueue_char(t_queue_char *queue, char data)
+{
+	t_node_char	*new_node;
+
+	new_node = (t_node_char *)gc_malloc(sizeof(t_node_char));
+	if (!new_node)
+		return ;
+	new_node->data = data;
+	new_node->next = NULL;
+	if (queue->rear)
+		queue->rear->next = new_node;
+	queue->rear = new_node;
+	if (!queue->front)
+		queue->front = queue->rear;
+}
+
+char	dequeue_char(t_queue_char *queue)
+{
+	t_node_char	*tmp;
+	char		data;
+
+	if (!queue || !queue->front)
+		return ('\0');
+	tmp = queue->front;
+	data = tmp->data;
+	queue->front = queue->front->next;
+	if (!queue->front)
+		queue->rear = NULL;
+	return (data);
+}
+
+void	enqueue_str(t_queue_char *queue, char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		enqueue_char(queue, str[i]);
+		i++;
+	}
+}
+
+char	*queue_char_str_convert(t_queue_char *queue)
+{
+	t_node_char	*tmp;
+	char		*str;
+	int			i;
+	int			len;
+
+	if (!queue || !queue->front)
+		return (NULL);
+	len = 0;
+	tmp = queue->front;
+	while (tmp)
+	{
+		len++;
+		tmp = tmp->next;
+	}
+	str = (char *)gc_malloc(sizeof(char) * (len + 1));
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (queue->front)
+	{
+		str[i++] = dequeue_char(queue);
+	}
+	str[i] = '\0';
+	return (str);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   void-shell-utils1.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/21 18:39:02 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/18 23:32:46 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+void	retrieve_exit_status(t_command *cmd, t_shell_context *context,
+		int *exit_status, int status)
+{
+	int	fd;
+
+	if (cmd && (cmd->type == CMD_EXEC || cmd->type == CMD_REDIR))
+	{
+		if (WIFEXITED(status))
+			*exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			*exit_status = WTERMSIG(status) + 128;
+		else
+			*exit_status = EXIT_FAILURE;
+	}
+	else
+	{
+		fd = open(SHELL_CHILD_STATUS_FILE, O_RDONLY);
+		if (-1 == fd)
+			terminate_with_error(context, "open", 1);
+		if (-1 == read(fd, exit_status, sizeof(int)))
+			terminate_with_error(context, "read", 1);
+		ft_close(context, fd);
+	}
+}
+
+void	store_subprocess_pid(pid_t pid, t_shell_context *context)
+{
+	int	fd;
+
+	fd = open(SHELL_CHILD_PID_FILE, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (-1 == fd)
+		terminate_with_error(context, "open", 1);
+	if (-1 == write(fd, &pid, sizeof(pid_t)))
+		terminate_with_error(context, "write", 1);
+	ft_close(context, fd);
+}
+
+int	is_built_in_command(t_command *cmd)
+{
+	t_exec	*exec_cmd;
+
+	if (!cmd)
+		return (0);
+	if (cmd && (cmd->type == CMD_EXEC))
+	{
+		exec_cmd = (t_exec *)cmd;
+		if (exec_cmd->argv[0] && (ft_strcmp(exec_cmd->argv[0], "cd") == 0
+				|| ft_strcmp(exec_cmd->argv[0], "export") == 0
+				|| ft_strcmp(exec_cmd->argv[0], "unset") == 0))
+			return (1);
+	}
+	return (0);
+}
+
+void	run_built_in_command(t_exec *cmd, t_env_var **env_list,
+		int *exit_status)
+{
+	(void)env_list;
+	if (ft_strcmp(cmd->argv[0], "cd") == 0)
+		cd(cmd->argv, exit_status, env_list);
+	else if (ft_strcmp(cmd->argv[0], "export") == 0)
+	{
+		ft_export(cmd->argv, env_list, exit_status);
+	}
+	else if (ft_strcmp(cmd->argv[0], "unset") == 0)
+	{
+		unset_env(cmd->argv, env_list, exit_status);
+	}
+}
+
+void	clean_shell(t_shell_context *context)
+{
+	unlink(SHELL_CHILD_PID_FILE);
+	unlink(SHELL_CHILD_STATUS_FILE);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   command_executor.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/01 23:46:19 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/02 20:22:18 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+void	execute_command(t_command *cmd, t_shell_context *context,
+		int *exit_status)
+{
+	if (cmd->type == CMD_EXEC)
+	{
+		run_exec(cmd, context, exit_status);
+	}
+	else if (cmd->type == CMD_REDIR)
+	{
+		execute_redirects_command(cmd, context, exit_status);
+	}
+	else if (cmd->type == CMD_PIPE)
+	{
+		execute_pipeline_command(cmd, context, exit_status);
+	}
+	exit(*exit_status);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execution_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/01 23:46:26 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/19 00:24:40 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+char	*get_executable_path(char *command, char *path)
+{
+	int		i;
+	char	**path_directories;
+	char	*command_with_slash;
+	char	*full_path;
+
+	path_directories = ft_split(path, ':');
+	command_with_slash = ft_strjoin("/", command);
+	i = 0;
+	while (path_directories[i])
+	{
+		full_path = ft_strjoin(path_directories[i], command_with_slash);
+		if (full_path && (access(full_path, X_OK) == 0))
+			return (full_path);
+		i++;
+	}
+	return (NULL);
+}
+
+void	handle_invalid_executable(t_exec *cmd, t_shell_context *context,
+		struct stat path_stat)
+{
+	if (S_ISDIR(path_stat.st_mode))
+	{
+		print_exec_error(cmd->argv[0], "Is a directory");
+		terminate_cleanly(context, 126);
+	}
+	else if (access(cmd->argv[0], X_OK) != 0)
+	{
+		print_exec_error(cmd->argv[0], "Permission denied");
+		terminate_cleanly(context, 126);
+	}
+}
+
+void	handle_executable_path(t_exec *ecmd, t_shell_context *context)
+{
+	struct stat	path_stat;
+
+	if (ecmd->argv[0] == NULL)
+	{
+		if (ft_strchr(context->input, '$') != NULL)
+			terminate_cleanly(context, 0);
+		else if (ft_strchr(context->input, '\"') || ft_strchr(context->input,
+				'\''))
+			(print_exec_error(ecmd->argv[0], "command not found"),
+				terminate_cleanly(context, 127));
+		else
+			terminate_cleanly(context, 0);
+	}
+	else if (ft_strchr("./", ecmd->argv[0][0]))
+	{
+		if (stat(ecmd->argv[0], &path_stat) == 0)
+			handle_invalid_executable(ecmd, context, path_stat);
+		else
+			(print_exec_error(ecmd->argv[0], "No such file or directory"),
+				terminate_cleanly(context, 127));
+	}
+}
+
+char	*get_command_path(char *cmd_name, t_env_var *env_vars)
+{
+	char	*path_env;
+	char	*cmd_path;
+
+	path_env = get_env_value("PATH", env_vars);
+	if (!path_env)
+		return (NULL);
+	cmd_path = get_executable_path(cmd_name, path_env);
+	return (cmd_path);
+}
+
+void	handle_execve(char *binary_path, char **argv, char **envp,
+		t_shell_context *context)
+{
+	execve(binary_path, argv, envp);
+	print_exec_error(argv[0], "command not found");
+	terminate_cleanly(context, 127);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execution_manager.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/01 23:46:23 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/20 14:58:17 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+void	print_exec_error(char *cmd_name, char *error_type)
+{
+	ft_putstr_fd("Void-shell: ", STDERR_FILENO);
+	ft_putstr_fd(cmd_name, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putstr_fd(error_type, STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
+}
+
+static int	is_builtin_command(t_exec *exec_cmd)
+{
+	const char	*builtins[] = {"echo", "exit", "env", "export", "unset", "pwd"};
+	size_t		i;
+	size_t		builtin_count;
+
+	builtin_count = sizeof(builtins) / sizeof(builtins[0]);
+	i = 0;
+	while (i < builtin_count)
+	{
+		if (ft_strcmp(exec_cmd->argv[0], builtins[i]) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+static void	execute_builtin_command(t_exec *exec_cmd, t_shell_context *context,
+		int *exit_status)
+{
+	int	status;
+
+	if (ft_strcmp(exec_cmd->argv[0], "echo") == 0)
+	{
+		echo(exec_cmd->argv);
+		*exit_status = 0;
+	}
+	else if (ft_strcmp(exec_cmd->argv[0], "exit") == 0)
+	{
+		ft_exit(exec_cmd->argv, context);
+	}
+	else if (ft_strcmp(exec_cmd->argv[0], "env") == 0)
+		env(exec_cmd->argv, context);
+	else if (ft_strcmp(exec_cmd->argv[0], "export") == 0)
+		simple_export(exec_cmd->argv, context->env_vars);
+	else if (ft_strcmp(exec_cmd->argv[0], "unset") == 0)
+	{
+		// free_exit(params, 0);
+	}
+	else if (ft_strcmp(exec_cmd->argv[0], "pwd") == 0)
+	{
+		pwd(exit_status);
+	}
+}
+
+static void	execute_external_command(t_command *cmd, t_shell_context *context)
+{
+	t_exec		*exec_cmd;
+	char		*binary_path;
+	char		**envp;
+	struct stat	buffer;
+
+	envp = envp_to_env_vector(context->env_vars);
+	exec_cmd = (t_exec *)cmd;
+	binary_path = get_command_path(exec_cmd->argv[0], context->env_vars);
+	if (!binary_path)
+		(print_exec_error(exec_cmd->argv[0], "command not found"),
+			terminate_cleanly(context, 127));
+	if (stat(binary_path, &buffer) != 0)
+		(print_exec_error(exec_cmd->argv[0], "No such file or directory"),
+			terminate_cleanly(context, 127));
+	if (access(binary_path, X_OK) != 0)
+		(print_exec_error(exec_cmd->argv[0], "Permission denied"),
+			terminate_cleanly(context, 127));
+	handle_execve(binary_path, exec_cmd->argv, envp, context);
+}
+
+void	run_exec(t_command *cmd, t_shell_context *context, int *exit_status)
+{
+	t_exec	*exec_cmd;
+
+	exec_cmd = (t_exec *)cmd;
+	handle_executable_path(exec_cmd, context);
+	if (is_builtin_command(exec_cmd))
+	{
+		execute_builtin_command(exec_cmd, context, exit_status);
+		terminate_cleanly(context, *exit_status);
+	}
+	else
+	{
+		if (exec_cmd->argv[0] && (access(exec_cmd->argv[0], X_OK) == 0))
+		{
+			execve(exec_cmd->argv[0], exec_cmd->argv, context->envp);
+			print_exec_error(exec_cmd->argv[0], "command not found");
+			terminate_cleanly(context, 127);
+		}
+		else
+			execute_external_command(cmd, context);
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe_handler.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/01 23:46:29 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/19 00:41:50 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+static void	signal_handler(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+static void	handle_heredoc(pid_t pid1, int fd[2], t_shell_context *context,
+		int *exit_status)
+{
+	int	status;
+
+	waitpid(pid1, &status, 0);
+	if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+	{
+		ft_close(context, fd[0]);
+		ft_close(context, fd[1]);
+		*exit_status = WEXITSTATUS(status);
+	}
+}
+
+static pid_t	handle_pipeline_child_processes(t_pipe *pipe_cmd, int fd[2],
+		t_shell_context *context, int *exit_status)
+{
+	pid_t	pid1;
+
+	pid1 = ft_fork(context);
+	if (pid1 == 0)
+	{
+		if (pipe_cmd->left->type == CMD_REDIR
+			&& ((t_redir *)pipe_cmd->left)->redir_type == '%')
+		{
+			ft_close(context, fd[0]);
+			if (dup2(fd[1], STDOUT_FILENO) == -1)
+			{
+				perror("dup2");
+				exit(EXIT_FAILURE);
+			}
+			ft_close(context, fd[1]);
+			execute_command(pipe_cmd->left, context, exit_status);
+			exit(0);
+		}
+		else
+			left_pipe(context, pipe_cmd->left, fd, exit_status);
+	}
+	if (pipe_cmd->left->type == CMD_REDIR
+		&& ((t_redir *)pipe_cmd->left)->redir_type == '%')
+		handle_heredoc(pid1, fd, context, exit_status);
+	return (pid1);
+}
+
+void	execute_pipeline_command(t_command *cmd, t_shell_context *context,
+		int *exit_status)
+{
+	int		fd[2];
+	int		status;
+	t_pipe	*pipe_cmd;
+	pid_t	pid1;
+	pid_t	pid2;
+
+	pipe_cmd = (t_pipe *)cmd;
+	ft_pipe(fd, context);
+	pid1 = handle_pipeline_child_processes(pipe_cmd, fd, context, exit_status);
+	pid2 = ft_fork(context);
+	if (pid2 == 0)
+		right_pipe(pipe_cmd->right, context, fd, exit_status);
+	signal_handler();
+	ft_close(context, fd[0]);
+	ft_close(context, fd[1]);
+	waitpid(pid2, &status, 0);
+	if (WIFEXITED(status))
+		*exit_status = WEXITSTATUS(status);
+	else
+		*exit_status = 1;
+	if (!(pipe_cmd->left->type == CMD_REDIR
+			&& ((t_redir *)pipe_cmd->left)->redir_type == '%'))
+		waitpid(pid1, NULL, 0);
+	save_exit_status(context, *exit_status);
+	terminate_cleanly(context, *exit_status);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirection_manager.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/20 15:04:01 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+static char	*read_heredoc_input(char *del, t_shell_context *context,
+		int *exit_status)
+{
+	char	*line;
+	t_queue	queue;
+	int		tty_fd;
+	int		is_quoted;
+	char	*clean_del;
+
+	tty_fd = open("/dev/tty", O_RDONLY);
+	if (tty_fd < 0)
+		terminate_with_error(context, "open", 1);
+	dup2(tty_fd, STDIN_FILENO);
+	ft_close(context, tty_fd);
+	init_queue(&queue);
+	is_quoted = 0;
+	clean_del = clean_delimiter(del, &is_quoted);
+	if (!clean_del)
+		clean_del = ft_strdup("");
+	while (1)
+	{
+		ft_putstr_fd("> ", STDERR_FILENO);
+		line = get_next_line(STDIN_FILENO);
+		if (!line)
+			break ;
+		if (clean_del[0] == '\0')
+		{
+			if (line[0] == '\n')
+				break ;
+		}
+		else if (ft_strlen(line) >= ft_strlen(clean_del) && ft_strncmp(line,
+				clean_del, ft_strlen(clean_del)) == 0
+			&& line[ft_strlen(clean_del)] == '\n')
+			break ;
+		if (is_quoted)
+			enqueue(&queue, ft_strdup(line));
+		else
+			enqueue(&queue, process_line_hd(context, line, exit_status));
+	}
+	return (queue_str_convert(&queue));
+}
+
+static void	write_heredoc_file(t_shell_context *context, char *content)
+{
+	int	fd;
+
+	if (!content)
+		terminate_cleanly(context, 0);
+	fd = open(SHELL_HEREDOC_FILE, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (fd < 0)
+		terminate_with_error(context, "open", 1);
+	if (write(fd, content, ft_strlen(content)) < 0)
+		terminate_with_error(context, "write", 1);
+	ft_close(context, fd);
+}
+
+void	execute_redirects_command(t_command *cmd, t_shell_context *context,
+		int *exit_status)
+{
+	t_redir	*redir_cmd;
+	char	*heredoc_content;
+
+	redir_cmd = (t_redir *)cmd;
+	ignore_signals_heredoc();
+	if (redir_cmd->redir_type != '%')
+	{
+		if (ft_strcmp(redir_cmd->file, "\x01\x01\x01") == 0)
+		{
+			*exit_status = 1;
+			terminate_cleanly(context, *exit_status);
+		}
+		if (!redir_cmd->file)
+		{
+			ft_putstr_fd("minishell: No such file or directory\n",
+				STDERR_FILENO);
+			*exit_status = 1;
+			terminate_cleanly(context, *exit_status);
+		}
+		ft_close(context, redir_cmd->fd);
+		if (open(redir_cmd->file, redir_cmd->mode, 0644) < 0)
+			terminate_with_error(context, "open", 1);
+	}
+	else
+	{
+		heredoc_content = read_heredoc_input(redir_cmd->file, context,
+				exit_status);
+		write_heredoc_file(context, heredoc_content);
+		ft_close(context, redir_cmd->fd);
+		if (open(SHELL_HEREDOC_FILE, redir_cmd->mode, 0644) < 0)
+			terminate_with_error(context, "open", 1);
+	}
+	execute_command(redir_cmd->sub_cmd, context, exit_status);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc_redir.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/20 00:40:06 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+static void	handle_dollar_sign_del(char *str, int *index, t_queue_char *queue)
+{
+	int	i;
+
+	i = *index;
+	if (str[i + 1] == '"')
+	{
+		i += 2;
+		while (str[i] && str[i] != '"')
+			enqueue_char(queue, str[i++]);
+		if (str[i] == '"')
+			i++;
+	}
+	else if (str[i + 1] && (str[i + 1] == '$' || str[i + 1] == '\0' || str[i
+			+ 1] == ' '))
+		enqueue_char(queue, str[i++]);
+	else
+	{
+		enqueue_char(queue, str[i++]);
+		if (str[i])
+			enqueue_char(queue, str[i++]);
+	}
+	*index = i - 1;
+}
+
+static void	handle_single_quote(char *str, int *index, t_queue_char *queue)
+{
+	int	i;
+
+	(*index)++;
+	i = *index;
+	while (str[i] && str[i] != '\'')
+	{
+		enqueue_char(queue, str[i]);
+		i++;
+	}
+	*index = i;
+}
+
+static void	handle_double_quote(char *str, int *index, t_queue_char *queue)
+{
+	int	i;
+
+	(*index)++;
+	i = *index;
+	while (str[i] && str[i] != '"')
+	{
+		enqueue_char(queue, str[i]);
+		i++;
+	}
+	*index = i;
+}
+
+static void	clean_del_helper(char *str, t_queue_char *queue, int *is_quoted)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'')
+		{
+			handle_single_quote(str, &i, queue);
+			*is_quoted = 1;
+		}
+		else if (str[i] == '"')
+		{
+			handle_double_quote(str, &i, queue);
+			*is_quoted = 1;
+		}
+		else if (str[i] == '$')
+		{
+			handle_dollar_sign_del(str, &i, queue);
+			*is_quoted = 1;
+		}
+		else
+			enqueue_char(queue, str[i]);
+		i++;
+	}
+}
+
+char	*clean_delimiter(char *str, int *is_quoted)
+{
+	t_queue_char	queue;
+	char			*cleaned;
+
+	init_queue_char(&queue);
+	*is_quoted = 0;
+	clean_del_helper(str, &queue, is_quoted);
+	cleaned = queue_char_str_convert(&queue);
+	return (cleaned);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirection_helper.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/20 15:01:20 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+static char	*getvar_name(char *arg)
+{
+	int	i;
+	int	n;
+
+	i = 0;
+	if (ft_isdigit(arg[i]))
+	{
+		n = arg[i] - '0';
+		return (ft_itoa(n));
+	}
+	while (arg[i] && ((ft_isalnum(arg[i]) || arg[i] == '_')))
+		i++;
+	return (ft_substr(arg, 0, i));
+}
+
+static void	replace_var_in_line(char *line, int *i, t_shell_context *context,
+		t_queue_char *q)
+{
+	char	*var_name;
+	char	*var_value;
+
+	(*i)++;
+	var_name = getvar_name(line + *i);
+	var_value = get_env_value(var_name, context->env_vars);
+	if (var_value)
+		enqueue_str(q, var_value);
+	*i += ft_strlen(var_name);
+}
+
+void ignore_signals_heredoc(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+char	*process_line_hd(t_shell_context *context, char *line,
+		int *exit_status)
+{
+	int				i;
+	t_queue_char	q;
+	char			*exit_code;
+
+	i = 0;
+	init_queue_char(&q);
+	while (line[i])
+	{
+		if (line[i] == '$' && line[i + 1] == '?')
+		{
+			exit_code = ft_itoa(*exit_status);
+			enqueue_str(&q, exit_code);
+			i += 2;
+		}
+		else if (line[i] == '$' && (is_whitespace(line[i + 1])))
+			enqueue_char(&q, line[i++]);
+		else if (line[i] == '$')
+			replace_var_in_line(line, &i, context, &q);
+		else
+			enqueue_char(&q, line[i++]);
+	}
+	return (queue_char_str_convert(&q));
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe_handler2.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/01 23:46:29 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/06 18:55:48 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+void	save_exit_status(t_shell_context *context, int status_code)
+{
+	int		fd;
+	ssize_t	bytes_written;
+
+	fd = open(SHELL_CHILD_STATUS_FILE, O_WRONLY | O_CREAT | O_APPEND, 0777);
+	if (fd < 0)
+	{
+		perror("open");
+		terminate_with_error(context, "Open", EXIT_FAILURE);
+	}
+	bytes_written = write(fd, &status_code, sizeof(status_code));
+	if (bytes_written < 0)
+	{
+		perror("write");
+		terminate_with_error(context, "Write", EXIT_FAILURE);
+	}
+	ft_close(context, fd);
+}
+
+void	left_pipe(t_shell_context *context, t_command *cmd, int fd[2],
+		int *exit_status)
+{
+	ft_close(context, fd[0]);
+	if (dup2(fd[1], STDOUT_FILENO) == -1)
+	{
+		perror("dup2");
+		exit(EXIT_FAILURE);
+	}
+	ft_close(context, fd[1]);
+	execute_command(cmd, context, exit_status);
+	exit(0);
+}
+
+void	right_pipe(t_command *cmd, t_shell_context *context, int fd[2],
+		int *exit_status)
+{
+	ft_close(context, fd[1]);
+	if (dup2(fd[0], STDIN_FILENO) == -1)
+	{
+		perror("dup2");
+		exit(EXIT_FAILURE);
+	}
+	ft_close(context, fd[0]);
+	execute_command(cmd, context, exit_status);
+	exit(0);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/06 20:55:50 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/18 22:19:48 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+t_command	*parsepipe(char **ps, char *es, int *ret)
+{
+	t_command	*cmd;
+
+	cmd = parseexec(ps, es, ret);
+	if (peek(ps, es, "|"))
+	{
+		gettoken(ps, es, 0, 0);
+		cmd = create_pipecmd(cmd, parsepipe(ps, es, ret));
+	}
+	return (cmd);
+}
+
+t_command	*parsecmd(char *line, int *exit_status)
+{
+	int			ret;
+	char		*ps;
+	char		*es;
+	t_command	*cmd;
+
+	ret = 0;
+	ps = line;
+	es = ps + ft_strlen(line);
+	cmd = parsepipe(&ps, es, &ret);
+	peek(&ps, es, "");
+	if (ps != es || ret != 0)
+	{
+		if (ret == 1)
+			ft_putstr_fd("Void-shell: too many arguments\n", 2);
+		else
+			ft_putstr_fd("Void-shell: syntax error\n", 2);
+		*exit_status = 258;
+		release_command_resources(cmd);
+		return (NULL);
+	}
+	cmd_null_terminate(cmd);
+	return (cmd);
+}
+
+static void	parse_next_redir(t_command **cmd, t_exec **ecmd, char **ps,
+		char *es)
+{
+	t_command	*tmp;
+
+	if ((*cmd) != (t_command *)(*ecmd))
+	{
+		tmp = (*cmd);
+		while (((t_redir *)tmp)->sub_cmd->type == CMD_REDIR)
+			tmp = ((t_redir *)tmp)->sub_cmd;
+		((t_redir *)tmp)->sub_cmd = parseredirs(((t_command *)(*ecmd)), ps, es);
+	}
+	else
+		(*cmd) = parseredirs((*cmd), ps, es);
+}
+
+t_command	*parseredirs(t_command *sub_cmd, char **ps, char *es)
+{
+	char		*q;
+	char		*eq;
+	int			tok;
+	t_command	*cmd;
+
+	cmd = sub_cmd;
+	if (peek(ps, es, "<>"))
+	{
+		tok = gettoken(ps, es, 0, 0);
+		gettoken(ps, es, &q, &eq);
+		if (tok == '<')
+			cmd = create_redircmd(parseredirs(sub_cmd, ps, es),
+					create_redirdata(q, eq, 0, O_RDONLY), '<');
+		else if (tok == '>')
+			cmd = create_redircmd(parseredirs(sub_cmd, ps, es),
+					create_redirdata(q, eq, 1, O_WRONLY | O_CREAT | O_TRUNC),
+					'>');
+		else if (tok == '+')
+			cmd = create_redircmd(parseredirs(sub_cmd, ps, es),
+					create_redirdata(q, eq, 1, O_WRONLY | O_CREAT | O_APPEND),
+					'+');
+		else if (tok == '%')
+			cmd = create_redircmd(parseredirs(sub_cmd, ps, es),
+					create_redirdata(q, eq, 0, O_RDONLY), '%');
+	}
+	return (cmd);
+}
+
+static int	collect_exec_argument(t_exec **exec_cmd, char **ps, char *es,
+		int *arg_count)
+{
+	int		token;
+	char	*start;
+	char	*end;
+
+	token = gettoken(ps, es, &start, &end);
+	if (token == '\0')
+		return (0);
+	(*exec_cmd)->argv[*arg_count] = start;
+	(*exec_cmd)->eargv[*arg_count] = end;
+	(*arg_count)++;
+	return (1);
+}
+
+t_command	*parseexec(char **ps, char *es, int *status)
+{
+	t_exec		*exec_cmd;
+	t_command	*cmd;
+	int			arg_count;
+
+	arg_count = 0;
+	cmd = create_execcmd();
+	exec_cmd = (t_exec *)cmd;
+	cmd = parseredirs(cmd, ps, es);
+	while (!peek(ps, es, "|"))
+	{
+		if (!collect_exec_argument(&exec_cmd, ps, es, &arg_count))
+			break ;
+		if (arg_count >= MAX_ARGS)
+		{
+			*status = 1;
+			release_command_resources(cmd);
+			return (NULL);
+		}
+		parse_next_redir(&cmd, &exec_cmd, ps, es);
+	}
+	exec_cmd->argv[arg_count] = NULL;
+	exec_cmd->eargv[arg_count] = NULL;
+	return (cmd);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   command_cleanup.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/06 20:55:43 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/05 12:40:30 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+void	release_command_resources(t_command *cmd)
+{
+	t_redir	*redir;
+	t_pipe	*pipe;
+	t_exec	*exec;
+
+	if (!cmd)
+		return ;
+	if (cmd->type == CMD_EXEC)
+		exec = (t_exec *)cmd;
+	else if (cmd->type == CMD_PIPE)
+	{
+		pipe = (t_pipe *)cmd;
+		release_command_resources(pipe->left);
+		release_command_resources(pipe->right);
+	}
+	else if (cmd->type == CMD_REDIR)
+	{
+		redir = (t_redir *)cmd;
+		release_command_resources(redir->sub_cmd);
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_null_terminate.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/06 20:41:06 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/02 19:24:51 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+static void	nulterminate_pipe(t_command *cmd)
+{
+	t_pipe	*pipe;
+
+	if (!cmd)
+		return ;
+	pipe = (t_pipe *)cmd;
+	cmd_null_terminate(pipe->left);
+	cmd_null_terminate(pipe->right);
+}
+
+static void	nulterminate_redir(t_command *cmd)
+{
+	t_redir	*redir;
+
+	if (!cmd)
+		return ;
+	redir = (t_redir *)cmd;
+	*redir->efile = '\0';
+	cmd_null_terminate(redir->sub_cmd);
+}
+
+static void	nulterminate_exec(t_command *cmd)
+{
+	t_exec	*exec;
+	int		i;
+
+	if (!cmd)
+		return ;
+	exec = (t_exec *)cmd;
+	i = 0;
+	while (exec->argv[i] != NULL)
+	{
+		*exec->eargv[i] = '\0';
+		i++;
+	}
+}
+
+t_command	*cmd_null_terminate(t_command *cmd)
+{
+	if (!cmd)
+		return (NULL);
+	if (cmd->type == CMD_EXEC)
+	{
+		nulterminate_exec(cmd);
+	}
+	else if (cmd->type == CMD_PIPE)
+	{
+		nulterminate_pipe(cmd);
+	}
+	else if (cmd->type == CMD_REDIR)
+	{
+		nulterminate_redir(cmd);
+	}
+	return (cmd);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/05 16:03:46 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/05 17:03:09 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+void	ft_exit(char **argv, t_shell_context *context)
+{
+	long long	exit_code;
+	int			over_under_flow;
+
+	if (argv[1])
+	{
+		if (!is_numeric(argv[1]))
+			non_num_arg(argv[1], context);
+		else if (argv[2])
+			too_many_args(context);
+		else
+		{
+			ft_putstr_fd("exit\n", STDOUT_FILENO);
+			exit_code = ft_atoll(argv[1], &over_under_flow);
+			if (over_under_flow)
+			{
+				ft_putstr_fd("voidshell: exit: ", STDERR_FILENO);
+				ft_putstr_fd(argv[1], STDERR_FILENO);
+				ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
+				terminate_cleanly(context, 255);
+			}
+			terminate_cleanly(context, exit_code);
+		}
+	}
+}
+#include "../../include/minishell.h"
+
+static t_env_var	*remove_env_var(t_env_var *node, char *key)
+{
+	t_env_var	*next_node;
+
+	if (!node)
+		return (NULL);
+	if (ft_strcmp(node->key, key) == 0)
+	{
+		next_node = node->next;
+		return (next_node);
+	}
+	node->next = remove_env_var(node->next, key);
+	return (node);
+}
+
+void	unset_env(char **args, t_env_var **env_var_list, int *exit_status)
+{
+	int			i;
+	t_env_var	*temp;
+
+	i = 1;
+	while (args[i])
+	{
+		if (!is_valid_var(args[i]))
+		{
+			ft_putstr_fd("minishell: unset: `", STDERR_FILENO);
+			ft_putstr_fd(args[i], STDERR_FILENO);
+			ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
+			*exit_status = 1;
+			i++;
+			continue ;
+		}
+		if (ft_strcmp((*env_var_list)->key, args[i]) == 0)
+		{
+			temp = *env_var_list;
+			*env_var_list = (*env_var_list)->next;
+		}
+		else
+			*env_var_list = remove_env_var(*env_var_list, args[i]);
+		i++;
+	}
+}
+#include "../../include/minishell.h"
+
+int	is_valid_var(char *key)
+{
+	int	i;
+
+	i = 0;
+	if (!ft_isalpha(key[i]) && key[i] != '_')
+		return (0);
+	i++;
+	while (key[i])
+	{
+		if (!ft_isalnum(key[i]) && key[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+char	*extract_key(char *str, char *equal_pos)
+{
+	char	*key;
+
+	if (!equal_pos)
+		return (ft_strdup(str));
+	key = ft_substr(str, 0, equal_pos - str);
+	return (key);
+}
+
+// void	insert_exported_var(char *equal_sign, char *key,
+// 		t_env_var **env_var_list)
+// {
+// 	t_env_var	*new_node;
+
+// 	if (!equal_sign)
+// 	{
+// 		new_node = create_env_var(key, NULL);
+// 		insert_env_var(env_var_list, new_node);
+// 	}
+// 	else
+// 	{
+// 		new_node = create_env_var(key, ft_strdup(equal_sign + 1));
+// 		insert_env_var(env_var_list, new_node);
+// 	}
+// }
+
+void	insert_exported_var(char *equal_sign, char *key,
+		t_env_var **env_var_list)
+{
+	t_env_var	*new_node;
+	char		*value;
+	char		*existing_value;
+	char		*new_value;
+
+	if (!equal_sign)
+	{
+		new_node = create_env_var(key, NULL);
+		insert_env_var(env_var_list, new_node);
+	}
+	else
+	{
+		value = ft_strdup(equal_sign + 1);
+		if (equal_sign[-1] == '+')
+		{
+			existing_value = get_env_value(key, *env_var_list);
+			if (existing_value)
+			{
+				new_value = ft_strjoin(existing_value, value);
+				value = new_value;
+			}
+		}
+		new_node = create_env_var(key, value);
+		insert_env_var(env_var_list, new_node);
+	}
+}
+
+void	display_env_variables(t_env_var *env_var_list)
+{
+	t_env_var	*current;
+
+	current = env_var_list;
+	while (current)
+	{
+		if (current->value)
+			printf("declare -x %s=\"%s\"\n", current->key, current->value);
+		else
+			printf("declare -x %s\n", current->key);
+		current = current->next;
+	}
+}
+
+void	simple_export(char **args, t_env_var *env_var_list)
+{
+	if (!args[1])
+	{
+		display_env_variables(env_var_list);
+		return ;
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/05 16:03:46 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/16 00:05:10 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+static void	print_env_error(char *arg)
+{
+	ft_putstr_fd("env: ", STDERR_FILENO);
+	ft_putstr_fd(arg, STDERR_FILENO);
+	ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+}
+
+void	env(char **args, t_shell_context *context)
+{
+	t_env_var	*curr;
+
+	if (args[1])
+	{
+		curr = context->env_vars;
+		while (curr)
+		{
+			if (ft_strcmp(curr->key, args[1]) == 0)
+			{
+				if (curr->value)
+					printf("%s\n", curr->value);
+				terminate_cleanly(context, 0);
+			}
+			curr = curr->next;
+		}
+		print_env_error(args[1]);
+		terminate_cleanly(context, 127);
+	}
+	curr = context->env_vars;
+	while (curr)
+	{
+		if (curr->value)
+			printf("%s=%s\n", curr->key, curr->value);
+		curr = curr->next;
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pwd.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/05 16:03:46 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/05 16:38:44 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+void	pwd(int *exit_status)
+{
+	char	*cwd;
+
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+	{
+		*exit_status = 1;
+		perror("pwd");
+		return ;
+	}
+	ft_putendl_fd(cwd, STDOUT_FILENO);
+	free(cwd);
+	*exit_status = 0;
+}
+#include "../../include/minishell.h"
+
+// void	ft_export(char **args, t_env_var **env_var_list, int *exit_status)
+// {
+// 	int		i;
+// 	char	*key;
+// 	char	*equal_pos;
+
+// 	if (!args[1])
+// 	{
+// 		display_env_variables(*env_var_list);
+// 		return ;
+// 	}
+// 	i = 0;
+// 	while (args[++i])
+// 	{
+// 		equal_pos = ft_strchr(args[i], '=');
+// 		key = extract_key(args[i], equal_pos);
+// 		if (!is_valid_var(key))
+// 		{
+// 			ft_putstr_fd("minishell: export: `", 2);
+// 			ft_putstr_fd(key, 2);
+// 			ft_putstr_fd("': not a valid identifier\n", 2);
+// 			*exit_status = 1;
+// 			i++;
+// 			continue ;
+// 		}
+// 		insert_exported_var(equal_pos, key, env_var_list);
+// 	}
+// }
+void	ft_export(char **args, t_env_var **env_var_list, int *exit_status)
+{
+	int		i;
+	char	*key;
+	char	*equal_pos;
+	int		is_append;
+
+	if (!args[1])
+	{
+		display_env_variables(*env_var_list);
+		return ;
+	}
+	i = 0;
+	while (args[++i])
+	{
+		is_append = 0;
+		equal_pos = ft_strchr(args[i], '=');
+		if (equal_pos && equal_pos > args[i] && equal_pos[-1] == '+')
+		{
+			is_append = 1;
+			equal_pos[-1] = '\0';
+		}
+		key = extract_key(args[i], equal_pos);
+		if (is_append && equal_pos)
+			equal_pos[-1] = '+';
+		if (!key || !is_valid_var(key))
+		{
+			ft_putstr_fd("minishell: export: `", 2);
+			ft_putstr_fd(args[i], 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			*exit_status = 1;
+			continue ;
+		}
+		insert_exported_var(equal_pos, key, env_var_list);
+	}
+}
+#include "../../include/minishell.h"
+
+void	ft_puterror(char *arg)
+{
+	ft_putstr_fd("minishell: cd: '", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd("': No such file or directory\n", 2);
+}
+
+void	ft_puterror2(char *arg)
+{
+	ft_putstr_fd("minishell: cd: ", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd(": not set\n", 2);
+}
+
+void	ft_puterror3(char *arg, char *arg2)
+{
+	ft_putstr_fd("minishell: cd: ", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(arg2, 2);
+	ft_putstr_fd("\n", 2);
+}
+
+void	set_env_var(const char *key, t_env_var *env_vars)
+{
+	char		*cwd;
+	t_env_var	*node;
+
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+		return ;
+	node = create_env_var(ft_strdup(key), ft_strdup(cwd));
+	free(cwd);
+	update_env_var(env_vars, node);
+}
+
+int	check_home(t_env_var *env_vars)
+{
+	t_env_var	*tmp;
+
+	tmp = env_vars;
+	while (tmp)
+	{
+		if (!strncmp("HOME", tmp->key, 4))
+			return (1);
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
+void	ft_chdir(t_env_var *env_vars, char *path)
+{
+	int	i;
+
+	set_env_var("OLDPWD", env_vars);
+	i = chdir(path);
+	if (i)
+	{
+		ft_puterror(path);
+		return ;
+	}
+	printf("%s\n", path);
+	set_env_var("PWD", env_vars);
+}
+
+void	cd_oldpwd(t_env_var *env_vars)
+{
+	char	*path;
+	char	*oldpwd;
+
+	path = NULL;
+	oldpwd = get_env_value("OLDPWD", env_vars);
+	if (oldpwd)
+		path = ft_strdup(oldpwd);
+	if (!path)
+		ft_puterror("OLDPWD");
+	else
+		ft_chdir(env_vars, path);
+}
+
+void	cd_home(t_env_var *env_vars)
+{
+	char	*path;
+	char	*home;
+	int		i;
+
+	path = NULL;
+	if (!check_home(env_vars))
+		ft_puterror("HOME");
+	else
+	{
+		set_env_var("OLDPWD", env_vars);
+		home = get_env_value("HOME", env_vars);
+		if (home)
+			path = ft_strdup(home);
+		printf("path = %s \n", path);
+		i = chdir(path);
+		if (i)
+		{
+			ft_puterror(path);
+			return ;
+		}
+		set_env_var("PWD", env_vars);
+	}
+}
+
+void	cd(char **args, int *exit_status, t_env_var **env_vars)
+{
+	char	*home;
+	char	*cwd;
+	int		i;
+
+	home = getcwd(NULL, 0);
+	cwd = ft_strdup(home);
+	free(home);
+	if (args[2])
+	{
+		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+		*exit_status = 1;
+	}
+	else if (!args[1])
+		cd_home(*env_vars);
+	else if (!ft_strcmp(args[1], "-"))
+		cd_oldpwd(*env_vars);
+	else if (!ft_strcmp(args[1], ""))
+	{
+		printf("We are here\n");
+		cd_oldpwd(*env_vars); // Handle empty string as cd -
+	}
+	else if (ft_strcmp(args[1], "."))
+	{
+		set_env_var("OLDPWD", *env_vars);
+		i = chdir(args[1]);
+		if (i == -1)
+		{
+			ft_puterror3(args[1], strerror(errno));
+			*exit_status = 1;
+			return ;
+		}
+		set_env_var("PWD", *env_vars);
+	}
+	else if (!cwd)
+	{
+		ft_putstr_fd("cd: error retrieving current directory: getcwd:\
+		cannot access parent directories: No such file or directory\n",
+						2);
+		*exit_status = 1;
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/05 16:03:46 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/16 02:47:35 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+static int	check_overflow(long long num, int sign, int digit)
+{
+	long long	max_div_10;
+	long long	min_div_10;
+
+	max_div_10 = LLONG_MAX / 10;
+	min_div_10 = LLONG_MIN / 10;
+	if (sign == 1)
+	{
+		if (num > max_div_10 || (num == max_div_10 && digit > LLONG_MAX % 10))
+			return (1);
+	}
+	else
+	{
+		if (num < min_div_10 || (num == min_div_10 && digit > -(LLONG_MIN
+					% 10)))
+			return (1);
+	}
+	return (0);
+}
+
+long long	ft_atoll(const char *str, int *over_under_flow)
+{
+	int			i;
+	int			sign;
+	long long	num;
+
+	i = 0;
+	sign = 1;
+	num = 0;
+	while (str[i] && ((str[i] >= 9 && str[i] <= 13) || str[i] == 32))
+		i++;
+	if (str[i] && (str[i] == '+' || str[i] == '-'))
+	{
+		if (str[i++] == '-')
+			sign = -1;
+	}
+	while (str[i] && (str[i] >= '0' && str[i] <= '9'))
+	{
+		if (check_overflow(num, sign, str[i] - '0'))
+			return (*over_under_flow = 1, 0);
+		if (sign == 1)
+			num = (num * 10) + (str[i] - '0');
+		else
+			num = (num * 10) - (str[i] - '0');
+		i++;
+	}
+	return (*over_under_flow = 0, num);
+}
+
+void	non_num_arg(char *arg, t_shell_context *context)
+{
+	ft_putstr_fd("exit\n", STDOUT_FILENO);
+	ft_putstr_fd("voidshell: exit: ", STDERR_FILENO);
+	ft_putstr_fd(arg, STDERR_FILENO);
+	ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
+	terminate_cleanly(context, 2);
+}
+
+void	too_many_args(t_shell_context *context)
+{
+	ft_putstr_fd("exit\n", STDOUT_FILENO);
+	ft_putstr_fd("voidshell: exit: too many arguments\n", STDERR_FILENO);
+	terminate_cleanly(context, 1);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/15 23:27:01 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/16 12:59:56 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+static int	is_n_flag(char *arg)
+{
+	int	i;
+
+	i = 1;
+	if (arg[0] != '-')
+		return (0);
+	if (arg[1] == '\0')
+		return (0);
+	while (arg[i])
+	{
+		if (arg[i] != 'n')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+void	echo(char **args)
+{
+	int	i;
+	int	new_line;
+
+	new_line = 1;
+	i = 1;
+	while (args[i] && is_n_flag(args[i]))
+	{
+		new_line = 0;
+		i++;
+	}
+	while (args[i])
+	{
+		ft_putstr_fd(args[i], STDOUT_FILENO);
+		if (args[i + 1])
+			ft_putstr_fd(" ", STDOUT_FILENO);
+		i++;
+	}
+	if (new_line)
+		ft_putstr_fd("\n", STDOUT_FILENO);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   garbage_collector.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/03 15:03:42 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/05 12:39:57 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+t_garbage_collector	g_gc = {0};
+
+void	*gc_malloc(size_t size)
+{
+	void		*ptr;
+	t_gc_node	*node;
+
+	ptr = malloc(size);
+	if (!ptr)
+		return (NULL);
+	node = malloc(sizeof(t_gc_node));
+	if (!node)
+	{
+		free(ptr);
+		gc_free_all();
+		return (NULL);
+	}
+	node->ptr = ptr;
+	node->next = g_gc.allocations;
+	g_gc.allocations = node;
+	return (ptr);
+}
+
+void	gc_free_all(void)
+{
+	t_gc_node	*current;
+	t_gc_node	*tmp;
+
+	current = g_gc.allocations;
+	while (current)
+	{
+		free(current->ptr);
+		tmp = current;
+		current = current->next;
+		free(tmp);
+	}
+	g_gc.allocations = NULL;
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander2.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/20 00:01:31 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+static void	handle_double_quotes_rem(const char *str, int *i,
+		int *in_double_quotes)
+{
+	if (*in_double_quotes == 0)
+		*in_double_quotes = 1;
+	else
+		*in_double_quotes = 0;
+	(*i)++;
+}
+
+static void	handle_consecutive_quotes(const char *str, char *result, int *i,
+		int *j)
+{
+	int	count;
+	int	k;
+
+	count = 0;
+	k = *i;
+	while (str[k] == '\'')
+	{
+		count++;
+		k++;
+	}
+	if (count > 1 && str[k] != '\0')
+	{
+		while (count > 0)
+		{
+			result[*j] = '\'';
+			(*j)++;
+			(*i)++;
+			count--;
+		}
+	}
+}
+
+static void	handle_single_quote_content(const char *str, char *result, int *i,
+		int *j)
+{
+	(*i)++;
+	while (str[*i] && str[*i] != '\'')
+	{
+		result[*j] = str[*i];
+		(*j)++;
+		(*i)++;
+	}
+	if (str[*i] == '\'')
+		(*i)++;
+}
+
+static void	process_quotes(const char *str, char *result)
+{
+	int	val[3];
+
+	val[0] = 0;
+	val[1] = 0;
+	val[2] = 0;
+	while (str[val[0]])
+	{
+		if (str[val[0]] == '\"' && (!val[2] || val[2]))
+			handle_double_quotes_rem(str, &val[0], &val[2]);
+		else if (str[val[0]] == '\'' && !val[2])
+		{
+			if (str[val[0] + 1] == '\'')
+				val[0] += 2;
+			else
+			{
+				handle_consecutive_quotes(str, result, &val[0], &val[1]);
+				if (str[val[0]] == '\'')
+					handle_single_quote_content(str, result, &val[0], &val[1]);
+			}
+		}
+		else
+			result[val[1]++] = str[val[0]++];
+	}
+	result[val[1]] = '\0';
+}
+
+char	*remove_quotes(const char *str)
+{
+	char	*result;
+
+	result = gc_malloc(strlen(str) + 1);
+	if (!result)
+		return (ft_strdup(""));
+	process_quotes(str, result);
+	return (result);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/19 19:29:26 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+static void	process_argument(char *arg, t_queue_char *queue, int *exit_status,
+		t_shell_context *context)
+{
+	int	i;
+	int	*values[2];
+	int	prev_i;
+
+	if (!arg || !queue || !exit_status || !context)
+		return ;
+	i = 0;
+	while (arg[i] != '\0')
+	{
+		prev_i = i;
+		if (arg[i] == '\'')
+			handle_single_quotes(arg, &i, queue);
+		else if (arg[i] == '\"')
+		{
+			values[0] = &i;
+			values[1] = exit_status;
+			handle_double_quotes(arg, values, queue, context);
+		}
+		else if (arg[i + 1] == '%')
+		{
+			enqueue_char(queue, '$');
+			i++;
+			while (arg[i] == '%')
+			{
+				enqueue_char(queue, '%');
+				i++;
+			}
+		}
+		else if (arg[i] == '$')
+		{
+			values[0] = &i;
+			values[1] = exit_status;
+			handle_dollar_sign(arg, values, queue, context);
+		}
+		else
+			enqueue_char(queue, arg[i++]);
+		if (prev_i == i && arg[i] != '\0')
+			i++;
+	}
+}
+
+static char	*clean_argument(char *arg, t_shell_context *context,
+		int *exit_status)
+{
+	t_queue_char	queue;
+	char			*cleaned_arg;
+	char			*home;
+
+	init_queue_char(&queue);
+	if (ft_strcmp(arg, "~") == 0)
+	{
+		home = get_env_value("HOME", context->env_vars);
+		if (home)
+			cleaned_arg = home;
+		else
+			cleaned_arg = ft_strdup("~");
+	}
+	else
+	{
+		process_argument(arg, &queue, exit_status, context);
+		cleaned_arg = queue_char_str_convert(&queue);
+	}
+	enqueue(&context->queue, cleaned_arg);
+	enqueue(&context->queue, " ");
+	return (cleaned_arg);
+}
+
+void	clean_nulls_from_argv(char **argv, int size)
+{
+	int		i;
+	int		j;
+	size_t	len;
+
+	i = 0;
+	j = 0;
+	while (i < size)
+	{
+		if (argv[i] != NULL)
+		{
+			if (argv[i][0] == '\x01' && argv[i][1] == '\0')
+			{
+				i++;
+				continue ;
+			}
+			if (argv[i][0] == '\x01')
+				ft_memmove(argv[i], argv[i] + 1, ft_strlen(argv[i]));
+			len = ft_strlen(argv[i]);
+			while (len > 0 && argv[i][len - 1] == '\x01')
+			{
+				argv[i][len - 1] = '\0';
+				len--;
+			}
+			argv[j] = argv[i];
+			j++;
+		}
+		i++;
+	}
+	while (j < size)
+	{
+		argv[j] = NULL;
+		j++;
+	}
+}
+
+// char	*remove_quotes(const char *str)
+// {
+// 	int		i;
+// 	int		j;
+// 	int		in_double_quotes;
+// 	char	*result;
+// 	int		count;
+// 	int		k;
+
+// 	i = 0;
+// 	j = 0;
+// 	in_double_quotes = 0;
+// 	result = gc_malloc(strlen(str) + 1);
+// 	if (!result)
+// 		return (ft_strdup(""));
+// 	while (str[i] != '\0')
+// 	{
+// 		if (str[i] == '\"' && !in_double_quotes)
+// 		{
+// 			in_double_quotes = 1;
+// 			i++;
+// 		}
+// 		else if (str[i] == '\"' && in_double_quotes)
+// 		{
+// 			in_double_quotes = 0;
+// 			i++;
+// 		}
+// 		else if (str[i] == '\'' && !in_double_quotes)
+// 		{
+// 			if (str[i + 1] == '\'')
+// 			{
+// 				i += 2;
+// 				continue ;
+// 			}
+// 			count = 0;
+// 			k = i;
+// 			while (str[k] == '\'')
+// 			{
+// 				count++;
+// 				k++;
+// 			}
+// 			if (count > 1 && str[k] != '\0')
+// 			{
+// 				while (count > 0)
+// 				{
+// 					result[j++] = '\'';
+// 					i++;
+// 					count--;
+// 				}
+// 			}
+// 			else
+// 			{
+// 				i++;
+// 				while (str[i] && str[i] != '\'')
+// 					result[j++] = str[i++];
+// 				if (str[i] == '\'')
+// 					i++;
+// 			}
+// 		}
+// 		else
+// 			result[j++] = str[i++];
+// 	}
+// 	result[j] = '\0';
+// 	return (result);
+// }
+
+void	restore_quotes(char **vector)
+{
+	char	*str;
+	int		i;
+	int		j;
+
+	if (!vector)
+		return ;
+	i = 0;
+	while (vector[i])
+	{
+		str = vector[i];
+		j = 0;
+		while (str[j])
+		{
+			if (str[j] == '\x1F')
+				str[j] = '\'';
+			j++;
+		}
+		i++;
+	}
+}
+
+void	clean_execution_command_args(t_command *cmd, t_shell_context *context,
+		int *exit_status)
+{
+	int		i;
+	int		size;
+	t_exec	*exec;
+	char	*res;
+	char	**vector;
+
+	if (!cmd || !context)
+		return ;
+	exec = (t_exec *)cmd;
+	i = 0;
+	size = 0;
+	if (!exec->argv[0])
+		return ;
+	while (exec->argv[size])
+		size++;
+	while (exec->argv[i])
+	{
+		if (has_special_characters(exec->argv[i]))
+			exec->argv[i] = clean_argument(exec->argv[i], context, exit_status);
+		else
+		{
+			enqueue(&context->queue, exec->argv[i]);
+			enqueue(&context->queue, " ");
+		}
+		i++;
+	}
+	clean_nulls_from_argv(exec->argv, size);
+	res = queue_str_convert(&context->queue);
+	if (!res)
+		return ;
+	vector = ft_split_beta(res, ' ');
+	if (!vector)
+		return ;
+	clean_nulls_from_argv(vector, size);
+	i = 0;
+	while (vector[i])
+	{
+		vector[i] = remove_quotes(vector[i]);
+		i++;
+	}
+	restore_quotes(vector);
+	i = 0;
+	while (vector[i])
+	{
+		exec->argv[i] = vector[i];
+		i++;
+	}
+	exec->argv[i] = NULL;
+}
+
+void	process_all_commands(t_command *cmd, t_shell_context *context,
+		int *exit_status)
+{
+	t_pipe	*pipe;
+	t_redir	*redir;
+
+	if (cmd->type == CMD_EXEC)
+	{
+		clean_execution_command_args(cmd, context, exit_status);
+	}
+	else if (cmd->type == CMD_PIPE)
+	{
+		pipe = (t_pipe *)cmd;
+		process_all_commands(pipe->left, context, exit_status);
+		process_all_commands(pipe->right, context, exit_status);
+	}
+	else if (cmd->type == CMD_REDIR)
+	{
+		redir = (t_redir *)cmd;
+		if (redir->redir_type != '%' && has_special_characters(redir->file))
+		{
+			redir->file = clean_argument2(redir->file, context, exit_status);
+		}
+		process_all_commands(redir->sub_cmd, context, exit_status);
+	}
+}
+
+int	count_redirections(t_command *cmd)
+{
+	t_redir	*redir;
+	int		count;
+
+	count = 0;
+	if (cmd->type == CMD_REDIR)
+	{
+		redir = (t_redir *)cmd;
+		if (redir->redir_type == '%')
+			count++;
+		count += count_redirections(redir->sub_cmd);
+	}
+	return (count);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander_filename.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/20 00:30:19 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+static void	handle_single_quotes2(char *str, int *index, t_queue_char *queue,
+		int *was_quoted)
+{
+	if (!str || !index || !queue || !was_quoted)
+		return ;
+	(*was_quoted) = 1;
+	(*index)++;
+	while (str[*index] && str[*index] != '\'')
+	{
+		enqueue_char(queue, str[*index]);
+		(*index)++;
+	}
+	if (str[*index] == '\'')
+	{
+		(*index)++;
+	}
+}
+
+static void	handle_dollar_in_quotes2(t_quote_params *params)
+{
+	char	*exit_status_str;
+	char	*var_name;
+	char	*var_value;
+
+	if (!params->arg[*params->i + 1] || is_whitespace(params->arg[*params->i
+			+ 1]) || params->arg[*params->i + 1] == '\"')
+	{
+		enqueue_char(params->q, '$');
+		(*params->i)++;
+		return ;
+	}
+	if (params->arg[*params->i + 1] == '?')
+	{
+		exit_status_str = ft_itoa(*params->exit_status);
+		if (exit_status_str)
+		{
+			enqueue_str(params->q, exit_status_str);
+			(*params->i) += 2;
+		}
+		return ;
+	}
+	(*params->i)++;
+	var_name = extract_variable_name(params->arg + *params->i);
+	if (var_name && (var_value = get_env_value(var_name,
+				params->context->env_vars)))
+		(enqueue_str(params->q, var_value), (*params->i)
+			+= ft_strlen(var_name));
+}
+
+static void	handle_double_quotes2(t_quote_params *params)
+{
+	if (!params->arg || !params->q || !params->context || !params->was_quoted)
+		return ;
+	(*params->was_quoted) = 1;
+	(*params->i)++;
+	while (params->arg[*params->i] && params->arg[*params->i] != '\"')
+	{
+		if (params->arg[*params->i] == '$')
+			handle_dollar_in_quotes2(params);
+		else
+		{
+			enqueue_char(params->q, params->arg[*params->i]);
+			(*params->i)++;
+		}
+	}
+	if (params->arg[*params->i] == '\"')
+		(*params->i)++;
+}
+
+static void	process_argument2(char *arg, t_queue_char *queue, int *exit_status,
+		t_shell_context *context, int *was_quoted)
+{
+	int				i;
+	int				*values[2];
+	int				prev_i;
+	t_quote_params	params;
+
+	if (!arg || !queue || !exit_status || !context || !was_quoted)
+		return ;
+	i = 0;
+	while (arg[i] != '\0')
+	{
+		prev_i = i;
+		values[0] = &i;
+		values[1] = exit_status;
+		if (arg[i] == '\'')
+			handle_single_quotes2(arg, &i, queue, was_quoted);
+		else if (arg[i] == '\"')
+		{
+			params.arg = arg;
+			params.i = values[0];
+			params.q = queue;
+			params.context = context;
+			params.was_quoted = was_quoted;
+			handle_double_quotes2(&params);
+		}
+		else if (arg[i] == '$')
+			handle_dollar_sign(arg, values, queue, context);
+		else
+			enqueue_char(queue, arg[i++]);
+		if (prev_i == i && arg[i] != '\0')
+			i++;
+	}
+}
+
+char	*clean_argument2(char *arg, t_shell_context *context, int *exit_status)
+{
+	t_queue_char	queue;
+	char			*cleaned_arg;
+	char			*home;
+	int				was_quoted;
+
+	was_quoted = 0;
+	init_queue_char(&queue);
+	if (ft_strcmp(arg, "~") == 0)
+	{
+		home = get_env_value("HOME", context->env_vars);
+		if (home)
+			cleaned_arg = home;
+		else
+			cleaned_arg = ft_strdup("~");
+	}
+	else
+	{
+		process_argument2(arg, &queue, exit_status, context, &was_quoted);
+		cleaned_arg = queue_char_str_convert(&queue);
+	}
+	if (is_ambiguous_redirect(cleaned_arg) && !was_quoted)
+		(ft_putstr_fd("minishell: ambiguous redirect\n", STDERR_FILENO),
+			cleaned_arg = ft_strdup("\x01\x01\x01"));
+	return (cleaned_arg);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander_utils2.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/07 23:39:28 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/20 00:39:29 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+static void	handle_dollar_sign_in_quotes(char *arg, int *i, int *exit_status,
+		t_queue_char *q)
+{
+	char	*exit_status_str;
+
+	if (!arg[*i + 1] || is_whitespace(arg[*i + 1]) || arg[*i + 1] == '\"')
+	{
+		enqueue_char(q, '$');
+		(*i)++;
+	}
+	else if (arg[*i + 1] == '?')
+	{
+		exit_status_str = ft_itoa(*exit_status);
+		if (exit_status_str)
+		{
+			enqueue_str(q, exit_status_str);
+			(*i) += 2;
+		}
+	}
+}
+
+static void	handle_percent_in_quotes(char *arg, int *i, t_queue_char *q)
+{
+	enqueue_char(q, '$');
+	(*i)++;
+	while (arg[*i] == '%')
+	{
+		enqueue_char(q, '%');
+		(*i)++;
+	}
+}
+
+static void	handle_var_in_quotes(char *arg, int *i, t_queue_char *q,
+		t_shell_context *context)
+{
+	char	*var_name;
+	char	*var_value;
+
+	(*i)++;
+	var_name = extract_variable_name(arg + *i);
+	if (var_name)
+	{
+		var_value = get_env_value(var_name, context->env_vars);
+		if (var_value)
+			enqueue_str(q, replace_quotes_with_x(var_value));
+		(*i) += ft_strlen(var_name);
+	}
+}
+
+static void	process_quotes_content(char *arg, int *values[2], t_queue_char *q,
+		t_shell_context *context)
+{
+	while (arg[*values[0]] && arg[*values[0]] != '\"')
+	{
+		if (arg[*values[0]] == '$')
+		{
+			if (arg[*values[0] + 1] == '%')
+				handle_percent_in_quotes(arg, values[0], q);
+			else if (!arg[*values[0] + 1] || is_whitespace(arg[*values[0] + 1])
+				|| arg[*values[0] + 1] == '\"' || arg[*values[0] + 1] == '?')
+				handle_dollar_sign_in_quotes(arg, values[0], values[1], q);
+			else
+				handle_var_in_quotes(arg, values[0], q, context);
+		}
+		else
+		{
+			enqueue_char(q, arg[*values[0]]);
+			(*values[0])++;
+		}
+	}
+}
+
+void	handle_double_quotes(char *arg, int *values[2], t_queue_char *q,
+		t_shell_context *context)
+{
+	int	*i;
+	int	*exit_status;
+
+	if (!arg || !values || !q || !context)
+		return ;
+	i = values[0];
+	exit_status = values[1];
+	enqueue_char(q, '\"');
+	(*i)++;
+	process_quotes_content(arg, values, q, context);
+	if (arg[*i] == '\"')
+	{
+		enqueue_char(q, '\"');
+		(*i)++;
+	}
+}
+#include "../../include/minishell.h"
+
+static bool	is_separator(char c, char sep)
+{
+	return (c == sep || c == ' ' || c == '\t' || c == '\n');
+}
+
+static int	count_words(const char *s, char sep)
+{
+	int		count;
+	bool	in_word;
+	bool	in_single_quote;
+	bool	in_double_quote;
+
+	count = 0;
+	in_word = false;
+	in_single_quote = false;
+	in_double_quote = false;
+	while (*s)
+	{
+		if (*s == '\'' && !in_double_quote)
+			in_single_quote = !in_single_quote;
+		else if (*s == '\"' && !in_single_quote)
+			in_double_quote = !in_double_quote;
+		if (!in_single_quote && !in_double_quote && is_separator(*s, sep))
+			in_word = false;
+		else if (!in_word)
+		{
+			in_word = true;
+			count++;
+		}
+		s++;
+	}
+	return (count);
+}
+
+static char	*get_next_word(const char **s_ptr, char sep)
+{
+	const char	*s;
+	char		*word;
+	int			len;
+	bool		in_single_quote;
+	bool		in_double_quote;
+	const char	*start;
+
+	s = *s_ptr;
+	len = 0;
+	in_single_quote = false;
+	in_double_quote = false;
+	while (*s && is_separator(*s, sep))
+	{
+		s++;
+	}
+	start = s;
+	while (*s)
+	{
+		if (*s == '\'' && !in_double_quote)
+			in_single_quote = !in_single_quote;
+		else if (*s == '\"' && !in_single_quote)
+			in_double_quote = !in_double_quote;
+		else if (!in_single_quote && !in_double_quote && is_separator(*s, sep))
+			break ;
+		len++;
+		s++;
+	}
+	word = gc_malloc(sizeof(char) * (len + 1));
+	if (!word)
+		return (NULL);
+	for (int i = 0; i < len; i++)
+		word[i] = start[i];
+	word[len] = '\0';
+	*s_ptr = s;
+	return (word);
+}
+
+char	**ft_split_beta(const char *s, char sep)
+{
+	char	**result;
+	int		word_count;
+	int		i;
+
+	if (!s)
+		return (NULL);
+	word_count = count_words(s, sep);
+	result = gc_malloc(sizeof(char *) * (word_count + 1));
+	if (!result)
+		return (NULL);
+	i = 0;
+	while (i < word_count)
+	{
+		result[i] = get_next_word(&s, sep);
+		if (!result[i])
+		{
+			return (NULL);
+		}
+		i++;
+	}
+	result[i] = NULL;
+	return (result);
+}
+
+int	is_ambiguous_redirect(const char *filename)
+{
+	if (!filename || filename[0] == '\0')
+	{
+		return (1);
+	}
+	if (ft_strchr(filename, '\x01'))
+	{
+		return (1);
+	}
+	if (count_words(filename, ' ') > 1)
+	{
+		return (1);
+	}
+	return (0);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/07 23:39:28 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/20 00:39:18 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+char	*replace_quotes_with_x(char *str)
+{
+	char	*result;
+	int		i;
+
+	if (!str)
+		return (NULL);
+	result = ft_strdup(str);
+	i = 0;
+	while (result && result[i])
+	{
+		if (result[i] == '\'')
+			result[i] = '\x1F';
+		i++;
+	}
+	return (result);
+}
+int	has_special_characters(char *str)
+{
+	if (!str)
+		return (0);
+	return (ft_strchr(str, '\'') || ft_strchr(str, '\"') || ft_strchr(str, '$')
+			|| ft_strchr(str, '~') || ft_strchr(str, '\\'));
+}
+void	handle_single_quotes(char *str, int *index, t_queue_char *queue)
+{
+	if (!str || !index || !queue)
+		return ;
+	enqueue_char(queue, '\'');
+	(*index)++;
+	while (str[*index] && str[*index] != '\'')
+	{
+		enqueue_char(queue, str[*index]);
+		(*index)++;
+	}
+	if (str[*index] == '\'')
+	{
+		enqueue_char(queue, '\'');
+		(*index)++;
+	}
+}
+
+char	*extract_variable_name(char *arg)
+{
+	int	i;
+
+	if (!arg)
+		return (NULL);
+	if (arg[0] && (arg[0] == '@' || arg[0] == '*' || arg[0] == '#'
+			|| arg[0] == '?' || arg[0] == '-' || arg[0] == '$' || arg[0] == '!'
+			|| ft_isdigit(arg[0])))
+	{
+		return (ft_substr(arg, 0, 1));
+	}
+	if (!arg[0] || arg[0] == '=' || (!ft_isalpha(arg[0]) && arg[0] != '_'))
+		return (ft_strdup(""));
+	i = 0;
+	while (arg[i] && (ft_isalnum(arg[i]) || arg[i] == '_'))
+		i++;
+	return (ft_substr(arg, 0, i));
+}
+void	process_variable(char *str, int *values[2], t_queue_char *queue,
+		t_shell_context *context)
+{
+	int		*i;
+	char	*var_name;
+	char	*var_value;
+
+	if (!str || !values || !queue || !context)
+		return ;
+	i = values[0];
+	var_name = extract_variable_name(str + *i);
+	if (!var_name)
+	{
+		enqueue_char(queue, '$');
+		return ;
+	}
+	var_value = get_env_value(var_name, context->env_vars);
+	if (var_value)
+		enqueue_str(queue, replace_quotes_with_x(var_value));
+	else
+		enqueue_char(queue, '\x01');
+	(*i) += ft_strlen(var_name);
+}
+
+void	handle_dollar_sign(char *str, int *values[2], t_queue_char *queue,
+		t_shell_context *context)
+{
+	int		*index;
+	int		*exit_status;
+	char	*exit_status_str;
+
+	if (!str || !values || !queue || !context)
+		return ;
+	index = values[0];
+	exit_status = values[1];
+	(*index)++;
+	if (!str[*index] || is_whitespace(str[*index]))
+	{
+		enqueue_char(queue, '$');
+		return ;
+	}
+	if (str[*index] == '?')
+	{
+		exit_status_str = ft_itoa(*exit_status);
+		if (exit_status_str)
+		{
+			enqueue_str(queue, exit_status_str);
+			(*index)++;
+		}
+	}
+	else
+		process_variable(str, values, queue, context);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/19 00:03:09 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/19 00:08:34 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/minishell.h"
+
+static int	is_shell_input_valid(char *input, int *exit_status)
+{
+	if (!ft_strlen(input) || is_whitespace_string(input)
+		|| !check_command_validity(input, exit_status))
+		return (0);
+	return (1);
+}
+
+static void	init_shell_env(t_shell_context *context, char **envp,
+		int *exit_status)
+{
+	context->envp = envp;
+	context->env_vars = NULL;
+	init_env_var(&context->env_vars, envp);
+	init_queue(&context->queue);
+	context->last_cmd = NULL;
+	*exit_status = EXIT_SUCCESS;
+}
+
+static void	run_cmd_helper(t_shell_context *context, int *exit_status)
+{
+	int		status;
+	t_exec	*exec;
+
+	set_signal_handler(context->tree);
+	if (ft_fork(context) == 0)
+	{
+		store_subprocess_pid(getpid(), context);
+		execute_command(context->tree, context, exit_status);
+	}
+	waitpid(-1, &status, 0);
+	retrieve_exit_status(context->tree, context, exit_status, status);
+	exec = (t_exec *)context->tree;
+	if ((exec->type == CMD_EXEC) && exec->argv[0] && ft_strcmp(exec->argv[0],
+			"exit") == 0)
+	{
+		if (!exec->argv[1] || (exec->argv[1] && (!is_numeric(exec->argv[1])
+					|| !exec->argv[2])))
+		{
+			unlink("/tmp/exit_status.tmp");
+			unlink("/tmp/child_pid.tmp");
+			terminate_cleanly(context, *exit_status);
+		}
+	}
+	clean_shell(context);
+}
+
+static void	run_cmd(t_shell_context *context, int *exit_status)
+{
+	t_exec	*exec_cmd;
+
+	context->tree = parsecmd(context->input, exit_status);
+	if (!context->tree)
+		return ;
+	if (count_redirections(context->tree) > 16)
+	{
+		ft_putstr_fd("void-shell: maximum here-document count exceeded\n", 2);
+		*exit_status = 2;
+		ft_free(context->input);
+		return ;
+	}
+	process_all_commands(context->tree, context, exit_status);
+	if (context->tree && context->tree->type == CMD_EXEC)
+	{
+		exec_cmd = (t_exec *)context->tree;
+		insert_env_var(&context->env_vars, create_env_var("_",
+				exec_cmd->argv[0]));
+	}
+	if (!context->input)
+	{
+		if (context->tree && context->tree->type == CMD_EXEC)
+		{
+			exec_cmd = (t_exec *)context->tree;
+			insert_env_var(&context->env_vars, create_env_var("_",
+					exec_cmd->argv[0]));
+		}
+		else
+		{
+			insert_env_var(&context->env_vars, create_env_var("_",
+					context->input));
+		}
+	}
+	if (is_built_in_command(context->tree))
+	{
+		run_built_in_command((t_exec *)context->tree, &context->env_vars,
+			exit_status);
+		release_command_resources(context->tree);
+		free_queue(&context->queue);
+	}
+	else
+		run_cmd_helper(context, exit_status);
+	ft_free(context->input);
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	int				exit_status;
+	t_shell_context	context;
+
+	(void)argc;
+	(void)argv;
+	init_shell_env(&context, envp, &exit_status);
+	while (1)
+	{
+		setup_signals();
+		context.input = readline("void-shell$ ");
+		if (!context.input)
+		{
+			ft_putstr_fd("exit\n", 1);
+			break ;
+		}
+		add_history(context.input);
+		if (!is_shell_input_valid(context.input, &exit_status))
+		{
+			ft_free(context.input);
+			context.input = NULL;
+			continue ;
+		}
+		run_cmd(&context, &exit_status);
+	}
+	rl_clear_history();
+	gc_free_all();
+	return (EXIT_SUCCESS);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   environment_utils.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/30 01:51:48 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/05 12:30:16 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+t_env_var	*create_env_var(char *key, char *value)
+{
+	t_env_var	*new;
+
+	new = gc_malloc(sizeof(t_env_var));
+	if (!new)
+		return (NULL);
+	new->key = key;
+	new->value = value;
+	new->next = NULL;
+	return (new);
+}
+
+char	*get_env_value(char *key, t_env_var *env)
+{
+	t_env_var	*head;
+
+	head = env;
+	while (head != NULL)
+	{
+		if (ft_strcmp(head->key, key) == 0)
+			return (head->value);
+		head = head->next;
+	}
+	return (NULL);
+}
+
+void	free_env_node(t_env_var *node)
+{
+	if (!node)
+		return ;
+	node->key = NULL;
+	node->value = NULL;
+	node = NULL;
+}
+
+void	free_env(t_env_var *env)
+{
+	t_env_var	*head;
+	t_env_var	*tmp;
+
+	head = env;
+	while (head != NULL)
+	{
+		tmp = head;
+		head = head->next;
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   environment_utils1.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/30 01:51:48 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/06 12:55:29 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+static char	*ft_strjoin3(const char *s1, const char *s2, const char *s3)
+{
+	char	*result;
+	size_t	len1;
+	size_t	len2;
+	size_t	len3;
+
+	if (!s1 || !s2 || !s3)
+		return (NULL);
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	len3 = ft_strlen(s3);
+	result = (char *)gc_malloc(len1 + len2 + len3 + 1);
+	if (!result)
+		return (NULL);
+	ft_memcpy(result, s1, len1);
+	ft_memcpy(result + len1, s2, len2);
+	ft_memcpy(result + len1 + len2, s3, len3);
+	result[len1 + len2 + len3] = '\0';
+	return (result);
+}
+
+static int	fill_env_vector(char **env_vector, t_env_var *env_vars)
+{
+	int			i;
+	t_env_var	*temp;
+
+	i = 0;
+	temp = env_vars;
+	while (temp)
+	{
+		if (temp->key)
+		{
+			if (temp->value)
+				env_vector[i] = ft_strjoin3(temp->key, "=", temp->value);
+			else
+				env_vector[i] = ft_strdup(temp->key);
+			if (!env_vector[i])
+				return (-1);
+			i++;
+		}
+		temp = temp->next;
+	}
+	env_vector[i] = NULL;
+	return (0);
+}
+
+char	**envp_to_env_vector(t_env_var *env_vars)
+{
+	int			count;
+	t_env_var	*temp;
+	char		**env_vector;
+
+	count = 0;
+	temp = env_vars;
+	while (temp)
+	{
+		count++;
+		temp = temp->next;
+	}
+	env_vector = gc_malloc(sizeof(char *) * (count + 1));
+	if (!env_vector)
+		return (NULL);
+	if (fill_env_vector(env_vector, env_vars) == -1)
+		return (NULL);
+	return (env_vector);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   environment.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/30 01:51:48 by msennane          #+#    #+#             */
+/*   Updated: 2024/12/06 12:56:30 by msennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+int	update_env_var(t_env_var *env_var_list, t_env_var *new_nod)
+{
+	t_env_var	*tmp;
+	char		*new_value;
+
+	tmp = env_var_list;
+	while (tmp)
+	{
+		if (ft_strcmp(tmp->key, new_nod->key) == 0)
+		{
+			if (!new_nod->value)
+				return (1);
+			new_value = ft_strdup(new_nod->value);
+			if (!new_value)
+				return (1);
+			tmp->value = new_value;
+			return (1);
+		}
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
+void	insert_env_var(t_env_var **env_var_list, t_env_var *new_nod)
+{
+	if (update_env_var(*env_var_list, new_nod))
+		return ;
+	if (!*env_var_list)
+	{
+		*env_var_list = new_nod;
+		return ;
+	}
+	if (ft_strcmp(new_nod->key, (*env_var_list)->key) < 0)
+	{
+		new_nod->next = *env_var_list;
+		*env_var_list = new_nod;
+		return ;
+	}
+	insert_env_var(&((*env_var_list)->next), new_nod);
+}
+
+void	extract_and_push(t_env_var **env_var_list, char *env_var)
+{
+	char		*key;
+	char		*value;
+	char		*equal;
+	t_env_var	*new_nod;
+
+	equal = ft_strchr(env_var, '=');
+	if (!equal)
+	{
+		key = ft_strdup(env_var);
+		if (!key)
+			return ;
+		new_nod = create_env_var(key, NULL);
+		if (!new_nod)
+			return ;
+	}
+	else
+	{
+		key = ft_substr(env_var, 0, equal - env_var);
+		value = ft_strdup(equal + 1);
+		if (!key || (equal[1] && !value))
+			return ;
+		new_nod = create_env_var(key, value);
+	}
+	if (new_nod)
+		insert_env_var(env_var_list, new_nod);
+}
+
+void	init_env_var(t_env_var **env_var_list, char **envp)
+{
+	int	i;
+
+	i = 0;
+	while (envp[i])
+	{
+		extract_and_push(env_var_list, envp[i]);
+		i++;
+	}
+	update_shell_lvl(env_var_list);
+}
+
+void	update_shell_lvl(t_env_var **env_var_list)
+{
+	char	*shell_lvl;
+	char	*new_shell_lvl;
+	int		shell_lvl_int;
+
+	shell_lvl = getenv("SHLVL");
+	if (!shell_lvl)
+	{
+		shell_lvl_int = 1;
+	}
+	else
+	{
+		shell_lvl_int = ft_atoi(shell_lvl);
+		shell_lvl_int++;
+	}
+	new_shell_lvl = ft_itoa(shell_lvl_int);
+	if (!new_shell_lvl)
+		return ;
+	insert_env_var(env_var_list, create_env_var(ft_strdup("SHLVL"),
+			new_shell_lvl));
+}
