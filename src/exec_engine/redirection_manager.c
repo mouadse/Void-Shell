@@ -6,12 +6,11 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/20 16:16:04 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 16:30:04 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdio.h>
 
 // static char	*read_heredoc_input(char *del, t_shell_context *context,
 // 		int *exit_status)
@@ -69,8 +68,68 @@ static void	write_heredoc_file(t_shell_context *context, char *content)
 	ft_close(context, fd);
 }
 
+// void	execute_redirects_command(t_command *cmd, t_shell_context *context,
+// 		int *exit_status)
+// {
+// 	t_redir	*redir_cmd;
+// 	char	*heredoc_content;
+
+// 	redir_cmd = (t_redir *)cmd;
+// 	ignore_signals_heredoc();
+// 	if (redir_cmd->redir_type != '%')
+// 	{
+// 		if (ft_strcmp(redir_cmd->file, "\x01\x01\x01") == 0)
+// 		{
+// 			*exit_status = 1;
+// 			terminate_cleanly(context, *exit_status);
+// 		}
+// 		if (!redir_cmd->file)
+// 		{
+// 			ft_putstr_fd("minishell: No such file or directory\n",
+// 				STDERR_FILENO);
+// 			*exit_status = 1;
+// 			terminate_cleanly(context, *exit_status);
+// 		}
+// 		ft_close(context, redir_cmd->fd);
+// 		if (open(redir_cmd->file, redir_cmd->mode, 0644) < 0)
+// 			terminate_with_error(context, "open", 1);
+// 	}
+// 	else
+// 	{
+// 		heredoc_content = read_heredoc_input(redir_cmd->file, context,
+// 				exit_status);
+// 		write_heredoc_file(context, heredoc_content);
+// 		ft_close(context, redir_cmd->fd);
+// 		if (open(SHELL_HEREDOC_FILE, redir_cmd->mode, 0644) < 0)
+// 			terminate_with_error(context, "open", 1);
+// 	}
+// 	execute_command(redir_cmd->sub_cmd, context, exit_status);
+// }
+
+static void	handle_file_error(t_shell_context *context, int *exit_status)
+{
+	ft_putstr_fd("minishell: No such file or directory\n", STDERR_FILENO);
+	*exit_status = 1;
+	terminate_cleanly(context, *exit_status);
+}
+
+static void	handle_regular_redir(t_redir *redir, t_shell_context *context,
+			int *exit_status)
+{
+	if (ft_strcmp(redir->file, "\x01\x01\x01") == 0)
+	{
+		*exit_status = 1;
+		terminate_cleanly(context, *exit_status);
+	}
+	if (!redir->file)
+		handle_file_error(context, exit_status);
+	ft_close(context, redir->fd);
+	if (open(redir->file, redir->mode, 0644) < 0)
+		terminate_with_error(context, "open", 1);
+}
+
 void	execute_redirects_command(t_command *cmd, t_shell_context *context,
-		int *exit_status)
+			int *exit_status)
 {
 	t_redir	*redir_cmd;
 	char	*heredoc_content;
@@ -78,23 +137,7 @@ void	execute_redirects_command(t_command *cmd, t_shell_context *context,
 	redir_cmd = (t_redir *)cmd;
 	ignore_signals_heredoc();
 	if (redir_cmd->redir_type != '%')
-	{
-		if (ft_strcmp(redir_cmd->file, "\x01\x01\x01") == 0)
-		{
-			*exit_status = 1;
-			terminate_cleanly(context, *exit_status);
-		}
-		if (!redir_cmd->file)
-		{
-			ft_putstr_fd("minishell: No such file or directory\n",
-				STDERR_FILENO);
-			*exit_status = 1;
-			terminate_cleanly(context, *exit_status);
-		}
-		ft_close(context, redir_cmd->fd);
-		if (open(redir_cmd->file, redir_cmd->mode, 0644) < 0)
-			terminate_with_error(context, "open", 1);
-	}
+		handle_regular_redir(redir_cmd, context, exit_status);
 	else
 	{
 		heredoc_content = read_heredoc_input(redir_cmd->file, context,
