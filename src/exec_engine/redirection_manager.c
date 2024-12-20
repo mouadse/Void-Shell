@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/20 14:41:58 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:00:06 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static char	*read_heredoc_input(char *del, t_shell_context *context,
 			&& line[ft_strlen(clean_del)] == '\n')
 			break ;
 		if (is_quoted)
-			enqueue(&queue, ft_strdup(line));
+			enqueue(&queue, (void *)ft_strdup(line));
 		else
 			enqueue(&queue, process_line_hd(context, line, exit_status));
 	}
