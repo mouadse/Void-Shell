@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 20:46:40 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/21 00:47:30 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/21 00:58:25 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,10 @@ char	*remove_quotes(const char *str);
 
 char	*remove_quotes(const char *str);
 void	clean_nulls_from_argv(char **argv, int size);
+void	clean_execution_command_args(t_command *cmd, t_shell_context *context,
+		int *exit_status);
+char	*clean_argument(char *arg, t_shell_context *context,
+		int *exit_status);
+void	restore_quotes(char **vector);
+
 #endif

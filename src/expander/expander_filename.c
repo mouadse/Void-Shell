@@ -6,11 +6,10 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/20 23:22:44 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/21 00:54:33 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
 #include "../../include/minishell.h"
 
 static void	handle_single_quotes2(char *str, int *index, t_queue_char *queue,

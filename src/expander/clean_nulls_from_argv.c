@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 00:47:39 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/21 00:52:56 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/21 00:54:03 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,19 +49,16 @@
 // 	}
 // }
 
-static void clean_string(char *str)
+static void	clean_string(char *str)
 {
-	size_t len;
+	size_t	len;
 
 	if (!str)
-		return;
-	// Skip strings that are just '\x01'
+		return ;
 	if (str[0] == '\x01' && str[1] == '\0')
-		return;
-	// Remove leading '\x01'
+		return ;
 	if (str[0] == '\x01')
 		ft_memmove(str, str + 1, ft_strlen(str));
-	// Remove trailing '\x01' characters
 	len = ft_strlen(str);
 	while (len > 0 && str[len - 1] == '\x01')
 	{
@@ -70,10 +67,10 @@ static void clean_string(char *str)
 	}
 }
 
-void    clean_nulls_from_argv(char **argv, int size)
+void	clean_nulls_from_argv(char **argv, int size)
 {
-	int     i;
-	int     j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
@@ -84,7 +81,7 @@ void    clean_nulls_from_argv(char **argv, int size)
 			if (argv[i][0] == '\x01' && argv[i][1] == '\0')
 			{
 				i++;
-				continue;
+				continue ;
 			}
 			clean_string(argv[i]);
 			argv[j] = argv[i];

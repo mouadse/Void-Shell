@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:22:53 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/20 23:24:37 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/21 00:55:13 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,7 @@ static char	*get_next_word(const char **s_ptr, char sep)
 	in_single_quote = false;
 	in_double_quote = false;
 	while (*s && is_separator(*s, sep))
-	{
 		s++;
-	}
 	start = s;
 	while (*s)
 	{
@@ -78,9 +76,11 @@ static char	*get_next_word(const char **s_ptr, char sep)
 	word = gc_malloc(sizeof(char) * (len + 1));
 	if (!word)
 		return (NULL);
-	for (int i = 0; i < len; i++)
+	int i = 0;
+	while (i < len)
 	{
 		word[i] = start[i];
+		i++;
 	}
 	word[len] = '\0';
 	*s_ptr = s;
