@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/20 20:23:57 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 20:36:32 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	is_delimiter(char *line, char *clean_del)
 }
 
 static void	init_heredoc(t_shell_context *context, t_queue *queue,
-			char **clean_del, char *del)
+		char **clean_del, char *del)
 {
 	int	tty_fd;
 	int	is_quoted;
@@ -41,35 +41,36 @@ static void	init_heredoc(t_shell_context *context, t_queue *queue,
 		*clean_del = ft_strdup("");
 }
 
-static void handle_eof_warning(char *delimiter) {
-    ft_putstr_fd("warning: here-document delimited by end-of-file (wanted `", 2);
-    ft_putstr_fd(delimiter, 2);
-    ft_putstr_fd("')\n", 2);
+static void	eof_warning(char *delimiter)
+{
+	ft_putstr_fd("warning: here-document delimited by end-of-file (wanted `",
+		2);
+	ft_putstr_fd(delimiter, 2);
+	ft_putstr_fd("')\n", 2);
 }
 
 char	*read_heredoc_input(char *del, t_shell_context *context,
-			int *exit_status)
+		int *exit_status)
 {
 	char	*line;
 	t_queue	queue;
 	int		is_quoted;
 	char	*clean_del;
 
-	if(ft_strchr(context->input, '\'') || ft_strchr(context->input, '\"'))
-		is_quoted = 1;
-	else
-		is_quoted = 0;
+	is_quoted = ft_strchr(context->input, '\'') || ft_strchr(context->input,
+			'\"');
 	init_heredoc(context, &queue, &clean_del, del);
 	while (1)
 	{
 		ft_putstr_fd("> ", STDERR_FILENO);
 		line = get_next_line(STDIN_FILENO);
-		if (!line) {
-            handle_eof_warning(clean_del);
-            break;
-        }
-        if (is_delimiter(line, clean_del))
-            break;
+		if (!line)
+		{
+			eof_warning(clean_del);
+			break ;
+		}
+		else if (is_delimiter(line, clean_del))
+			break ;
 		if (is_quoted)
 			enqueue(&queue, ft_strdup(line));
 		else
