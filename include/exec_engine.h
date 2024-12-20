@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 01:40:43 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/20 14:14:33 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 16:15:51 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,7 @@ void	save_exit_status(t_shell_context *context, int status_code);
 void ignore_signals_heredoc(void);
 char	*process_line_hd(t_shell_context *context, char *line,
 		int *exit_status);
-		
+char	*read_heredoc_input(char *del, t_shell_context *context,
+			int *exit_status);
+
 #endif
