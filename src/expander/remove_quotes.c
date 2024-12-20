@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:34:10 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/20 23:55:37 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 23:58:04 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,46 +77,69 @@
 //     result[j] = '\0';
 //     return (result);
 // }
-char *remove_quotes(const char *str)
+
+// Function to handle single quotes
+char handle_single_quote(const char *str, int *i)
 {
-    if (str == NULL)
-        return (NULL);
-
-    size_t len = strlen(str);
-    char *result = gc_malloc(len + 1);
-    if (!result)
-        return (NULL);  // Changed from returning empty string to NULL for consistency
-
-    size_t result_index = 0;
-    bool in_double_quotes = false;
-    size_t i = 0;
-
-    while (i < len)
+    if (str[*i + 1] == '\'')
     {
-        // Handle double quotes
-        if (str[i] == '"')
-        {
-            in_double_quotes = !in_double_quotes;
-        }
-        // Handle single quotes when not inside double quotes
-        else if (str[i] == '\'' && !in_double_quotes)
-        {
-            // Skip paired single quotes (keep one of them)
-            if (i + 1 < len && str[i + 1] == '\'')
-            {
-                result[result_index++] = str[i];
-                i++;
-            }
-            // Skip lone single quotes
-        }
-        // Copy all other characters
+        *i += 2;
+        return '\0';
+    }
+    else
+    {
+        (*i)++;
+        char c = str[*i];
+        while (str[*i] && str[*i] != '\'')
+            (*i)++;
+        if (str[*i] == '\'')
+            (*i)++;
+        return c;
+    }
+}
+
+
+// Function to handle characters
+char handle_character(const char *str, int *i, int in_double_quotes)
+{
+    if (str[*i] == '\'' && !in_double_quotes)
+        return handle_single_quote(str, i);
+    else
+        return str[*i];
+}
+
+int toggle_double_quotes(int in_double_quotes)
+{
+    return !in_double_quotes;
+}
+
+// Function to process the input string
+void process_string(const char *str, char *result)
+{
+    int i;
+    int j;
+    int in_double_quotes;
+
+    i = 0;
+    j = 0;
+    in_double_quotes = 0;
+
+    while (str[i] != '\0')
+    {
+        if (str[i] == '\"')
+            in_double_quotes = toggle_double_quotes(in_double_quotes);
         else
-        {
-            result[result_index++] = str[i];
-        }
+            result[j++] = handle_character(str, &i, in_double_quotes);
         i++;
     }
+    result[j] = '\0';
+}
+char *remove_quotes(const char *str)
+{
+    char *result = gc_malloc(ft_strlen(str) + 1);
+    if (!result)
+        return ft_strdup("");
 
-    result[result_index] = '\0';
-    return (result);
+    process_string(str, result);
+    return result;
 }
