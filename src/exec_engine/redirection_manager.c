@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/20 15:19:23 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:23:03 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,5 @@ void	execute_redirects_command(t_command *cmd, t_shell_context *context,
 		if (open(SHELL_HEREDOC_FILE, redir_cmd->mode, 0644) < 0)
 			terminate_with_error(context, "open", 1);
 	}
-	printf("redir_cmd->sub_cmd->type: %d\n", redir_cmd->sub_cmd->type);
 	execute_command(redir_cmd->sub_cmd, context, exit_status);
 }
