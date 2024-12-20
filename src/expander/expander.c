@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/20 23:34:53 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/21 00:43:09 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,22 +119,26 @@ void	clean_nulls_from_argv(char **argv, int size)
 	}
 }
 
-
-
 void	restore_quotes(char **vector)
 {
 	char	*str;
+	int		i;
+	int		j;
 
 	if (!vector)
 		return ;
-	for (int i = 0; vector[i]; i++)
+	i = 0;
+	while (vector[i])
 	{
 		str = vector[i];
-		for (int j = 0; str[j]; j++)
+		j = 0;
+		while (str[j])
 		{
 			if (str[j] == '\x1F')
 				str[j] = '\'';
+			j++;
 		}
+		i++;
 	}
 }
 
