@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/21 16:23:13 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/21 16:27:27 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,12 @@ static void	handle_single_quotes2(char *str, int *index, t_queue_char *queue)
 		(*index)++;
 	}
 	if (str[*index] == '\'')
-	{
 		(*index)++;
-	}
 }
 
+
 static void	process_argument2(char *arg, t_queue_char *queue, int *exit_status,
-		t_shell_context *context)
+								t_shell_context *context)
 {
 	int	i;
 	int	prev_i;
@@ -56,14 +55,13 @@ static void	process_argument2(char *arg, t_queue_char *queue, int *exit_status,
 	}
 }
 
+
 char	*clean_argument2(char *arg, t_shell_context *context, int *exit_status)
 {
 	t_queue_char	queue;
 	char			*cleaned_arg;
 	char			*home;
 
-	// int				was_quoted;
-	// was_quoted = 0;
 	init_queue_char(&queue);
 	if (ft_strcmp(arg, "~") == 0)
 	{

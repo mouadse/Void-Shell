@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 16:05:46 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/21 16:21:10 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/21 16:29:49 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,16 @@ static void	handle_variable_expansion(char *arg, int *i, t_queue_char *q, t_shel
 }
 
 
-static void	handle_dollar_sign_file(char *arg, int *i, t_queue_char *q,
-								int *exit_status, t_shell_context *context)
+static void	handle_dollar_sign_file(char *arg, int *values[2], t_queue_char *q,
+							   t_shell_context *context)
 {
+	int	*i;
+	int	*exit_status;
+
+	i = values[0];
+	exit_status = values[1];
+
+	/* Check next character after '$' */
 	if (!arg[*i + 1] || is_whitespace(arg[*i + 1]) || arg[*i + 1] == '\"')
 	{
 		enqueue_char(q, '$');
@@ -113,10 +120,11 @@ static void	handle_dollar_sign_file(char *arg, int *i, t_queue_char *q,
 	}
 	else
 	{
-		(*i)++;
+		(*i)++; // Move past '$'
 		handle_variable_expansion(arg, i, q, context);
 	}
 }
+
 
 static void	process_double_quoted_content(char *arg, int *i, t_queue_char *q,
 										  int *exit_status, t_shell_context *context)
@@ -124,7 +132,7 @@ static void	process_double_quoted_content(char *arg, int *i, t_queue_char *q,
 	while (arg[*i] && arg[*i] != '\"')
 	{
 		if (arg[*i] == '$')
-			handle_dollar_sign_file(arg, i, q, exit_status, context);
+			handle_dollar_sign_file(arg, (int *[2]){ i, exit_status }, q, context);
 		else
 		{
 			enqueue_char(q, arg[*i]);
@@ -133,21 +141,19 @@ static void	process_double_quoted_content(char *arg, int *i, t_queue_char *q,
 	}
 }
 
+
 void	handle_double_quotes_filename(char *arg, int *values[2], t_queue_char *q,
 									  t_shell_context *context)
 {
-	int		*i;
-	int		*exit_status;
+	int	*i;
+	int	*exit_status;
 
 	if (!arg || !values || !q || !context)
 		return ;
-
 	i = values[0];
 	exit_status = values[1];
-
 	(*i)++;
 	process_double_quoted_content(arg, i, q, exit_status, context);
-
 	if (arg[*i] == '\"')
 		(*i)++;
 }
