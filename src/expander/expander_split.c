@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:22:53 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/21 00:55:13 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/21 01:43:46 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,44 +46,74 @@ static int	count_words(const char *s, char sep)
 	return (count);
 }
 
-static char	*get_next_word(const char **s_ptr, char sep)
+// static char	*extract_next_token(const char **s_ptr, char sep)
+// {
+// 	const char	*s;
+// 	char		*word;
+// 	int			len;
+// 	bool		in_single_quote;
+// 	bool		in_double_quote;
+// 	const char	*start;
+
+// 	s = *s_ptr;
+// 	len = 0;
+// 	in_single_quote = false;
+// 	in_double_quote = false;
+// 	while (*s && is_separator(*s, sep))
+// 		s++;
+// 	start = s;
+// 	while (*s)
+// 	{
+// 		if (*s == '\'' && !in_double_quote)
+// 			in_single_quote = !in_single_quote;
+// 		else if (*s == '\"' && !in_single_quote)
+// 			in_double_quote = !in_double_quote;
+// 		else if (!in_single_quote && !in_double_quote && is_separator(*s, sep))
+// 			break ;
+// 		len++;
+// 		s++;
+// 	}
+// 	word = gc_malloc(sizeof(char) * (len + 1));
+// 	if (!word)
+// 		return (NULL);
+// 	int i = 0;
+// 	while (i < len)
+// 	{
+// 		word[i] = start[i];
+// 		i++;
+// 	}
+// 	word[len] = '\0';
+// 	*s_ptr = s;
+// 	return (word);
+// }
+
+static char	*extract_next_token(const char **s_ptr, char sep)
 {
 	const char	*s;
-	char		*word;
-	int			len;
-	bool		in_single_quote;
-	bool		in_double_quote;
 	const char	*start;
+	const char	*end;
+	char		*word;
 
 	s = *s_ptr;
-	len = 0;
-	in_single_quote = false;
-	in_double_quote = false;
+	bool quotes[2] = {false, false}; // {single, double}
 	while (*s && is_separator(*s, sep))
 		s++;
 	start = s;
-	while (*s)
+	end = s;
+	while (*end && (quotes[0] || quotes[1] || !is_separator(*end, sep)))
 	{
-		if (*s == '\'' && !in_double_quote)
-			in_single_quote = !in_single_quote;
-		else if (*s == '\"' && !in_single_quote)
-			in_double_quote = !in_double_quote;
-		else if (!in_single_quote && !in_double_quote && is_separator(*s, sep))
-			break ;
-		len++;
-		s++;
+		if (*end == '\'' && !quotes[1])
+			quotes[0] = !quotes[0];
+		else if (*end == '\"' && !quotes[0])
+			quotes[1] = !quotes[1];
+		end++;
 	}
-	word = gc_malloc(sizeof(char) * (len + 1));
+	word = gc_malloc(end - start + 1);
 	if (!word)
 		return (NULL);
-	int i = 0;
-	while (i < len)
-	{
-		word[i] = start[i];
-		i++;
-	}
-	word[len] = '\0';
-	*s_ptr = s;
+	ft_memcpy(word, start, end - start);
+	word[end - start] = '\0';
+	*s_ptr = end;
 	return (word);
 }
 
@@ -102,11 +132,9 @@ char	**ft_split_beta(const char *s, char sep)
 	i = 0;
 	while (i < word_count)
 	{
-		result[i] = get_next_word(&s, sep);
+		result[i] = extract_next_token(&s, sep);
 		if (!result[i])
-		{
 			return (NULL);
-		}
 		i++;
 	}
 	result[i] = NULL;
