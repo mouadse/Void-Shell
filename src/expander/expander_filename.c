@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/21 16:20:30 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/21 16:23:13 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ char	*clean_argument2(char *arg, t_shell_context *context, int *exit_status)
 	t_queue_char	queue;
 	char			*cleaned_arg;
 	char			*home;
-	// int				was_quoted;
 
+	// int				was_quoted;
 	// was_quoted = 0;
 	init_queue_char(&queue);
 	if (ft_strcmp(arg, "~") == 0)
@@ -78,7 +78,8 @@ char	*clean_argument2(char *arg, t_shell_context *context, int *exit_status)
 		process_argument2(arg, &queue, exit_status, context);
 		cleaned_arg = queue_char_str_convert(&queue);
 	}
-	if (is_ambiguous_redirect(cleaned_arg)) // quotes are ambiguous
+	if (is_ambiguous_redirect(cleaned_arg) && (!ft_strchr(context->input, '\"')
+			&& !ft_strchr(context->input, '\''))) // quotes are ambiguous
 	{
 		ft_putstr_fd("minishell: ambiguous redirect\n", STDERR_FILENO);
 		cleaned_arg = ft_strdup("\x01\x01\x01");
