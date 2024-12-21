@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/21 13:55:57 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/21 15:39:10 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	handle_single_quotes2(char *str, int *index, t_queue_char *queue,
 	}
 }
 
-static void	handle_double_quotes2(char *arg, int *values[2], t_queue_char *q,
+static void	handle_double_quotes_filename(char *arg, int *values[2], t_queue_char *q,
 		t_shell_context *context, int *was_quoted)
 {
 	int		*i;
@@ -105,7 +105,7 @@ static void	process_argument2(char *arg, t_queue_char *queue, int *exit_status,
 		if (arg[i] == '\'')
 			handle_single_quotes2(arg, &i, queue, was_quoted);
 		else if (arg[i] == '\"')
-			handle_double_quotes2(arg, values, queue, context, was_quoted);
+			handle_double_quotes_filename(arg, values, queue, context, was_quoted);
 		else if (arg[i] == '$')
 			handle_dollar_sign(arg, values, queue, context);
 		else
