@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 00:03:09 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/19 00:08:34 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/21 01:34:47 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void	init_shell_env(t_shell_context *context, char **envp,
 	init_env_var(&context->env_vars, envp);
 	init_queue(&context->queue);
 	context->last_cmd = NULL;
+	context->exit_status = gc_malloc(sizeof(int));
 	*exit_status = EXIT_SUCCESS;
 }
 
