@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:34:10 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/21 14:29:03 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/21 14:34:02 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,23 +83,12 @@ static int	process_double_quote(const char *str, int *i, int *in_double_quotes)
 	if (str[*i] == '\"')
 	{
 		*in_double_quotes = !(*in_double_quotes);
-		(*i)++; // Move past the quote
+		(*i)++;
 		return (1);
 	}
 	return (0);
 }
 
-/**
- * Handles the case when we encounter single quotes *outside* of double quotes.
- * This handles two scenarios:
- *   1. Two consecutive single quotes (like `''`) which we skip entirely.
- *   2. A block of single quotes and the content inside them.
- *
- * @param str    The entire input string.
- * @param i      Pointer to current index in the string.
- * @param j      Pointer to the index for the 'result' buffer.
- * @param result The buffer where we write the output string.
- */
 static void	process_single_quote(const char *str, int *i, int *j, char *result)
 {
 	int	count;
@@ -126,9 +115,7 @@ static void	process_single_quote(const char *str, int *i, int *j, char *result)
 			(*i)++;
 	}
 }
-/**
- * The main remove_quotes function that orchestrates the logic.
- */
+
 char	*remove_quotes(const char *str)
 {
 	int		i;
@@ -151,9 +138,7 @@ char	*remove_quotes(const char *str)
 			process_single_quote(str, &i, &j, result);
 			continue ;
 		}
-		result[j] = str[i];
-		i++;
-		j++;
+		result[j++] = str[i++];
 	}
 	result[j] = '\0';
 	return (result);
