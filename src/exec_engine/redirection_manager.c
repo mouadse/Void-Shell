@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:06:13 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/20 16:30:04 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/21 15:52:37 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ static void	handle_regular_redir(t_redir *redir, t_shell_context *context,
 		*exit_status = 1;
 		terminate_cleanly(context, *exit_status);
 	}
-	if (!redir->file)
+	if (!redir->file || !ft_strcmp(redir->file, "\x01"))
 		handle_file_error(context, exit_status);
 	ft_close(context, redir->fd);
 	if (open(redir->file, redir->mode, 0644) < 0)
