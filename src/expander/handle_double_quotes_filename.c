@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 16:05:46 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/21 16:11:44 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/21 16:21:10 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,17 +134,16 @@ static void	process_double_quoted_content(char *arg, int *i, t_queue_char *q,
 }
 
 void	handle_double_quotes_filename(char *arg, int *values[2], t_queue_char *q,
-									  t_shell_context *context, int *was_quoted)
+									  t_shell_context *context)
 {
 	int		*i;
 	int		*exit_status;
 
-	if (!arg || !values || !q || !context || !was_quoted)
+	if (!arg || !values || !q || !context)
 		return ;
 
 	i = values[0];
 	exit_status = values[1];
-	(*was_quoted) = 1;
 
 	(*i)++;
 	process_double_quoted_content(arg, i, q, exit_status, context);

@@ -6,18 +6,16 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:15 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/21 16:06:07 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/21 16:20:30 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static void	handle_single_quotes2(char *str, int *index, t_queue_char *queue,
-		int *was_quoted)
+static void	handle_single_quotes2(char *str, int *index, t_queue_char *queue)
 {
-	if (!str || !index || !queue || !was_quoted)
+	if (!str || !index || !queue)
 		return ;
-	(*was_quoted) = 1;
 	(*index)++;
 	while (str[*index] && str[*index] != '\'')
 	{
@@ -31,13 +29,13 @@ static void	handle_single_quotes2(char *str, int *index, t_queue_char *queue,
 }
 
 static void	process_argument2(char *arg, t_queue_char *queue, int *exit_status,
-		t_shell_context *context, int *was_quoted)
+		t_shell_context *context)
 {
 	int	i;
 	int	prev_i;
 	int	*values[2];
 
-	if (!arg || !queue || !exit_status || !context || !was_quoted)
+	if (!arg || !queue || !exit_status || !context)
 		return ;
 	i = 0;
 	values[0] = &i;
@@ -46,9 +44,9 @@ static void	process_argument2(char *arg, t_queue_char *queue, int *exit_status,
 	{
 		prev_i = i;
 		if (arg[i] == '\'')
-			handle_single_quotes2(arg, &i, queue, was_quoted);
+			handle_single_quotes2(arg, &i, queue);
 		else if (arg[i] == '\"')
-			handle_double_quotes_filename(arg, values, queue, context, was_quoted);
+			handle_double_quotes_filename(arg, values, queue, context);
 		else if (arg[i] == '$')
 			handle_dollar_sign(arg, values, queue, context);
 		else
@@ -63,9 +61,9 @@ char	*clean_argument2(char *arg, t_shell_context *context, int *exit_status)
 	t_queue_char	queue;
 	char			*cleaned_arg;
 	char			*home;
-	int				was_quoted;
+	// int				was_quoted;
 
-	was_quoted = 0;
+	// was_quoted = 0;
 	init_queue_char(&queue);
 	if (ft_strcmp(arg, "~") == 0)
 	{
@@ -77,10 +75,10 @@ char	*clean_argument2(char *arg, t_shell_context *context, int *exit_status)
 	}
 	else
 	{
-		process_argument2(arg, &queue, exit_status, context, &was_quoted);
+		process_argument2(arg, &queue, exit_status, context);
 		cleaned_arg = queue_char_str_convert(&queue);
 	}
-	if (is_ambiguous_redirect(cleaned_arg) && !was_quoted)
+	if (is_ambiguous_redirect(cleaned_arg)) // quotes are ambiguous
 	{
 		ft_putstr_fd("minishell: ambiguous redirect\n", STDERR_FILENO);
 		cleaned_arg = ft_strdup("\x01\x01\x01");

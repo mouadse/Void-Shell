@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 20:46:40 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/21 16:05:25 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/21 16:20:50 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,6 @@ void	restore_quotes(char **vector);
 void	process_argument(char *arg, t_queue_char *queue, int *exit_status,
 		t_shell_context *context);
 void	handle_double_quotes_filename(char *arg, int *values[2], t_queue_char *q,
-		t_shell_context *context, int *was_quoted);
+		t_shell_context *context);
 
 #endif
