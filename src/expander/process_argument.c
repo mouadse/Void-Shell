@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 01:09:05 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/21 01:35:14 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/21 01:39:07 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,11 @@ void	enqueue_percentage_signs(const char *arg, int *i, t_queue_char *queue)
 {
 	enqueue_char(queue, '$');
 	(*i)++;
-	while (arg[*i] == '%')
-	{
-		enqueue_char(queue, '%');
-		(*i)++;
-	}
+	while (arg[*i] && arg[*i] == '%')
+    {
+        enqueue_char(queue, '%');
+        (*i)++;
+    }
 }
 
 void	process_special_character(char *arg, int *i, t_queue_char *queue,
@@ -80,7 +80,7 @@ void	process_special_character(char *arg, int *i, t_queue_char *queue,
 		values[1] = context->exit_status;
 		handle_double_quotes(arg, values, queue, context);
 	}
-	else if (arg[*i + 1] == '%')
+	else if (arg[*i] && arg[*i + 1] && arg[*i + 1] == '%')
 		enqueue_percentage_signs(arg, i, queue);
 	else if (arg[*i] == '$')
 	{
