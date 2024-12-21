@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:39:28 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/20 23:23:07 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/21 16:06:45 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ char	*extract_variable_name(char *arg)
 		i++;
 	return (ft_substr(arg, 0, i));
 }
+
 void	process_variable(char *str, int *values[2], t_queue_char *queue,
 		t_shell_context *context)
 {
