@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:22:53 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/21 01:43:46 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/21 01:58:26 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,23 @@ static int	count_words(const char *s, char sep)
 // 	return (word);
 // }
 
+static const char	*find_token_end(const char *str, char sep)
+{
+	bool	quotes[2];
+
+	quotes[0] = false; // single quotes
+	quotes[1] = false; // double quotes
+	while (*str && (quotes[0] || quotes[1] || !is_separator(*str, sep)))
+	{
+		if (*str == '\'' && !quotes[1])
+			quotes[0] = !quotes[0];
+		else if (*str == '\"' && !quotes[0])
+			quotes[1] = !quotes[1];
+		str++;
+	}
+	return (str);
+}
+
 static char	*extract_next_token(const char **s_ptr, char sep)
 {
 	const char	*s;
@@ -95,19 +112,11 @@ static char	*extract_next_token(const char **s_ptr, char sep)
 	char		*word;
 
 	s = *s_ptr;
-	bool quotes[2] = {false, false}; // {single, double}
 	while (*s && is_separator(*s, sep))
 		s++;
 	start = s;
 	end = s;
-	while (*end && (quotes[0] || quotes[1] || !is_separator(*end, sep)))
-	{
-		if (*end == '\'' && !quotes[1])
-			quotes[0] = !quotes[0];
-		else if (*end == '\"' && !quotes[0])
-			quotes[1] = !quotes[1];
-		end++;
-	}
+	end = find_token_end(s, sep);
 	word = gc_malloc(end - start + 1);
 	if (!word)
 		return (NULL);
