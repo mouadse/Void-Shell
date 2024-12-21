@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 20:46:40 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/21 00:58:25 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/21 01:08:42 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,7 @@ void	clean_execution_command_args(t_command *cmd, t_shell_context *context,
 char	*clean_argument(char *arg, t_shell_context *context,
 		int *exit_status);
 void	restore_quotes(char **vector);
+void	process_argument(char *arg, t_queue_char *queue, int *exit_status,
+		t_shell_context *context);
 
 #endif
