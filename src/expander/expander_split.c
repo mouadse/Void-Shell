@@ -6,7 +6,7 @@
 /*   By: msennane <msennane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:22:53 by msennane          #+#    #+#             */
-/*   Updated: 2024/12/21 01:58:26 by msennane         ###   ########.fr       */
+/*   Updated: 2024/12/21 02:00:16 by msennane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ static const char	*find_token_end(const char *str, char sep)
 {
 	bool	quotes[2];
 
-	quotes[0] = false; // single quotes
-	quotes[1] = false; // double quotes
+	quotes[0] = false;
+	quotes[1] = false;
 	while (*str && (quotes[0] || quotes[1] || !is_separator(*str, sep)))
 	{
 		if (*str == '\'' && !quotes[1])
